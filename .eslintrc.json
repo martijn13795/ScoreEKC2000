@@ -1,0 +1,26 @@
+{
+  "extends": ["eslint:recommended", "google"],
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "html"
+  ],
+  "rules": {
+    "brace-style": "off",
+    "new-cap": ["error", { "capIsNewExceptions": ["Polymer"] }],
+    "no-var": "off",
+    "no-undef": "off",
+    "max-len": ["error", 120],
+    "require-jsdoc": "off",
+    "linebreak-style": "off",
+//    For debugging purpuses
+    "no-console": "off"
+  },
+  "globals": {
+    "Polymer": true
+  }
+}
