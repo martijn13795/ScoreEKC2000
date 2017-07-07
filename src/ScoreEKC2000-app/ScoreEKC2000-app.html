@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="ScoreEKC2000-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class ScoreEKC2000App extends Polymer.Element {
+      static get is() { return 'ScoreEKC2000-app'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'ScoreEKC2000-app'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(ScoreEKC2000App.is, ScoreEKC2000App);
+  </script>
+</dom-module>

@@ -1,0 +1,7 @@
+{
+  "name": "ScoreEKC2000",
+  "short_name": "ScoreEKC2000",
+  "description": "Live score online",
+  "start_url": "/",
+  "display": "standalone"
+}

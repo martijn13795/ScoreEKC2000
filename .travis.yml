@@ -1,0 +1,26 @@
+language: node_js
+sudo: required
+dist: trusty
+addons:
+  firefox: latest
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+node_js:
+- '7'
+#- '6'
+#- '5'
+#- '4'
+before_script:
+- npm install -g bower polymer-cli@next firebase-tools
+- bower install
+script:
+- ./travis_scripts/firebase_generate_config.sh > scripts/config.js
+- xvfb-run npm test
+- polymer build --bundle --js-minify --css-minify --html-minify
+after_success:
+- ./travis_scripts/deploy.sh
+notifications:
+  email: false
