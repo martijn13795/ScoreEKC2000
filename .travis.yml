@@ -1,4 +1,5 @@
 language: node_js
+sudo: required
 dist: trusty
 addons:
   firefox: latest
@@ -14,7 +15,7 @@ before_script:
 - npm install -g bower polymer-cli@next firebase-tools
 - bower install
 script:
-- ./travis_scripts/firebase_generate_config.sh > scripts/config.js
+- ./travis_scripts/firebase_generate_config.sh
 - xvfb-run npm test
 - polymer build --bundle --js-minify --css-minify --html-minify
 after_success:
