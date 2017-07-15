@@ -1,6 +1,6 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/ScoreEKC2000-app/ScoreEKC2000-app.html",
+  "shell": "src/ekc-app/ekc-app.html",
   "sources": [
     "src/**/*",
     "images/**/*",
