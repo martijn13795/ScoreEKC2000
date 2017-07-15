@@ -1,32 +1,39 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
 <dom-module id="ekc-app">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <h2>Hello [[prop1]]!</h2>
-  </template>
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            .logo {
+                width: 250px;
+            }
+        </style>
+        <h2>Welkom bij de live score van [[prop1]]!</h2>
+        <img class="logo" src="../../images/logo.png" alt="Logo"/>
+    </template>
 
-  <script>
-    /**
-     * @customElement
-     * @polymer
-     */
-    class EkcApp extends Polymer.Element {
-      static get is() { return 'ekc-app'; }
-      static get properties() {
-        return {
-          prop1: {
-            type: String,
-            value: 'ekc-app',
-          },
-        };
-      }
-    }
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class EkcApp extends Polymer.Element {
+            static get is() {
+                return 'ekc-app';
+            }
 
-    window.customElements.define(EkcApp.is, EkcApp);
-  </script>
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'EKC 2000',
+                    },
+                };
+            }
+        }
+
+        window.customElements.define(EkcApp.is, EkcApp);
+    </script>
 </dom-module>
