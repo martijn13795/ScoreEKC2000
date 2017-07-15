@@ -10,7 +10,7 @@
                 width: 250px;
             }
         </style>
-        <h2>Welkom bij de live score van [[prop1]]!</h2>
+        <h2>Welkom bij de live score van [[name]]!</h2>
         <img class="logo" src="../../images/logo.png" alt="Logo"/>
     </template>
 
@@ -27,6 +27,10 @@
             static get properties() {
                 return {
                     prop1: {
+                        type: String,
+                        value: 'ekc-app',
+                    },
+                    name: {
                         type: String,
                         value: 'EKC 2000',
                     },
