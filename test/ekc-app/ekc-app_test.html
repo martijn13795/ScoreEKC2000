@@ -9,30 +9,30 @@
     <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../../src/ScoreEKC2000-app/ScoreEKC2000-app.html">
+    <link rel="import" href="../../src/ekc-app/ekc-app.html">
   </head>
   <body>
 
     <test-fixture id="BasicTestFixture">
       <template>
-        <ScoreEKC2000-app></ScoreEKC2000-app>
+        <ekc-app></ekc-app>
       </template>
     </test-fixture>
 
     <test-fixture id="ChangedPropertyTestFixture">
       <template>
-        <ScoreEKC2000-app prop1="new-prop1"></ScoreEKC2000-app>
+        <ekc-app prop1="new-prop1"></ekc-app>
       </template>
     </test-fixture>
 
     <script>
-      suite('ScoreEKC2000-app', function() {
+      suite('ekc-app', function() {
         test('instantiating the element with default properties works', function() {
           var element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 'ScoreEKC2000-app');
+          assert.equal(element.prop1, 'ekc-app');
           var elementShadowRoot = element.shadowRoot;
           var elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello ScoreEKC2000-app!');
+          assert.equal(elementHeader.innerHTML, 'Hello ekc-app!');
         });
 
         test('setting a property on the element works', function() {

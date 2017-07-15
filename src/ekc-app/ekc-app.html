@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<dom-module id="ScoreEKC2000-app">
+<dom-module id="ekc-app">
   <template>
     <style>
       :host {
@@ -15,18 +15,18 @@
      * @customElement
      * @polymer
      */
-    class ScoreEKC2000App extends Polymer.Element {
-      static get is() { return 'ScoreEKC2000-app'; }
+    class EkcApp extends Polymer.Element {
+      static get is() { return 'ekc-app'; }
       static get properties() {
         return {
           prop1: {
             type: String,
-            value: 'ScoreEKC2000-app',
+            value: 'ekc-app',
           },
         };
       }
     }
 
-    window.customElements.define(ScoreEKC2000App.is, ScoreEKC2000App);
+    window.customElements.define(EkcApp.is, EkcApp);
   </script>
 </dom-module>
