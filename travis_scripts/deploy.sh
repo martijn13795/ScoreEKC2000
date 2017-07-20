@@ -2,7 +2,7 @@
 deploy () {
     echo "Initiate deployment on $1 environment"
     firebase use "$1" --token "${FIREBASE_API_TOKEN}"
-    firebase deploy --token "${FIREBASE_API_TOKEN} --non-interactive"
+    firebase deploy --token "${FIREBASE_API_TOKEN}"
 }
 
 check_on_pr () {
