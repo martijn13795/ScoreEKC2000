@@ -1,0 +1,35 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+
+<dom-module id="score-overview">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+            }
+        </style>
+        <div>
+            <h1>Er zijn nog geen scores aanwezig.</h1>
+        </div>
+    </template>
+
+    <script>
+        class ScoreOverview extends Polymer.Element {
+            static get is() {
+                return 'score-overview';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'score-overview',
+                    },
+                };
+            }
+        }
+
+        window.customElements.define(ScoreOverview.is, ScoreOverview);
+    </script>
+</dom-module>

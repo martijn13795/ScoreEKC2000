@@ -45,6 +45,19 @@
         <!-- Load application shell -->
         <link rel="import" href="/src/ekc-app/ekc-app.html">
 
+        <!--Load firebase script. -->
+        <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+        <script src="/scripts/config.js"></script>
+        <script>
+            firebase.initializeApp(config);
+            // eslint-disable-next-line
+            const database = firebase.database();
+            // eslint-disable-next-line
+            const storage = firebase.storage();
+            // eslint-disable-next-line
+            const messaging = firebase.messaging();
+        </script>
+
         <style>
             html {
                 height: 100%;
