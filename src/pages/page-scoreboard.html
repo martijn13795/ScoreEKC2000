@@ -1,34 +1,32 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../elements/score-board.html">
 
-
-<dom-module id="score-overview">
+<dom-module id="page-scoreboard">
     <template>
         <style>
             :host {
                 display: block;
+                height: 100%;
             }
         </style>
-        <div>
-            <h1>Er zijn nog geen scores aanwezig!</h1>
-        </div>
+        <score-board></score-board>
     </template>
 
     <script>
-        class ScoreOverview extends Polymer.Element {
+        class PageScoreboard extends Polymer.Element {
             static get is() {
-                return 'score-overview';
+                return 'page-scoreboard';
             }
 
             static get properties() {
                 return {
                     prop1: {
                         type: String,
-                        value: 'score-overview',
+                        value: 'page-scoreboard',
                     },
                 };
             }
         }
-
-        window.customElements.define(ScoreOverview.is, ScoreOverview);
+        window.customElements.define(PageScoreboard.is, PageScoreboard);
     </script>
 </dom-module>

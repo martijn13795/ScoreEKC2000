@@ -1,7 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../elements/score-overview.html">
 
-<dom-module id="page-score-overview">
+<dom-module id="page-404">
     <template>
         <style>
             :host {
@@ -9,36 +8,37 @@
                 height: 100%;
                 margin-top: -21px;
             }
-
-            .logo {
-                width: 250px;
+            .container {
+                text-align: center;
             }
         </style>
-        <h2>Welkom bij de live score van [[clubName]]!</h2>
-        <img class="logo" src="../../images/logo.png" alt="Logo"/>
-        <score-overview></score-overview>
+        <div class="container">
+            <div class="content">
+                <h1>[[error]]</h1>
+                <span><img alt="404 error" src="../../images/404Error.png"></span>
+            </div>
+        </div>
     </template>
 
     <script>
-        class PageScoreOverview extends Polymer.Element {
+        class Page404 extends Polymer.Element {
             static get is() {
-                return 'page-score-overview';
+                return 'page-404';
             }
 
             static get properties() {
                 return {
                     prop1: {
                         type: String,
-                        value: 'page-score-overview',
+                        value: 'page-404',
                     },
-                    clubName: {
+                    error: {
                         type: String,
-                        value: 'EKC 2000',
+                        value: 'Oeps! - De pagina is niet gevonden',
                     },
                 };
             }
         }
-
-        window.customElements.define(PageScoreOverview.is, PageScoreOverview);
+        window.customElements.define(Page404.is, Page404);
     </script>
 </dom-module>

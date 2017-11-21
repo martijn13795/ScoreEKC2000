@@ -11,6 +11,8 @@
   },
   "private": false,
   "dependencies": {
+    "firebase": "^4.6.0",
+    "firebase-admin": "^5.4.3",
     "web-animations-js": "^2.2.5"
   },
   "description": "Live score online",

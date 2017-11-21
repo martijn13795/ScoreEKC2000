@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="page-start-scoreboard">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+            }
+        </style>
+        <button name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home</button>
+        <button name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest</button>
+    </template>
+
+    <script>
+        class PageStartScoreboard extends Polymer.Element {
+            static get is() {
+                return 'page-start-scoreboard';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'page-start-scoreboard',
+                    },
+                };
+            }
+
+            _homeScorePlus() {
+                const docRef = database.doc('score/score');
+                let homeScoreToSave;
+                let guestScoreToSave;
+                docRef.get().then(function(querySnapshot) {
+                    const myData = querySnapshot.data();
+                    homeScoreToSave = myData.homeScore;
+                    guestScoreToSave = myData.guestScore;
+                    homeScoreToSave++;
+                    docRef.set({
+                        homeScore: homeScoreToSave,
+                        guestScore: guestScoreToSave,
+                    });
+                });
+            }
+
+            _guestScorePlus() {
+                const docRef = database.doc('score/score');
+                let homeScoreToSave;
+                let guestScoreToSave;
+                docRef.get().then(function(querySnapshot) {
+                    const myData = querySnapshot.data();
+                    homeScoreToSave = myData.homeScore;
+                    guestScoreToSave = myData.guestScore;
+                    guestScoreToSave++;
+                    docRef.set({
+                        homeScore: homeScoreToSave,
+                        guestScore: guestScoreToSave,
+                    });
+                });
+            }
+        }
+        window.customElements.define(PageStartScoreboard.is, PageStartScoreboard);
+    </script>
+</dom-module>

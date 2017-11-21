@@ -1,0 +1,132 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+
+<dom-module id="score-board">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+                margin-top: -21px;
+                background-color: white;
+            }
+            #container {
+                display: inline;
+                height: 350px;
+                width: 1140px;
+            }
+            #top {
+                height: 50px;
+                width: 100%;
+                text-align: center;
+            }
+            #middle {
+                height: 250px;
+                width: 100%;
+            }
+            #bottom {
+                height: 50px;
+                width: 100%;
+            }
+            #left {
+                float: left;
+                height: auto;
+                width: 25%;
+                text-align: center;
+            }
+            #center {
+                float: left;
+                height: auto;
+                width: 50%;
+            }
+            #right {
+                float: left;
+                height: auto;
+                width: 25%;
+                text-align: center;
+            }
+            #logo {
+                height: auto;
+                width: 100%;
+                max-width: 340px;
+                display: block;
+                margin: 0 auto;
+            }
+            .score {
+                /*height: 125px;*/
+                /*width: 125px;*/
+                border-radius: 10px;
+                margin: 0 auto;
+                background-color: black;
+            }
+            #homeScore, #guestScore {
+                font-size:9vw;
+                position: relative;
+                padding-top: 50px;
+            }
+        </style>
+        <div id="container">
+            <div id="top">
+                <h1 id="title">Live score EKC 2000</h1>
+            </div>
+            <div id="middle">
+                <div id="left">
+                    <h1>EKC 2000</h1>
+                    <div class="score">
+                        <h2 id="homeScore" style="color: blue">[[homeScore]]</h2>
+                    </div>
+                </div>
+                <div id="center">
+                    <img id="logo" src="../../images/logo.png" alt="Logo"/>
+                </div>
+                <div id="right">
+                    <h1>Gasten</h1>
+                    <div class="score">
+                        <h2 id="guestScore" style="color: red">[[guestScore]]</h2>
+                    </div>
+                </div>
+            </div>
+            <div id="bottom">
+
+            </div>
+
+
+        </div>
+    </template>
+
+    <script>
+        class Scoreboard extends Polymer.Element {
+            static get is() {
+                return 'score-board';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'score-board',
+                    },
+                    homeScore: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '0',
+                    },
+                    guestScore: {
+                        type: String,
+                        value: '0',
+                    },
+                };
+            }
+
+            _updateScore() {
+                database.collection('score').doc('score').onSnapshot((doc) => {
+                    this.homeScore = doc.data().homeScore;
+                    this.guestScore = doc.data().guestScore;
+                });
+            }
+
+        }
+
+        window.customElements.define(Scoreboard.is, Scoreboard);
+    </script>
+</dom-module>
