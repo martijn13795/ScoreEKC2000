@@ -1,7 +1,7 @@
 #!/bin/bash
 deploy () {
-    echo "Initiate deployment on $FIREBASE_PROJECT_ID_PROD environment"
-    firebase use "${FIREBASE_PROJECT_ID_PROD}" --token "${FIREBASE_API_TOKEN}"
+    echo "Initiate deployment on $1 environment"
+    firebase use "$1" --token "${FIREBASE_API_TOKEN}"
     firebase deploy --token "${FIREBASE_API_TOKEN} --non-interactive"
 }
 
@@ -9,7 +9,7 @@ check_on_pr () {
     echo "Checking on PR..."
     echo "Pull Request: $TRAVIS_PULL_REQUEST"
     if [ $TRAVIS_PULL_REQUEST == false ]; then
-        deploy "$FIREBASE_PROJECT_ID_PROD"
+        deploy "$1"
     else
         echo "Is a pull request..."
         echo "Not deploying."
