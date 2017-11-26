@@ -17,10 +17,6 @@ script:
 - xvfb-run npm test
 - polymer build --bundle --js-minify --css-minify --html-minify
 after_success:
-  deploy:
-    provider: firebase
-    token:
-      secure: "I2pksjuohaBQQmbh60To8Kf+7tCZyb5oI0evxD63Xpjyz9waIfUAta9Mt4q1Aj0vPIuyy1hAQmikrByrvD7loEpMgyeWLLpYwQsbU44BGqz/slvlC9wkJHaQ9cRpqsvEF2yqM+eh/G0Ncn5R71rNVdXmGC54dawd152ToFf1nSTEKlWR0Spy7cfnyoZxviFUz31lAR3sutyClzlDdbseGrP4rA6LQKg5++unaQv8dO4a6bU74dZfDVjYnFaAT/P1kj6bVSo3jidYM8PLm9EbRZJReEHkKz6RfMtYzN/lSkLKT5h6LuQIbrXNDMZ+peVMhpz2O6mKj/OXTaI7IBtUyY7gbo6PxB5vuAt7nPh8BxclDqrGSbjRYH8F5HW8I386FD459EQ2zr+iLXdjmDlULp/I7AWgAiDXIC880giS1FOzdM/IdQ6r5yRTd7oyw/rsWxx2fCiETrDi8uQo8QNx4Osa9pV8UgwCsofHiW0ISEe93LR9KIcH3Kfbb7CPJgIAC3KzDCAaaZtlSW9cRQ3fN3w5wCYPnT+7W4E2y9/AxrDwZxHnTgPUKW+sqbJOuXLLkVCAtVByjXZb1B+xQU0mdc9KNWvNU45h7zgDLwvLkNoSwmobp66kG7QDWdRcv298RVyanYuNkaeAleb4vcx5/FvcPbv6ROrMMg+tleCQ64E="
-    project: $PROJECTID
+- firebase deploy --token=${FIREBASE_API_TOKEN}
 notifications:
   email: false
