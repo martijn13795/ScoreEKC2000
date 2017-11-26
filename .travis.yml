@@ -18,6 +18,10 @@ script:
 - xvfb-run npm test
 - polymer build --bundle --js-minify --css-minify --html-minify
 after_success:
-- ./travis_scripts/deploy.sh
+  deploy:
+    provider: firebase
+    token:
+      secure: "DESUz/0mK0boTmXsYmVVegKR3xricw47QE7oYVNUiXSbTIWo09JEVeIS5sh981OmGkxO+khOrm4V16efAAUitAZdqHn2eyiXahJoLhWiZRtszL7ex+YdggqBD7IT6Ba5F+YtTHUKYs5+OASYO6nQgzzsrmnKvjbax5+vDBZ99uOiJGKvJX8GoWO/bWO4itZtebrqWxjXLb8hLRM4yxNCo5JNqlB557fWks5nl1hG1FQ2xmYZvd5MqPkibpCQlW2QdA9udAqQ2IBs0pLYM+w7ZnZPdYIWClBBq7mjVLfn1Tdeq6A3AWsyXZoNes0/e/Wm6TsvrBxG/t60IQcZMYepiPIDwn6Q66Cf760vDmWMoCoN2u0mGKeu3jRuGV8r11lZm30uyyyJ+ueSSJQVqGqkbOvst81neew5ZUdtjEJ/tLf4INKlkrn8pQplF1P7CCiXDFTbDciI45/sDX0LrYNBr/HI0Rr3AEfS6DuKVFsy2MXlmMHP8jSZUqggqoHFugtIeudNdYOA01JcrO8Uqd746QybigDOB0dWAZtuv5GgpUGdxD6Ba1sMyE7BbXA/p7+IRXPoW3REhcAAUaLMl3K7xD7bMQtXYkA0KNzT3mv7EVn3EXziCGqBbQBnmY72sUsEHsPtZD/Ey1YAhUHyeRBQD7dOeVfOwBJFdrSHwz3qySw="
+    project: $PROJECTID
 notifications:
   email: false
