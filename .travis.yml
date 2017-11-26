@@ -9,19 +9,18 @@ addons:
     - google-chrome-stable
 node_js:
 - '6'
-#- '5'
 before_script:
 - npm install -g bower polymer-cli firebase-tools
 - bower install
 script:
-- ./travis_scripts/firebase_generate_config.sh > scripts/config.js
+- "./travis_scripts/firebase_generate_config.sh > scripts/config.js"
 - xvfb-run npm test
 - polymer build --bundle --js-minify --css-minify --html-minify
 after_success:
   deploy:
     provider: firebase
     token:
-      secure: "DESUz/0mK0boTmXsYmVVegKR3xricw47QE7oYVNUiXSbTIWo09JEVeIS5sh981OmGkxO+khOrm4V16efAAUitAZdqHn2eyiXahJoLhWiZRtszL7ex+YdggqBD7IT6Ba5F+YtTHUKYs5+OASYO6nQgzzsrmnKvjbax5+vDBZ99uOiJGKvJX8GoWO/bWO4itZtebrqWxjXLb8hLRM4yxNCo5JNqlB557fWks5nl1hG1FQ2xmYZvd5MqPkibpCQlW2QdA9udAqQ2IBs0pLYM+w7ZnZPdYIWClBBq7mjVLfn1Tdeq6A3AWsyXZoNes0/e/Wm6TsvrBxG/t60IQcZMYepiPIDwn6Q66Cf760vDmWMoCoN2u0mGKeu3jRuGV8r11lZm30uyyyJ+ueSSJQVqGqkbOvst81neew5ZUdtjEJ/tLf4INKlkrn8pQplF1P7CCiXDFTbDciI45/sDX0LrYNBr/HI0Rr3AEfS6DuKVFsy2MXlmMHP8jSZUqggqoHFugtIeudNdYOA01JcrO8Uqd746QybigDOB0dWAZtuv5GgpUGdxD6Ba1sMyE7BbXA/p7+IRXPoW3REhcAAUaLMl3K7xD7bMQtXYkA0KNzT3mv7EVn3EXziCGqBbQBnmY72sUsEHsPtZD/Ey1YAhUHyeRBQD7dOeVfOwBJFdrSHwz3qySw="
+      secure: "I2pksjuohaBQQmbh60To8Kf+7tCZyb5oI0evxD63Xpjyz9waIfUAta9Mt4q1Aj0vPIuyy1hAQmikrByrvD7loEpMgyeWLLpYwQsbU44BGqz/slvlC9wkJHaQ9cRpqsvEF2yqM+eh/G0Ncn5R71rNVdXmGC54dawd152ToFf1nSTEKlWR0Spy7cfnyoZxviFUz31lAR3sutyClzlDdbseGrP4rA6LQKg5++unaQv8dO4a6bU74dZfDVjYnFaAT/P1kj6bVSo3jidYM8PLm9EbRZJReEHkKz6RfMtYzN/lSkLKT5h6LuQIbrXNDMZ+peVMhpz2O6mKj/OXTaI7IBtUyY7gbo6PxB5vuAt7nPh8BxclDqrGSbjRYH8F5HW8I386FD459EQ2zr+iLXdjmDlULp/I7AWgAiDXIC880giS1FOzdM/IdQ6r5yRTd7oyw/rsWxx2fCiETrDi8uQo8QNx4Osa9pV8UgwCsofHiW0ISEe93LR9KIcH3Kfbb7CPJgIAC3KzDCAaaZtlSW9cRQ3fN3w5wCYPnT+7W4E2y9/AxrDwZxHnTgPUKW+sqbJOuXLLkVCAtVByjXZb1B+xQU0mdc9KNWvNU45h7zgDLwvLkNoSwmobp66kG7QDWdRcv298RVyanYuNkaeAleb4vcx5/FvcPbv6ROrMMg+tleCQ64E="
     project: $PROJECTID
 notifications:
   email: false
