@@ -17,6 +17,6 @@ script:
 - xvfb-run npm test
 - polymer build --bundle --js-minify --css-minify --html-minify
 after_success:
-- firebase deploy --token=${FIREBASE_API_TOKEN}
+- ./travis_scripts/deploy.sh
 notifications:
   email: false
