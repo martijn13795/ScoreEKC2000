@@ -6,58 +6,83 @@
             :host {
                 display: block;
                 height: 100%;
-                background-color: white;
+                background-image: url("../../images/scoreboard-background.jpg");
+                background-size: cover;
             }
 
             #container {
                 display: flex;
                 flex-direction: column;
                 flex-wrap: nowrap;
-                align-items: center;
                 text-align: center;
+                max-height: 450px;
+                justify-content: space-between;
             }
+
             #container div {
-                border: 1px #ccc solid;
+                padding: 10px;
             }
+
             #top {
                 font-size: 1.5vw;
                 white-space: nowrap;
             }
+
             #middle {
                 display: flex;
                 flex-direction: row;
             }
+
             #bottom {
 
             }
+
             #left {
                 flex: 1;
                 font-size: 3vw;
                 white-space: nowrap;
             }
+
             #center {
                 flex: 1;
             }
+
             #right {
                 flex: 1;
                 font-size: 3vw;
                 white-space: nowrap;
             }
-            #logo {
-                max-width:100%;
-            }
-            .score {
 
+            #logo {
+                max-width: 70%;
             }
+
+            .score {
+                border-radius: 10px;
+                margin: 0 auto;
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+
             #homeScore, #guestScore {
-                font-size: 4vw;
+                font-size: 6vw;
                 white-space: nowrap;
+            }
+            .time {
+                flex: 2;
+                font-size: 6vw;
+                white-space: nowrap;
+            }
+            .title {
+                flex: 1;
+            }
+            .time {
+                flex: 3;
             }
         </style>
         <div id="container">
-            <div id="top">
-                <h1 id="title">Live score EKC 2000</h1>
-            </div>
+            <!--<div id="top">-->
+                <!--<h1 id="title">Live score EKC 2000</h1>-->
+            <!--</div>-->
             <div id="middle">
                 <div id="left">
                     <div class="name">
@@ -68,7 +93,18 @@
                     </div>
                 </div>
                 <div id="center">
-                    <img id="logo" src="../../images/logo.png" alt="Logo"/>
+                    <div class="title">
+                        Live
+                    </div>
+                    <div class="time">
+                        30:00
+                    </div>
+                    <!--<div class="logo">-->
+                        <!--<img id="logo" src="../../images/logo.png" alt="Logo"/>-->
+                    <!--</div>-->
+                    <div class="half">
+                        <h1>1</h1>
+                    </div>
                 </div>
                 <div id="right">
                     <div class="name">
