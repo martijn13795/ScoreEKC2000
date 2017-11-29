@@ -67,21 +67,24 @@
                 font-size: 6vw;
                 white-space: nowrap;
             }
+
             .time {
                 flex: 2;
                 font-size: 6vw;
                 white-space: nowrap;
             }
+
             .title {
                 flex: 1;
             }
+
             .time {
                 flex: 3;
             }
         </style>
         <div id="container">
             <!--<div id="top">-->
-                <!--<h1 id="title">Live score EKC 2000</h1>-->
+            <!--<h1 id="title">Live score EKC 2000</h1>-->
             <!--</div>-->
             <div id="middle">
                 <div id="left">
@@ -100,7 +103,7 @@
                         30:00
                     </div>
                     <!--<div class="logo">-->
-                        <!--<img id="logo" src="../../images/logo.png" alt="Logo"/>-->
+                    <!--<img id="logo" src="../../images/logo.png" alt="Logo"/>-->
                     <!--</div>-->
                     <div class="half">
                         <h1>1</h1>
@@ -148,9 +151,9 @@
             }
 
             _updateScore() {
-                database.collection('score').doc('score').onSnapshot((doc) => {
-                    this.homeScore = doc.data().homeScore;
-                    this.guestScore = doc.data().guestScore;
+                database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
+                    this.homeScore = doc.data().homeScore.toString();
+                    this.guestScore = doc.data().guestScore.toString();
                 });
             }
 

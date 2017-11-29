@@ -61,7 +61,8 @@
                     fallback-selection="fallback">
                 <page-score-overview name="score-overview"></page-score-overview>
                 <page-start-scoreboard name="start-scoreboard"></page-start-scoreboard>
-                <page-scoreboard name="scoreboard"></page-scoreboard>
+                <page-scoreboard name="scoreboard" subpage="{{subpage}}"></page-scoreboard>
+                <page-manage-scoreboard name="manage-scoreboard" subpage="{{subpage}}"></page-manage-scoreboard>
                 <page-404 name="fallback"></page-404>
             </iron-pages>
             <paper-tabs id="tabs" selected="{{nav}}" align-bottom>
@@ -70,9 +71,6 @@
                 </paper-tab>
                 <paper-tab name="start-scoreboard" on-tap="navigate">
                     <iron-icon icon="icons:add-circle"></iron-icon>
-                </paper-tab>
-                <paper-tab name="scoreboard" on-tap="navigate">
-                    <iron-icon icon="icons:settings-overscan"></iron-icon>
                 </paper-tab>
             </paper-tabs>
         </app-header-layout>
@@ -136,9 +134,9 @@
                     // Pressed icon, so get parents value.
                     name = e.target.parentElement.getAttribute('name');
                 }
-                // Replace so one back-press quits app. Instead of overflowing the history
+                // Replace so one back-press quits app. Instead of overflowing the history       , replace: true
                 this.dispatchEvent(new CustomEvent('requestChangePage', {
-                    detail: {route: '/' + name, replace: true},
+                    detail: {route: '/' + name},
                 }));
             }
 
@@ -146,14 +144,16 @@
                 let i;
                 switch (e) {
                     case 'score-overview':
+                        this.$.tabs.style.display = 'block';
                         i = 0;
                         break;
                     case 'start-scoreboard':
+                        this.$.tabs.style.display = 'block';
                         i = 1;
                         break;
                     case 'scoreboard':
                         this.$.tabs.style.display = 'none';
-                        i = 2;
+                        i = 99;
                         break;
                     default:
                         i = -1;

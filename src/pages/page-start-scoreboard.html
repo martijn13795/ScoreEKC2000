@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../elements/make-match.html">
 
 <dom-module id="page-start-scoreboard">
     <template>
@@ -8,8 +9,7 @@
                 height: 100%;
             }
         </style>
-        <button name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home</button>
-        <button name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest</button>
+        <make-match></make-match>
     </template>
 
     <script>
@@ -26,39 +26,8 @@
                     },
                 };
             }
-
-            _homeScorePlus() {
-                const docRef = database.doc('score/score');
-                let homeScoreToSave;
-                let guestScoreToSave;
-                docRef.get().then(function(querySnapshot) {
-                    const myData = querySnapshot.data();
-                    homeScoreToSave = myData.homeScore;
-                    guestScoreToSave = myData.guestScore;
-                    homeScoreToSave++;
-                    docRef.set({
-                        homeScore: homeScoreToSave,
-                        guestScore: guestScoreToSave,
-                    });
-                });
-            }
-
-            _guestScorePlus() {
-                const docRef = database.doc('score/score');
-                let homeScoreToSave;
-                let guestScoreToSave;
-                docRef.get().then(function(querySnapshot) {
-                    const myData = querySnapshot.data();
-                    homeScoreToSave = myData.homeScore;
-                    guestScoreToSave = myData.guestScore;
-                    guestScoreToSave++;
-                    docRef.set({
-                        homeScore: homeScoreToSave,
-                        guestScore: guestScoreToSave,
-                    });
-                });
-            }
         }
+
         window.customElements.define(PageStartScoreboard.is, PageStartScoreboard);
     </script>
 </dom-module>

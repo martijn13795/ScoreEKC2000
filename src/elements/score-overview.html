@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 
 
 <dom-module id="score-overview">
@@ -7,10 +8,47 @@
             :host {
                 display: block;
             }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                text-align: center;
+                max-height: 450px;
+                justify-content: space-between;
+            }
+
+            .container div {
+                padding: 10px;
+                border: 1px #b2ff59 solid;
+            }
+
+            #list {
+                @apply (--layout-flex);
+                --iron-list-items-container: {
+                    max-width: 800px;
+                    margin: 0 auto;
+                };
+            }
         </style>
-        <div>
-            <h1>Er zijn nog geen scores aanwezig!</h1>
-        </div>
+        <template is="dom-if" if="{{matches}}">
+            <iron-list id="list" items="[[matches]]" as="match" scroll-target="document">
+                <template>
+                    <div class="container">
+                        <div on-click="_goToScoreboard" id="[[match.id]]">
+                            [[match.name]]
+                            [[match.homeName]]
+                            [[match.guestName]]
+                        </div>
+                    </div>
+                </template>
+            </iron-list>
+        </template>
+        <template is="dom-if" if="{{!matches}}">
+            <div>
+                <h1>Er zijn nog geen scores aanwezig!</h1>
+            </div>
+        </template>
     </template>
 
     <script>
@@ -25,7 +63,37 @@
                         type: String,
                         value: 'score-overview',
                     },
+                    matches: {
+                        type: Array,
+                        value: [],
+                        notify: true,
+                    },
                 };
+            }
+
+            constructor() {
+                super();
+                database.collection('matches').get().then((doc) => {
+                    doc.forEach((val) => {
+                        this.push('matches', {
+                            id: val.id,
+                            name: val.data().name,
+                            homeName: val.data().homeName,
+                            guestName: val.data().guestName,
+                            time: val.data().time,
+                            half: val.data().half,
+                        });
+                    });
+                });
+            }
+
+            _goToScoreboard(id) {
+                const key = id.target.getAttribute('id');
+                this.dispatchEvent(new CustomEvent('requestChangePage', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {route: '/scoreboard/' + key},
+                }));
             }
         }
 

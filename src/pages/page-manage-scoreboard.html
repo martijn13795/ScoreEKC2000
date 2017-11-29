@@ -1,0 +1,60 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="page-manage-scoreboard">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+            }
+        </style>
+        <h2>Welkom bij de manage van scoreboard: {{subpage}}</h2>
+        <button name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home</button>
+        <button name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest</button>
+    </template>
+
+    <script>
+        class PageManageScoreboard extends Polymer.Element {
+            static get is() {
+                return 'page-manage-scoreboard';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'page-manage-scoreboard',
+                    },
+                };
+            }
+
+            _homeScorePlus() {
+                const docRef = database.collection('matches').doc(this.subpage);
+                let homeScoreToSave;
+                docRef.get().then(function(querySnapshot) {
+                    const myData = querySnapshot.data();
+                    homeScoreToSave = myData.homeScore;
+                    homeScoreToSave++;
+                    docRef.update({
+                        homeScore: homeScoreToSave,
+                    });
+                });
+            }
+
+            _guestScorePlus() {
+                const docRef = database.collection('matches').doc(this.subpage);
+                let guestScoreToSave;
+                docRef.get().then(function(querySnapshot) {
+                    const myData = querySnapshot.data();
+                    guestScoreToSave = myData.guestScore;
+                    guestScoreToSave++;
+                    docRef.update({
+                        guestScore: guestScoreToSave,
+                    });
+                });
+            }
+        }
+
+        window.customElements.define(PageManageScoreboard.is, PageManageScoreboard);
+    </script>
+</dom-module>

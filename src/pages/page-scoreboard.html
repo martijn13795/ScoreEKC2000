@@ -9,7 +9,7 @@
                 height: 100%;
             }
         </style>
-        <score-board></score-board>
+        <score-board subpage="{{subpage}}"></score-board>
     </template>
 
     <script>
@@ -27,6 +27,7 @@
                 };
             }
         }
+
         window.customElements.define(PageScoreboard.is, PageScoreboard);
     </script>
 </dom-module>
