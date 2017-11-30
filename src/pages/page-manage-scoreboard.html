@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../elements/manage-scoreboard.html">
 
 <dom-module id="page-manage-scoreboard">
     <template>
@@ -8,9 +9,7 @@
                 height: 100%;
             }
         </style>
-        <h2>Welkom bij de manage van scoreboard: {{subpage}}</h2>
-        <button name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home</button>
-        <button name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest</button>
+        <manage-scoreboard subpage="{{subpage}}"></manage-scoreboard>
     </template>
 
     <script>
@@ -26,32 +25,6 @@
                         value: 'page-manage-scoreboard',
                     },
                 };
-            }
-
-            _homeScorePlus() {
-                const docRef = database.collection('matches').doc(this.subpage);
-                let homeScoreToSave;
-                docRef.get().then(function(querySnapshot) {
-                    const myData = querySnapshot.data();
-                    homeScoreToSave = myData.homeScore;
-                    homeScoreToSave++;
-                    docRef.update({
-                        homeScore: homeScoreToSave,
-                    });
-                });
-            }
-
-            _guestScorePlus() {
-                const docRef = database.collection('matches').doc(this.subpage);
-                let guestScoreToSave;
-                docRef.get().then(function(querySnapshot) {
-                    const myData = querySnapshot.data();
-                    guestScoreToSave = myData.guestScore;
-                    guestScoreToSave++;
-                    docRef.update({
-                        guestScore: guestScoreToSave,
-                    });
-                });
             }
         }
 

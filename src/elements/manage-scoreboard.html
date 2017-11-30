@@ -1,0 +1,142 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="manage-scoreboard">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                text-align: center;
+                justify-content: space-between;
+                max-width: 840px;
+                margin: 0 auto;
+            }
+        </style>
+        <div class="container">
+            <h1>{{currentMatch.name}}</h1>
+            <button name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home</button>
+            <button name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest</button>
+            <button name="startTimer" on-click="_startTimer">Start timer</button>
+        </div>
+    </template>
+
+    <script>
+        class ManageScoreboard extends Polymer.Element {
+            static get is() {
+                return 'manage-scoreboard';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'manage-scoreboard',
+                    },
+                    currentMatch: {
+                        type: Array,
+                        value: [],
+                        notify: true,
+                        observer: '_currentMatch',
+                    },
+                };
+            }
+
+            _startTimer() {
+                const docRef = database.collection('matches').doc(this.subpage);
+                let timer;
+                let timerMinutes;
+                let timerSeconds;
+                docRef.get().then(function(querySnapshot) {
+                    const myData = querySnapshot.data();
+                    timer = myData.time;
+                    timerMinutes = myData.time;
+                    timerSeconds = 0;
+                    setInterval(function() {
+                        if (timerMinutes >= 0) {
+                            if (timerSeconds === 0) {
+                                timerMinutes = timerMinutes - 1;
+                                if (timerMinutes >= 0 && timerMinutes < timer) {
+                                    if (timerMinutes <= 9) {
+                                        docRef.update({
+                                            timeMinutes: '0' + timerMinutes.toString(),
+                                        });
+                                    } else {
+                                        docRef.update({
+                                            timeMinutes: timerMinutes.toString(),
+                                        });
+                                    }
+                                } else {
+                                    return;
+                                }
+                                timerSeconds = 60;
+                            }
+                            timerSeconds = timerSeconds - 1;
+                            if (timerSeconds >= 0 && timerSeconds < 60) {
+                                if (timerSeconds <= 9) {
+                                    docRef.update({
+                                        timeSeconds: '0' + timerSeconds.toString(),
+                                    });
+                                } else {
+                                    docRef.update({
+                                        timeSeconds: timerSeconds.toString(),
+                                    });
+                                }
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    }, 1000);
+                });
+            }
+
+            _currentMatch() {
+                database.collection('matches').doc(this.subpage).get().then((val) => {
+                    this.set('currentMatch', {
+                        id: val.id,
+                        name: val.data().name,
+                        homeName: val.data().homeName,
+                        guestName: val.data().guestName,
+                        time: val.data().time,
+                        half: val.data().half,
+                    });
+                });
+            }
+
+            _homeScorePlus() {
+                const docRef = database.collection('matches').doc(this.subpage);
+                let homeScoreToSave;
+                docRef.get().then(function (querySnapshot) {
+                    const myData = querySnapshot.data();
+                    homeScoreToSave = myData.homeScore;
+                    homeScoreToSave++;
+                    docRef.update({
+                        homeScore: homeScoreToSave,
+                    });
+                });
+            }
+
+            _guestScorePlus() {
+                const docRef = database.collection('matches').doc(this.subpage);
+                let guestScoreToSave;
+                docRef.get().then(function (querySnapshot) {
+                    const myData = querySnapshot.data();
+                    guestScoreToSave = myData.guestScore;
+                    guestScoreToSave++;
+                    docRef.update({
+                        guestScore: guestScoreToSave,
+                    });
+                });
+            }
+        }
+
+        window.customElements.define(ManageScoreboard.is, ManageScoreboard);
+    </script>
+</dom-module>

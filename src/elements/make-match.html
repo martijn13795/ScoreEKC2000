@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 
 
 <dom-module id="make-match">
@@ -20,18 +19,15 @@
             }
 
             .container div {
-                border: 1px #ccc solid;
                 padding: 10px;
             }
         </style>
         <div class="container">
             <div class="homeName">
-                <paper-input label="Home" value="{{homeName}}" required auto-validate
-                             error-message="needs some text!"></paper-input>
+                <paper-input label="Home" value="{{homeName}}" required auto-validate error-message="needs some text!"></paper-input>
             </div>
             <div class="guestName">
-                <paper-input label="Guest" value="{{guestName}}" required auto-validate
-                             error-message="needs some text!"></paper-input>
+                <paper-input label="Guest" value="{{guestName}}" required auto-validate error-message="needs some text!"></paper-input>
             </div>
             <div class="timeMatch">
                 <paper-input label="Time" value="{{timeMatch}}" type="number"></paper-input>
@@ -81,13 +77,15 @@
                         guestScore: 0,
                         half: 1,
                         time: this.timeMatch,
+                        timeMinutes: this.timeMatch.toString(),
+                        timeSeconds: '00',
+                        date: new Date(),
                     }).then(function(querySnapshot) {
                         database.collection('matches').doc(querySnapshot.id).collection('scores').doc('score').set({
                             homeOrGuest: 'Home',
                             description: 'Test',
                         }).then(function() {
                             console.log('Document written');
-                            alert(querySnapshot.id);
                             window.location.href = 'http://ekc.dev/includes/activateScoreboard.php' +
                                 '?scoreboard=1&scoreboardID=' + querySnapshot.id;
                         });

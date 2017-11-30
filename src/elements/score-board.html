@@ -89,7 +89,7 @@
             <div id="middle">
                 <div id="left">
                     <div class="name">
-                        <h1>EKC 2000</h1>
+                        <h1>[[homeName]]</h1>
                     </div>
                     <div class="score">
                         <h2 id="homeScore" style="color: blue">[[homeScore]]</h2>
@@ -100,18 +100,18 @@
                         Live
                     </div>
                     <div class="time">
-                        30:00
+                        [[timeMinutes]]:[[timeSeconds]]
                     </div>
                     <!--<div class="logo">-->
                     <!--<img id="logo" src="../../images/logo.png" alt="Logo"/>-->
                     <!--</div>-->
                     <div class="half">
-                        <h1>1</h1>
+                        <h1>[[half]]</h1>
                     </div>
                 </div>
                 <div id="right">
                     <div class="name">
-                        <h1>Gasten</h1>
+                        <h1>[[guestName]]</h1>
                     </div>
                     <div class="score">
                         <h2 id="guestScore" style="color: red">[[guestScore]]</h2>
@@ -145,6 +145,37 @@
                     },
                     guestScore: {
                         type: String,
+                        observer: '_updateScore',
+                        value: '0',
+                    },
+                    homeName: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: 'EKC 2000',
+                    },
+                    guestName: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: 'Gast',
+                    },
+                    time: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '00:00',
+                    },
+                    timeMinutes: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '00',
+                    },
+                    timeSeconds: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '00',
+                    },
+                    half: {
+                        type: String,
+                        observer: '_updateScore',
                         value: '0',
                     },
                 };
@@ -154,6 +185,12 @@
                 database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
                     this.homeScore = doc.data().homeScore.toString();
                     this.guestScore = doc.data().guestScore.toString();
+                    this.homeName = doc.data().homeName.toString();
+                    this.guestName = doc.data().guestName.toString();
+                    this.time = doc.data().time.toString();
+                    this.timeMinutes = doc.data().timeMinutes.toString();
+                    this.timeSeconds = doc.data().timeSeconds.toString();
+                    this.half = doc.data().half.toString();
                 });
             }
 
