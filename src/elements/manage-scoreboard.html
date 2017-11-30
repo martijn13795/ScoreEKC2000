@@ -113,7 +113,7 @@
             _homeScorePlus() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let homeScoreToSave;
-                docRef.get().then(function (querySnapshot) {
+                docRef.get().then(function(querySnapshot) {
                     const myData = querySnapshot.data();
                     homeScoreToSave = myData.homeScore;
                     homeScoreToSave++;
@@ -126,7 +126,7 @@
             _guestScorePlus() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let guestScoreToSave;
-                docRef.get().then(function (querySnapshot) {
+                docRef.get().then(function(querySnapshot) {
                     const myData = querySnapshot.data();
                     guestScoreToSave = myData.guestScore;
                     guestScoreToSave++;
