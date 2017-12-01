@@ -1,6 +1,13 @@
 {
   "entrypoint": "index.html",
   "shell": "src/ekc-app/ekc-app.html",
+  "fragments": [
+    "src/pages/page-404.html",
+    "src/pages/page-manage-scoreboard.html",
+    "src/pages/page-score-overview.html",
+    "src/pages/page-scoreboard.html",
+    "src/pages/start-scoreboard.html"
+  ],
   "sources": [
     "src/**/*",
     "images/**/*",
