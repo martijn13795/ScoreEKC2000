@@ -6,7 +6,7 @@
     "src/pages/page-manage-scoreboard.html",
     "src/pages/page-score-overview.html",
     "src/pages/page-scoreboard.html",
-    "src/pages/start-scoreboard.html"
+    "src/pages/page-start-scoreboard.html"
   ],
   "sources": [
     "src/**/*",
