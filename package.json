@@ -7,7 +7,7 @@
   },
   "scripts": {
     "lint": "eslint . --ext js,html --ignore-path .gitignore",
-    "test": "polymer test"
+    "test": "npm run lint"
   },
   "private": false,
   "dependencies": {
