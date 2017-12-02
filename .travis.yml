@@ -15,7 +15,7 @@ before_script:
 script:
 - "./travis_scripts/firebase_generate_config.sh > scripts/config.js"
 - npm test
-- polymer build --bundle --js-minify --css-minify --html-minify
+- polymer build
 after_success:
 - ./travis_scripts/deploy.sh
 notifications:
