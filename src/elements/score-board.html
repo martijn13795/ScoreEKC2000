@@ -6,123 +6,92 @@
             :host {
                 display: block;
                 height: 100%;
-                background-image: url("../../images/scoreboard-background.jpg");
-                background-size: cover;
+                background-color: white;
             }
 
-            #container {
-                display: flex;
-                flex-direction: column;
-                flex-wrap: nowrap;
-                text-align: center;
-                max-height: 450px;
-                justify-content: space-between;
-            }
-
-            #container div {
-                padding: 10px;
-            }
-
-            #top {
-                font-size: 1.5vw;
-                white-space: nowrap;
-            }
-
-            #middle {
+            .container {
+                max-height: 320px;
                 display: flex;
                 flex-direction: row;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                background-color: #f5f5f5;
+                border: 1px solid #e3e3e3;
+                border-radius: 4px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05)
             }
 
-            #bottom {
-
-            }
-
-            #left {
-                flex: 1;
-                font-size: 3vw;
-                white-space: nowrap;
-            }
-
-            #center {
-                flex: 1;
-            }
-
-            #right {
-                flex: 1;
-                font-size: 3vw;
-                white-space: nowrap;
-            }
-
-            #logo {
-                max-width: 70%;
-            }
-
-            .score {
-                border-radius: 10px;
-                margin: 0 auto;
-                background-color: rgba(0, 0, 0, 0.7);
-            }
-
-            #homeScore, #guestScore {
-                font-size: 6vw;
-                white-space: nowrap;
-            }
-
-            .time {
+            .homeScore {
                 flex: 2;
-                font-size: 6vw;
-                white-space: nowrap;
             }
 
-            .title {
-                flex: 1;
+            .guestScore {
+                flex: 2;
             }
 
-            .time {
+            .timer {
                 flex: 3;
             }
+
+            .emptySpace {
+                flex: 2;
+            }
+
+            circle {
+                fill: #37c0fb;
+            }
+
+            .names {
+                font-size: 2.5vw;
+                height: 0;
+                white-space: nowrap;
+            }
+
+            @media all and (max-width: 939px) {
+                .emptySpace {
+                    display: none;
+                }
+            }
         </style>
-        <div id="container">
-            <!--<div id="top">-->
-            <!--<h1 id="title">Live score EKC 2000</h1>-->
-            <!--</div>-->
-            <div id="middle">
-                <div id="left">
-                    <div class="name">
-                        <h1>[[homeName]]</h1>
-                    </div>
-                    <div class="score">
-                        <h2 id="homeScore" style="color: blue">[[homeScore]]</h2>
-                    </div>
-                </div>
-                <div id="center">
-                    <div class="title">
-                        Live
-                    </div>
-                    <div class="time">
-                        [[timeMinutes]]:[[timeSeconds]]
-                    </div>
-                    <!--<div class="logo">-->
-                    <!--<img id="logo" src="../../images/logo.png" alt="Logo"/>-->
-                    <!--</div>-->
-                    <div class="half">
-                        <h1>[[half]]</h1>
-                    </div>
-                </div>
-                <div id="right">
-                    <div class="name">
-                        <h1>[[guestName]]</h1>
-                    </div>
-                    <div class="score">
-                        <h2 id="guestScore" style="color: red">[[guestScore]]</h2>
-                    </div>
+        <div class="container">
+            <div class="emptySpace"></div>
+            <div class="homeScore">
+                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                          font-size="8em" fill="black">[[homeScore]]
+                    </text>
+                </svg>
+                <div class="names">
+                    [[homeName]]
                 </div>
             </div>
-            <div id="bottom">
-
+            <div class="timer">
+                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                          font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
+                    </text>
+                    <text x="50%" y="78%" text-anchor="middle" dy=".3em"
+                          font-size="3em" font-weight="bold" fill="black">[[half]]
+                    </text>
+                </svg>
             </div>
-
-
+            <div class="guestScore">
+                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                          font-size="8em" fill="black">[[guestScore]]
+                    </text>
+                </svg>
+                <div class="names">
+                    [[guestName]]
+                </div>
+            </div>
+            <div class="emptySpace"></div>
         </div>
     </template>
 
