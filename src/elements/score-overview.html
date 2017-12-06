@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 
 <dom-module id="score-overview">
@@ -18,37 +20,49 @@
                 justify-content: space-between;
             }
 
-            .container div {
-                padding: 10px;
-                border: 1px #b2ff59 solid;
-            }
-
             #list {
                 @apply (--layout-flex);
                 --iron-list-items-container: {
                     max-width: 800px;
-                    margin: 0 auto;
+                    margin: 0 auto 48px;
                 };
             }
+
+            .logo {
+                width: 250px;
+            }
+
+            .match {
+                padding: 10px;
+                border-radius: 8px;
+                background-color: white;
+                border: 1px solid #ddd;
+                max-width: 800px;
+                margin: 16px auto 0 auto;
+            }
         </style>
-        <template is="dom-if" if="{{matches}}">
-            <iron-list id="list" items="[[matches]]" as="match" scroll-target="document">
-                <template>
-                    <div class="container">
-                        <div on-click="_goToScoreboard" id="[[match.id]]">
+        <div class="container">
+            <div class="header">
+                <h2>Welkom bij de live score van {{clubName}}!</h2>
+                <img class="logo" src="../../images/logo.png" alt="Logo"/>
+            </div>
+            <template is="dom-if" if="{{matches}}">
+                <iron-list id="list" items="[[matches]]" as="match" scroll-target="document">
+                    <template>
+                        <div class="match" on-click="_goToScoreboard" id="[[match.id]]">
                             [[match.name]]
                             [[match.homeName]]
                             [[match.guestName]]
                         </div>
-                    </div>
-                </template>
-            </iron-list>
-        </template>
-        <template is="dom-if" if="{{!matches}}">
-            <div>
-                <h1>Er zijn nog geen scores aanwezig!</h1>
-            </div>
-        </template>
+                    </template>
+                </iron-list>
+            </template>
+            <template is="dom-if" if="{{!matches}}">
+                <div>
+                    <h1>Er zijn nog geen scores aanwezig!</h1>
+                </div>
+            </template>
+        </div>
     </template>
 
     <script>
@@ -67,6 +81,10 @@
                         type: Array,
                         value: [],
                         notify: true,
+                    },
+                    clubName: {
+                        type: String,
+                        value: 'EKC 2000',
                     },
                 };
             }

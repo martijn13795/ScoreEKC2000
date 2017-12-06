@@ -70,13 +70,13 @@
                     let name = this.homeName + ' - ' + this.guestName;
 
                     database.collection('matches').add({
-                        name: name,
-                        homeName: this.homeName,
-                        guestName: this.guestName,
+                        name: name.toString(),
+                        homeName: this.homeName.toString(),
+                        guestName: this.guestName.toString(),
                         homeScore: 0,
                         guestScore: 0,
-                        half: 1,
-                        time: this.timeMatch,
+                        half: '1',
+                        time: this.timeMatch.toString(),
                         timeMinutes: this.timeMatch.toString(),
                         timeSeconds: '00',
                         date: new Date(),

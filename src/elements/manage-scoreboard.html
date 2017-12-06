@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <dom-module id="manage-scoreboard">
     <template>
@@ -6,6 +7,7 @@
             :host {
                 display: block;
                 height: 100%;
+                margin-bottom: 21px;
             }
 
             .container {
@@ -13,16 +15,107 @@
                 flex-direction: column;
                 flex-wrap: nowrap;
                 text-align: center;
-                justify-content: space-between;
+                align-items: center;
+                justify-content: center;
                 max-width: 840px;
                 margin: 0 auto;
             }
+
+            .containerScoreboard {
+                /*max-width: 840px;*/
+                margin: 0 auto;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                background-color: #f5f5f5;
+                border: 1px solid #e3e3e3;
+                border-radius: 4px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05)
+            }
+
+            .homeScore {
+                flex: 2;
+            }
+
+            .guestScore {
+                flex: 2;
+            }
+
+            .timer {
+                flex: 3;
+            }
+
+            .emptySpace {
+                flex: 2;
+            }
+
+            circle {
+                fill: #37c0fb;
+            }
+
+            .names {
+                font-size: 2.5vw;
+                height: 0;
+                white-space: nowrap;
+            }
+
+            @media all and (max-width: 939px) {
+                .emptySpace {
+                    display: none;
+                }
+            }
         </style>
+        <div class="containerScoreboard">
+            <div class="emptySpace"></div>
+            <div class="homeScore">
+                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                          font-size="8em" fill="black">[[homeScore]]
+                    </text>
+                </svg>
+                <div class="names">
+                    [[homeName]]
+                </div>
+            </div>
+            <div class="timer">
+                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                          font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
+                    </text>
+                    <text x="50%" y="78%" text-anchor="middle" dy=".3em"
+                          font-size="3em" font-weight="bold" fill="black">[[half]]
+                    </text>
+                </svg>
+            </div>
+            <div class="guestScore">
+                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                          font-size="8em" fill="black">[[guestScore]]
+                    </text>
+                </svg>
+                <div class="names">
+                    [[guestName]]
+                </div>
+            </div>
+            <div class="emptySpace"></div>
+        </div>
         <div class="container">
-            <h1>{{currentMatch.name}}</h1>
-            <button name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home</button>
-            <button name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest</button>
-            <button name="startTimer" on-click="_startTimer">Start timer</button>
+            <div>
+                <h1>{{currentMatch.name}}</h1>
+                <paper-button raised name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home
+                </paper-button>
+                <paper-button raised name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest
+                </paper-button>
+                <paper-button raised name="timer" id="timer" on-click="_timer">Start timer</paper-button>
+                <paper-button raised name="half" id="half" on-click="_half">Start second half</paper-button>
+            </div>
         </div>
     </template>
 
@@ -44,56 +137,147 @@
                         notify: true,
                         observer: '_currentMatch',
                     },
+                    homeScore: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '0',
+                    },
+                    guestScore: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '0',
+                    },
+                    homeName: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: 'EKC 2000',
+                    },
+                    guestName: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: 'Gast',
+                    },
+                    time: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '00:00',
+                    },
+                    timeMinutes: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '00',
+                    },
+                    timeSeconds: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '00',
+                    },
+                    half: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '0',
+                    },
                 };
             }
 
-            _startTimer() {
+            _updateScore() {
+                database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
+                    this.homeScore = doc.data().homeScore.toString();
+                    this.guestScore = doc.data().guestScore.toString();
+                    this.homeName = doc.data().homeName.toString();
+                    this.guestName = doc.data().guestName.toString();
+                    this.time = doc.data().time.toString();
+                    this.timeMinutes = doc.data().timeMinutes.toString();
+                    this.timeSeconds = doc.data().timeSeconds.toString();
+                    this.half = doc.data().half.toString();
+                });
+            }
+
+            _timer() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let timer;
                 let timerMinutes;
                 let timerSeconds;
-                docRef.get().then(function(querySnapshot) {
-                    const myData = querySnapshot.data();
-                    timer = myData.time;
-                    timerMinutes = myData.time;
-                    timerSeconds = 0;
-                    setInterval(function() {
-                        if (timerMinutes >= 0) {
-                            if (timerSeconds === 0) {
-                                timerMinutes = timerMinutes - 1;
-                                if (timerMinutes >= 0 && timerMinutes < timer) {
-                                    if (timerMinutes <= 9) {
+                let interval;
+
+                let button = this.$.timer;
+                if (button.textContent === 'Start timer') {
+                    button.textContent = 'stop timer';
+                    docRef.get().then(function(querySnapshot) {
+                        const myData = querySnapshot.data();
+                        timer = myData.time;
+                        timerMinutes = myData.timeMinutes;
+                        timerSeconds = myData.timeSeconds;
+                        interval = setInterval(function() {
+                            if (button.textContent === 'Start timer') {
+                                clearInterval(interval);
+                            } else if (timerMinutes >= 0) {
+                                if (timerSeconds === 0 || timerSeconds === '00') {
+                                    timerMinutes = timerMinutes - 1;
+                                    if (timerMinutes >= 0 && timerMinutes < timer) {
+                                        if (timerMinutes <= 9) {
+                                            docRef.update({
+                                                timeMinutes: '0' + timerMinutes.toString(),
+                                            });
+                                        } else {
+                                            docRef.update({
+                                                timeMinutes: timerMinutes.toString(),
+                                            });
+                                        }
+                                    } else {
+                                        return;
+                                    }
+                                    timerSeconds = 60;
+                                }
+                                timerSeconds = timerSeconds - 1;
+                                if (timerSeconds >= 0 && timerSeconds < 60) {
+                                    if (timerSeconds <= 9) {
                                         docRef.update({
-                                            timeMinutes: '0' + timerMinutes.toString(),
+                                            timeSeconds: '0' + timerSeconds.toString(),
                                         });
                                     } else {
                                         docRef.update({
-                                            timeMinutes: timerMinutes.toString(),
+                                            timeSeconds: timerSeconds.toString(),
                                         });
                                     }
                                 } else {
                                     return;
                                 }
-                                timerSeconds = 60;
-                            }
-                            timerSeconds = timerSeconds - 1;
-                            if (timerSeconds >= 0 && timerSeconds < 60) {
-                                if (timerSeconds <= 9) {
-                                    docRef.update({
-                                        timeSeconds: '0' + timerSeconds.toString(),
-                                    });
-                                } else {
-                                    docRef.update({
-                                        timeSeconds: timerSeconds.toString(),
-                                    });
-                                }
                             } else {
                                 return;
                             }
-                        } else {
-                            return;
-                        }
-                    }, 1000);
+                        }, 1000);
+                    });
+                } else {
+                    button.textContent = 'Start timer';
+                    clearInterval(interval);
+                }
+            }
+
+            _half() {
+                const docRef = database.collection('matches').doc(this.subpage);
+                let button = this.$.half;
+                let half;
+                let time;
+                docRef.get().then(function(querySnapshot) {
+                    const myData = querySnapshot.data();
+                    half = myData.half;
+                    time = myData.time;
+                    if (button.textContent === 'Start second half' && half === '1') {
+                        button.textContent = 'End match';
+                        docRef.update({
+                            half: '2',
+                            timeMinutes: time.toString(),
+                            timeSeconds: '00',
+                        });
+                    } else if (button.textContent === 'End match' && half === '2') {
+                        docRef.update({
+                            half: '0',
+                            timeMinutes: '00',
+                            timeSeconds: '00',
+                        }).then(window.location.href = 'http://ekc.dev/includes/activateScoreboard.php' +
+                            '?scoreboard=false&scoreboardID=' + querySnapshot.id);
+                    }
                 });
             }
 

@@ -11,7 +11,9 @@
     "iron-icons": "PolymerElements/iron-icons#^2.0.1",
     "app-layout": "PolymerElements/app-layout#^2.0.4",
     "paper-input": "PolymerElements/paper-input#^2.0.3",
-    "iron-list": "PolymerElements/iron-list#^2.0.11"
+    "iron-list": "PolymerElements/iron-list#^2.0.11",
+    "paper-button": "PolymerElements/paper-button#^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.1"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
