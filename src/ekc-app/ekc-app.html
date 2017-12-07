@@ -156,7 +156,8 @@
                         i = 99;
                         break;
                     default:
-                        i = 0;
+                        this.$.tabs.style.display = 'block';
+                        i = -1;
                 }
                 this.nav = i;
             }
@@ -173,10 +174,11 @@
             }
 
             _routePageChanged(page) {
-                if (page === undefined) {
-                    return;
+                if (page === undefined || page === '') {
+                    this.page = 'score-overview';
+                } else {
+                    this.page = page;
                 }
-                this.page = page || 'score-overview';
             }
 
             _routeSubPageChanged(subpage) {

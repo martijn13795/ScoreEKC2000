@@ -107,6 +107,10 @@
                         type: String,
                         value: 'score-board',
                     },
+                    subpage: {
+                        type: String,
+                        observer: '_updateScore',
+                    },
                     homeScore: {
                         type: String,
                         observer: '_updateScore',

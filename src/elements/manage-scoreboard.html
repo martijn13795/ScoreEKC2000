@@ -1,5 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <dom-module id="manage-scoreboard">
     <template>
@@ -68,6 +71,13 @@
                     display: none;
                 }
             }
+
+            paper-input {
+                --paper-input-error: {
+                    white-space: normal;
+                    margin-bottom: 10px;
+                };
+            }
         </style>
         <div class="containerScoreboard">
             <div class="emptySpace"></div>
@@ -109,12 +119,17 @@
         <div class="container">
             <div>
                 <h1>{{currentMatch.name}}</h1>
-                <paper-button raised name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home
-                </paper-button>
-                <paper-button raised name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest
-                </paper-button>
-                <paper-button raised name="timer" id="timer" on-click="_timer">Start timer</paper-button>
-                <paper-button raised name="half" id="half" on-click="_half">Start second half</paper-button>
+                <template is="dom-if" if="{{_isEqualTo(half)}}">
+                    <div>
+                        <paper-textarea label="Hoe is er gescoord?"></paper-textarea>
+                        <paper-button raised name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home
+                        </paper-button>
+                    </div>
+                    <paper-button raised name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest
+                    </paper-button>
+                    <paper-button raised name="timer" id="timer" on-click="_timer">Start timer</paper-button>
+                    <paper-button raised name="half" id="half" on-click="_half">[[halfText]]</paper-button>
+                </template>
             </div>
         </div>
     </template>
@@ -130,6 +145,10 @@
                     prop1: {
                         type: String,
                         value: 'manage-scoreboard',
+                    },
+                    subpage: {
+                        type: String,
+                        observer: '_updateScore',
                     },
                     currentMatch: {
                         type: Array,
@@ -177,6 +196,10 @@
                         observer: '_updateScore',
                         value: '0',
                     },
+                    halfText: {
+                        type: String,
+                        value: 'Begin tweede helft',
+                    },
                 };
             }
 
@@ -190,6 +213,9 @@
                     this.timeMinutes = doc.data().timeMinutes.toString();
                     this.timeSeconds = doc.data().timeSeconds.toString();
                     this.half = doc.data().half.toString();
+                    if (this.half === '2') {
+                        this.halfText = 'Beëindig wedstrijd';
+                    }
                 });
             }
 
@@ -200,9 +226,9 @@
                 let timerSeconds;
                 let interval;
 
-                let button = this.$.timer;
-                if (button.textContent === 'Start timer') {
-                    button.textContent = 'stop timer';
+                let buttonn = this.$.timer;
+                if (buttonn.textContent === 'Start timer') {
+                    buttonn.textContent = 'stop timer';
                     docRef.get().then(function(querySnapshot) {
                         const myData = querySnapshot.data();
                         timer = myData.time;
@@ -256,21 +282,20 @@
 
             _half() {
                 const docRef = database.collection('matches').doc(this.subpage);
-                let button = this.$.half;
                 let half;
                 let time;
-                docRef.get().then(function(querySnapshot) {
+                docRef.get().then((querySnapshot) => {
                     const myData = querySnapshot.data();
                     half = myData.half;
                     time = myData.time;
-                    if (button.textContent === 'Start second half' && half === '1') {
-                        button.textContent = 'End match';
+                    if (this.halfText === 'Begin tweede helft' && half === '1') {
+                        this.halfText = 'Beëindig wedstrijd';
                         docRef.update({
                             half: '2',
                             timeMinutes: time.toString(),
                             timeSeconds: '00',
                         });
-                    } else if (button.textContent === 'End match' && half === '2') {
+                    } else if (this.halfText === 'Beëindig wedstrijd' && half === '2') {
                         docRef.update({
                             half: '0',
                             timeMinutes: '00',
@@ -279,6 +304,14 @@
                             '?scoreboard=false&scoreboardID=' + querySnapshot.id);
                     }
                 });
+            }
+
+            _isEqualTo(string) {
+                if (string === '1' || string === '2') {
+                    return true;
+                } else {
+                    return false;
+                }
             }
 
             _currentMatch() {

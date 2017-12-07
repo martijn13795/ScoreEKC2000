@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 
 <dom-module id="make-match">
@@ -26,14 +27,14 @@
             <div class="homeName">
                 <paper-input label="Home" value="{{homeName}}" required auto-validate error-message="needs some text!"></paper-input>
             </div>
-            <div class="guestName">
+            <div class="guestName" style="margin-top: -15px">
                 <paper-input label="Guest" value="{{guestName}}" required auto-validate error-message="needs some text!"></paper-input>
             </div>
             <div class="timeMatch">
                 <paper-input label="Time" value="{{timeMatch}}" type="number"></paper-input>
             </div>
             <div class="submit">
-                <button id="submit" on-click="_submit">Start scoreboard</button>
+                <paper-button raised id="submit" on-click="_submit">Start scoreboard</paper-button>
             </div>
         </div>
     </template>
