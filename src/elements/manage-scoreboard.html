@@ -127,7 +127,7 @@
                     </div>
                     <paper-button raised name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest
                     </paper-button>
-                    <paper-button raised name="timer" id="timer" on-click="_timer">Start timer</paper-button>
+                    <paper-button raised name="timer" id="timer" on-click="_timer">[[timerText]]</paper-button>
                     <paper-button raised name="half" id="half" on-click="_half">[[halfText]]</paper-button>
                 </template>
             </div>
@@ -200,6 +200,10 @@
                         type: String,
                         value: 'Begin tweede helft',
                     },
+                    timerText: {
+                        type: String,
+                        value: 'Start timer',
+                    },
                 };
             }
 
@@ -226,16 +230,15 @@
                 let timerSeconds;
                 let interval;
 
-                let buttonn = this.$.timer;
-                if (buttonn.textContent === 'Start timer') {
-                    buttonn.textContent = 'stop timer';
-                    docRef.get().then(function(querySnapshot) {
+                if (this.timerText === 'Start timer') {
+                    this.timerText = 'stop timer';
+                    docRef.get().then((querySnapshot) => {
                         const myData = querySnapshot.data();
                         timer = myData.time;
                         timerMinutes = myData.timeMinutes;
                         timerSeconds = myData.timeSeconds;
-                        interval = setInterval(function() {
-                            if (button.textContent === 'Start timer') {
+                        interval = setInterval(() => {
+                            if (this.timerText === 'Start timer') {
                                 clearInterval(interval);
                             } else if (timerMinutes >= 0) {
                                 if (timerSeconds === 0 || timerSeconds === '00') {
@@ -275,7 +278,7 @@
                         }, 1000);
                     });
                 } else {
-                    button.textContent = 'Start timer';
+                    this.timerText = 'Start timer';
                     clearInterval(interval);
                 }
             }

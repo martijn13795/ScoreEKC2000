@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 
 
 <dom-module id="score-overview">
@@ -40,29 +41,47 @@
                 max-width: 800px;
                 margin: 16px auto 0 auto;
             }
+
+            .spinner {
+                margin-top: 40px;
+                width: 100px;
+                height: 100px;
+                --paper-spinner-stroke-width: 5px
+            }
         </style>
+
+
         <div class="container">
             <div class="header">
                 <h2>Welkom bij de live score van {{clubName}}!</h2>
                 <img class="logo" src="../../images/logo.png" alt="Logo"/>
             </div>
-            <template is="dom-if" if="{{matches}}">
-                <iron-list id="list" items="[[matches]]" as="match" scroll-target="document">
-                    <template>
-                        <div class="match" on-click="_goToScoreboard" id="[[match.id]]">
-                            [[match.name]]
-                            [[match.homeName]]
-                            [[match.guestName]]
-                        </div>
-                    </template>
-                </iron-list>
-            </template>
-            <template is="dom-if" if="{{!matches}}">
-                <div>
-                    <h1>Er zijn nog geen scores aanwezig!</h1>
+            <template is="dom-if" if="{{isLoading}}">
+                <!-- Implement fancy spinner -->
+                <div class="loading">
+                    <paper-spinner class="spinner" active></paper-spinner>
                 </div>
             </template>
+            <template is="dom-if" if="{{!isLoading}}">
+                <template is="dom-if" if="{{matches}}">
+                    <iron-list id="list" items="[[matches]]" as="match" scroll-target="document">
+                        <template>
+                            <div class="match" on-click="_goToScoreboard" id="[[match.id]]">
+                                [[match.name]]
+                                [[match.homeName]]
+                                [[match.guestName]]
+                            </div>
+                        </template>
+                    </iron-list>
+                </template>
+                <template is="dom-if" if="{{!matches}}">
+                    <div>
+                        <h1>Er zijn nog geen scores aanwezig!</h1>
+                    </div>
+                </template>
+            </template>
         </div>
+
     </template>
 
     <script>
@@ -86,12 +105,17 @@
                         type: String,
                         value: 'EKC 2000',
                     },
+                    isLoading: {
+                        type: Boolean,
+                        value: true,
+                    },
                 };
             }
 
             constructor() {
                 super();
                 database.collection('matches').get().then((doc) => {
+                    this.isLoading = false;
                     doc.forEach((val) => {
                         this.push('matches', {
                             id: val.id,
