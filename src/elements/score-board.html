@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <dom-module id="score-board">
     <template>
@@ -54,9 +56,29 @@
                 .emptySpace {
                     display: none;
                 }
+                .spinner {
+                    margin-top: 25%;
+                    margin-bottom: 25%;
+                }
+            }
+
+            .spinner {
+                margin-top: 105px;
+                margin-bottom: 105px;
+                width: 100px;
+                height: 100px;
+                --paper-spinner-stroke-width: 5px;
+                --paper-spinner-color: #37c0fb;
             }
         </style>
         <div class="container">
+            <template is="dom-if" if="{{isLoading}}">
+                <!-- Implement fancy spinner -->
+                <div class="loading">
+                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                </div>
+            </template>
+            <template is="dom-if" if="{{!isLoading}}">
             <div class="emptySpace"></div>
             <div class="homeScore">
                 <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
@@ -92,6 +114,7 @@
                 </div>
             </div>
             <div class="emptySpace"></div>
+            </template>
         </div>
     </template>
 
@@ -110,6 +133,10 @@
                     subpage: {
                         type: String,
                         observer: '_updateScore',
+                    },
+                    isLoading: {
+                        type: Boolean,
+                        value: true,
                     },
                     homeScore: {
                         type: String,
@@ -156,6 +183,7 @@
 
             _updateScore() {
                 database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
+                    this.isLoading = false;
                     this.homeScore = doc.data().homeScore.toString();
                     this.guestScore = doc.data().guestScore.toString();
                     this.homeName = doc.data().homeName.toString();

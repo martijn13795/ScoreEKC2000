@@ -53,8 +53,8 @@
         <script>
             firebase.initializeApp(config);
             // eslint-disable-next-line
-            var database = firebase.firestore();
-            firebase.firestore().enablePersistence()
+            const database = firebase.firestore();
+            database.enablePersistence()
                 .then(function() {
                     // It succeeded
                     console.log('Offline database enabled');
