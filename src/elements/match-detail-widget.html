@@ -9,7 +9,7 @@
             }
 
             .match {
-                padding: 10px;
+                padding-top: 3px;
                 border-radius: 8px;
                 background-color: white;
                 border: 1px solid #ddd;
@@ -36,6 +36,10 @@
             }
 
             .left {
+                flex: 2;
+            }
+
+            .left2 {
                 flex: 1;
             }
 
@@ -47,8 +51,15 @@
                 flex: 1;
             }
 
-            .score {
-                font-size: 22px;
+            .right2 {
+                flex: 2;
+            }
+
+            circle {
+                fill: #37c0fb;
+            }
+
+            .name {
                 font-weight: bold;
             }
         </style>
@@ -57,24 +68,37 @@
         <div class="match">
             <div class="top">
                 <div class="left">
-                    <span class="score">[[homeScore]]</span>
+                    <span class="name">[[homeName]]</span>
+                </div>
+                <div class="left2">
+                    <svg version="1.1" viewBox="0 0 200 200" height="35px" preserveAspectRatio="xMinYMin meet">
+                        <circle cx="100" cy="100" r="95" stroke="#2e2e2e" stroke-width="10px"></circle>
+                        <text x="50%" y="50%" text-anchor="middle" dy=".35em" dx="-.05em"
+                              font-size="6em" fill="black">[[homeScore]]
+                        </text>
+                    </svg>
                 </div>
                 <div class="center">
-                    <span class="score">-</span>
+                    <svg version="1.1" viewBox="0 0 200 200" height="60px" preserveAspectRatio="xMinYMin meet">
+                        <circle cx="100" cy="100" r="95" stroke="#2e2e2e" stroke-width="6px"></circle>
+                        <text x="50%" y="50%" text-anchor="middle" dy=".35em" dx="-.05em"
+                              font-size="4em" fill="black">[[timeMinutes]]:[[timeSeconds]]
+                        </text>
+                        <text x="50%" y="80%" text-anchor="middle" dy=".35em" dx="-.05em"
+                              font-size="2em" font-weight="bold" fill="black">[[half]]
+                        </text>
+                    </svg>
                 </div>
                 <div class="right">
-                    <span class="score">[[guestScore]]</span>
+                    <svg version="1.1" viewBox="0 0 200 200" height="35px" preserveAspectRatio="xMinYMin meet">
+                        <circle cx="100" cy="100" r="95" stroke="#2e2e2e" stroke-width="10px"></circle>
+                        <text x="50%" y="50%" text-anchor="middle" dy=".35em" dx="-.05em"
+                              font-size="6em" fill="black">[[guestScore]]
+                        </text>
+                    </svg>
                 </div>
-            </div>
-            <div class="middle">
-                <div class="left">
-                    [[homeName]]
-                </div>
-                <div class="center">
-                    [[timeMinutes]]:[[timeSeconds]]
-                </div>
-                <div class="right">
-                    [[guestName]]
+                <div class="right2">
+                    <span class="name">[[guestName]]</span>
                 </div>
             </div>
         </div>
@@ -114,6 +138,10 @@
                         notify: true,
                     },
                     timeSeconds: {
+                        type: String,
+                        notify: true,
+                    },
+                    half: {
                         type: String,
                         notify: true,
                     },

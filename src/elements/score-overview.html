@@ -11,6 +11,7 @@
         <style>
             :host {
                 display: block;
+                padding-top: 35px;
             }
 
             .container {
@@ -22,6 +23,11 @@
                 justify-content: space-between;
             }
 
+            .headerText {
+                font-weight: bold;
+                font-size: 26px;
+            }
+
             #list {
                 @apply (--layout-flex);
                 --iron-list-items-container: {
@@ -30,8 +36,19 @@
                 };
             }
 
-            .logo {
-                width: 250px;
+            @media all and (max-width: 800px) {
+                #list {
+                    @apply (--layout-flex);
+                    --iron-list-items-container: {
+                        max-width: 800px;
+                        margin: 0 10px 48px;
+                    };
+                }
+            }
+
+
+            .hover :hover {
+                cursor: pointer;
             }
 
             .spinner {
@@ -45,8 +62,7 @@
 
         <div class="container">
             <div class="header">
-                <h2>Welkom bij de live score van {{clubName}}!</h2>
-                <img class="logo" src="../../images/logo.png" alt="Logo"/>
+                <span class="headerText">Wedstrijden</span>
             </div>
             <template is="dom-if" if="{{isLoading}}">
                 <div class="loading">
@@ -57,17 +73,20 @@
                 <template is="dom-if" if="{{matches}}">
                     <iron-list id="list" items="[[matches]]" as="match" scroll-target="document">
                         <template>
-                            <match-detail-widget
-                                    class="match"
-                                    on-click="_goToScoreboard"
-                                    id="[[match.id]]"
-                                    home-name="[[match.homeName]]"
-                                    home-score="[[match.homeScore]]"
-                                    guest-name="[[match.guestName]]"
-                                    guest-score="[[match.guestScore]]"
-                                    time-minutes="[[match.timeMinutes]]"
-                                    time-seconds="[[match.timeSeconds]]">
-                            </match-detail-widget>
+                            <div class="hover">
+                                <match-detail-widget
+                                        class="match"
+                                        on-click="_goToScoreboard"
+                                        id="[[match.id]]"
+                                        home-name="[[match.homeName]]"
+                                        home-score="[[match.homeScore]]"
+                                        guest-name="[[match.guestName]]"
+                                        guest-score="[[match.guestScore]]"
+                                        time-minutes="[[match.timeMinutes]]"
+                                        time-seconds="[[match.timeSeconds]]"
+                                        half="[[match.half]]">
+                                </match-detail-widget>
+                            </div>
                         </template>
                     </iron-list>
                 </template>
