@@ -1,0 +1,126 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+
+<dom-module id="match-detail-widget">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            .match {
+                padding: 10px;
+                border-radius: 8px;
+                background-color: white;
+                border: 1px solid #ddd;
+                max-width: 800px;
+                margin: 12px auto 0 auto;
+            }
+
+            .top {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .middle {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .left {
+                flex: 1;
+            }
+
+            .center {
+                flex: 1;
+            }
+
+            .right {
+                flex: 1;
+            }
+
+            .score {
+                font-size: 22px;
+                font-weight: bold;
+            }
+        </style>
+
+
+        <div class="match">
+            <div class="top">
+                <div class="left">
+                    <span class="score">[[homeScore]]</span>
+                </div>
+                <div class="center">
+                    <span class="score">-</span>
+                </div>
+                <div class="right">
+                    <span class="score">[[guestScore]]</span>
+                </div>
+            </div>
+            <div class="middle">
+                <div class="left">
+                    [[homeName]]
+                </div>
+                <div class="center">
+                    [[timeMinutes]]:[[timeSeconds]]
+                </div>
+                <div class="right">
+                    [[guestName]]
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        class MatchDetailWidget extends Polymer.Element {
+            static get is() {
+                return 'match-detail-widget';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'match-detail-widget',
+                    },
+                    homeName: {
+                        type: String,
+                        notify: true,
+                    },
+                    guestName: {
+                        type: String,
+                        notify: true,
+                    },
+                    homeScore: {
+                        type: String,
+                        notify: true,
+                    },
+                    guestScore: {
+                        type: String,
+                        notify: true,
+                    },
+                    timeMinutes: {
+                        type: String,
+                        notify: true,
+                    },
+                    timeSeconds: {
+                        type: String,
+                        notify: true,
+                    },
+                };
+            }
+        }
+
+        window.customElements.define(MatchDetailWidget.is, MatchDetailWidget);
+    </script>
+</dom-module>

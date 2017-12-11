@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../elements/match-detail-widget.html">
 
 
 <dom-module id="score-overview">
@@ -33,15 +34,6 @@
                 width: 250px;
             }
 
-            .match {
-                padding: 10px;
-                border-radius: 8px;
-                background-color: white;
-                border: 1px solid #ddd;
-                max-width: 800px;
-                margin: 16px auto 0 auto;
-            }
-
             .spinner {
                 margin-top: 40px;
                 width: 100px;
@@ -57,7 +49,6 @@
                 <img class="logo" src="../../images/logo.png" alt="Logo"/>
             </div>
             <template is="dom-if" if="{{isLoading}}">
-                <!-- Implement fancy spinner -->
                 <div class="loading">
                     <paper-spinner class="spinner" active></paper-spinner>
                 </div>
@@ -66,11 +57,17 @@
                 <template is="dom-if" if="{{matches}}">
                     <iron-list id="list" items="[[matches]]" as="match" scroll-target="document">
                         <template>
-                            <div class="match" on-click="_goToScoreboard" id="[[match.id]]">
-                                [[match.name]]
-                                [[match.homeName]]
-                                [[match.guestName]]
-                            </div>
+                            <match-detail-widget
+                                    class="match"
+                                    on-click="_goToScoreboard"
+                                    id="[[match.id]]"
+                                    home-name="[[match.homeName]]"
+                                    home-score="[[match.homeScore]]"
+                                    guest-name="[[match.guestName]]"
+                                    guest-score="[[match.guestScore]]"
+                                    time-minutes="[[match.timeMinutes]]"
+                                    time-seconds="[[match.timeSeconds]]">
+                            </match-detail-widget>
                         </template>
                     </iron-list>
                 </template>
@@ -114,17 +111,38 @@
 
             constructor() {
                 super();
-                database.collection('matches').get().then((doc) => {
+                database.collection('matches').onSnapshot((doc) => {
                     this.isLoading = false;
+                    let i = -1;
                     doc.forEach((val) => {
-                        this.push('matches', {
-                            id: val.id,
-                            name: val.data().name,
-                            homeName: val.data().homeName,
-                            guestName: val.data().guestName,
-                            time: val.data().time,
-                            half: val.data().half,
-                        });
+                        i++;
+                        if (this.matches[i]) {
+                            this.set('matches.' + i, {
+                                id: val.id,
+                                name: val.data().name,
+                                homeName: val.data().homeName,
+                                guestName: val.data().guestName,
+                                homeScore: val.data().homeScore,
+                                guestScore: val.data().guestScore,
+                                timeMinutes: val.data().timeMinutes,
+                                timeSeconds: val.data().timeSeconds,
+                                time: val.data().time,
+                                half: val.data().half,
+                            });
+                        } else {
+                            this.push('matches', {
+                                id: val.id,
+                                name: val.data().name,
+                                homeName: val.data().homeName,
+                                guestName: val.data().guestName,
+                                homeScore: val.data().homeScore,
+                                guestScore: val.data().guestScore,
+                                timeMinutes: val.data().timeMinutes,
+                                timeSeconds: val.data().timeSeconds,
+                                time: val.data().time,
+                                half: val.data().half,
+                            });
+                        }
                     });
                 });
             }

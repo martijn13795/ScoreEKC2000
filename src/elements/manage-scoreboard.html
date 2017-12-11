@@ -10,7 +10,6 @@
             :host {
                 display: block;
                 height: 100%;
-                margin-bottom: 21px;
             }
 
             .container {
@@ -78,6 +77,11 @@
                     margin-bottom: 10px;
                 };
             }
+
+            .button {
+                background-color: #FFF;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
         </style>
         <div class="containerScoreboard">
             <div class="emptySpace"></div>
@@ -118,17 +122,23 @@
         </div>
         <div class="container">
             <div>
-                <h1>{{currentMatch.name}}</h1>
+                <h3>[[homeName]] - [[guestName]]</h3>
                 <template is="dom-if" if="{{_isEqualTo(half)}}">
                     <div>
                         <paper-textarea label="Hoe is er gescoord?"></paper-textarea>
-                        <paper-button raised name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home
+                        <paper-button class="button" name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home
                         </paper-button>
                     </div>
-                    <paper-button raised name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest
-                    </paper-button>
-                    <paper-button raised name="timer" id="timer" on-click="_timer">[[timerText]]</paper-button>
-                    <paper-button raised name="half" id="half" on-click="_half">[[halfText]]</paper-button>
+                    <div style="margin-top: 10px;">
+                        <paper-button class="button" name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest
+                        </paper-button>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <paper-button class="button" name="timer" id="timer" on-click="_timer">[[timerText]]</paper-button>
+                    </div>
+                    <div style="margin-top: 10px; margin-bottom: 60px;">
+                        <paper-button class="button" name="half" id="half" on-click="_half">[[halfText]]</paper-button>
+                    </div>
                 </template>
             </div>
         </div>
@@ -149,12 +159,6 @@
                     subpage: {
                         type: String,
                         observer: '_updateScore',
-                    },
-                    currentMatch: {
-                        type: Array,
-                        value: [],
-                        notify: true,
-                        observer: '_currentMatch',
                     },
                     homeScore: {
                         type: String,
@@ -315,19 +319,6 @@
                 } else {
                     return false;
                 }
-            }
-
-            _currentMatch() {
-                database.collection('matches').doc(this.subpage).get().then((val) => {
-                    this.set('currentMatch', {
-                        id: val.id,
-                        name: val.data().name,
-                        homeName: val.data().homeName,
-                        guestName: val.data().guestName,
-                        time: val.data().time,
-                        half: val.data().half,
-                    });
-                });
             }
 
             _homeScorePlus() {
