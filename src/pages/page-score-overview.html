@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../elements/score-overview.html">
 
 <dom-module id="page-score-overview">
@@ -7,10 +8,18 @@
             :host {
                 display: block;
                 height: 100%;
-                margin-top: -21px;
+            }
+
+            app-toolbar {
+                background-color: #373b50;
+                color: #fff;
+                text-align: center;
+                font-size: 24px;
             }
         </style>
-
+        <app-toolbar>
+            <div main-title>Wedstrijden</div>
+        </app-toolbar>
         <score-overview></score-overview>
     </template>
 

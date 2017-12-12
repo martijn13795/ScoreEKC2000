@@ -15,31 +15,34 @@
                 flex-direction: column;
                 flex-wrap: nowrap;
                 justify-content: space-between;
-                margin: 0 auto;
-                max-width: 840px;
-            }
-
-            .container div {
-                padding: 10px;
+                margin: 20px auto;
+                max-width: 800px;
             }
 
             #submit {
-                background-color: #FFF;
+                background-color: #373b50;
+                color: #fff;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+
+            .vertical-section:not([style-scope]):not(.style-scope) {
+                background-color: white;
+                padding: 7px 24px 24px 24px;
+                margin: 0 24px 24px 24px;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
         </style>
         <div class="container">
-            <div class="homeName">
-                <paper-input label="Home" value="{{homeName}}" required auto-validate error-message="needs some text!"></paper-input>
-            </div>
-            <div class="guestName" style="margin-top: -15px">
-                <paper-input label="Guest" value="{{guestName}}" required auto-validate error-message="needs some text!"></paper-input>
-            </div>
-            <div class="timeMatch">
-                <paper-input label="Time" value="{{timeMatch}}" type="number"></paper-input>
-            </div>
-            <div class="submit">
-                <paper-button id="submit" on-click="_submit">Start scoreboard</paper-button>
+            <div class="vertical center-justified layout">
+                <div class="vertical-section">
+                    <paper-input label="Thuis" value="{{homeName}}" required auto-validate
+                                 error-message="needs some text!"></paper-input>
+                    <paper-input label="Gasten" value="{{guestName}}" required auto-validate
+                                 error-message="needs some text!"></paper-input>
+                    <paper-input label="Minuten per helft" value="{{timeMatch}}" type="number"></paper-input>
+                    <br>
+                    <paper-button id="submit" on-click="_submit">Start scoreboard</paper-button>
+                </div>
             </div>
         </div>
     </template>
@@ -58,11 +61,9 @@
                     },
                     homeName: {
                         type: String,
-                        value: 'EKC 2000',
                     },
                     guestName: {
                         type: String,
-                        value: '',
                     },
                     timeMatch: {
                         type: Number,

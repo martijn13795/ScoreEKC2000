@@ -61,9 +61,6 @@
 
 
         <div class="container">
-            <div class="header">
-                <span class="headerText">Wedstrijden</span>
-            </div>
             <template is="dom-if" if="{{isLoading}}">
                 <div class="loading">
                     <paper-spinner class="spinner" active></paper-spinner>
@@ -91,7 +88,7 @@
                     </iron-list>
                 </template>
                 <template is="dom-if" if="{{!matches.length}}">
-                    <div>
+                    <div style="margin: 0 10px 10px 10px">
                         <h1>Er zijn nog geen wedstrijden aanwezig!</h1>
                     </div>
                 </template>
