@@ -191,11 +191,13 @@
                 // Load page import on demand. Show 404 page if fails
                 const link = '../pages/page-' + page + '.html';
                 const resolvedPageUrl = this.resolveUrl(link);
-                Polymer.importHref(
-                    resolvedPageUrl,
-                    null,
-                    this._showPage404.bind(this),
-                    true);
+                Polymer.RenderStatus.afterNextRender(this, function() {
+                    Polymer.importHref(
+                        resolvedPageUrl,
+                        null,
+                        this._showPage404.bind(this),
+                        true);
+                }.bind(this));
             }
 
             _subpageChanged(subpage, oldSubpage) {
