@@ -57,12 +57,13 @@
             <iron-pages
                     attr-for-selected="name"
                     selected="[[page]]"
-                    fallback-selection="score-overview">
+                    fallback-selection="fallback">
                 <page-score-overview name="score-overview"></page-score-overview>
                 <page-start-scoreboard name="start-scoreboard"></page-start-scoreboard>
                 <page-scoreboard name="scoreboard" subpage="{{subpage}}"></page-scoreboard>
+                <page-scoreboard-detail name="scoreboard-detail" subpage="{{subpage}}"></page-scoreboard-detail>
                 <page-manage-scoreboard name="manage-scoreboard" subpage="{{subpage}}"></page-manage-scoreboard>
-                <page-404 name="404"></page-404>
+                <page-404 name="fallback"></page-404>
             </iron-pages>
             <paper-tabs id="tabs" selected="{{nav}}" align-bottom>
                 <paper-tab name="score-overview" on-tap="navigate">
@@ -151,6 +152,10 @@
                         i = 1;
                         break;
                     case 'scoreboard':
+                        this.$.tabs.style.display = 'block';
+                        i = 99;
+                        break;
+                    case 'scoreboard-detail':
                         this.$.tabs.style.display = 'none';
                         i = 99;
                         break;

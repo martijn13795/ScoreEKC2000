@@ -70,7 +70,7 @@
                 </div>
             </template>
             <template is="dom-if" if="{{!isLoading}}">
-                <template is="dom-if" if="{{matches}}">
+                <template is="dom-if" if="{{matches.length}}">
                     <iron-list id="list" items="[[matches]]" as="match" scroll-target="document">
                         <template>
                             <div class="hover">
@@ -90,9 +90,9 @@
                         </template>
                     </iron-list>
                 </template>
-                <template is="dom-if" if="{{!matches}}">
+                <template is="dom-if" if="{{!matches.length}}">
                     <div>
-                        <h1>Er zijn nog geen scores aanwezig!</h1>
+                        <h1>Er zijn nog geen wedstrijden aanwezig!</h1>
                     </div>
                 </template>
             </template>

@@ -1,0 +1,33 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../elements/score-board-detail.html">
+
+<dom-module id="page-scoreboard-detail">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+            }
+        </style>
+        <score-board-detail subpage="{{subpage}}"></score-board-detail>
+    </template>
+
+    <script>
+        class PageScoreboardDetail extends Polymer.Element {
+            static get is() {
+                return 'page-scoreboard-detail';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'page-scoreboard-detail',
+                    },
+                };
+            }
+        }
+
+        window.customElements.define(PageScoreboardDetail.is, PageScoreboardDetail);
+    </script>
+</dom-module>

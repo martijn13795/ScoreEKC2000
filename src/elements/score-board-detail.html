@@ -1,0 +1,202 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<dom-module id="score-board-detail">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+                background-color: white;
+            }
+
+            .container {
+                margin: 0 auto;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                background-color: #f5f5f5;
+                border: 1px solid #e3e3e3;
+                border-radius: 4px;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05)
+            }
+
+            .homeScore {
+                flex: 2;
+            }
+
+            .guestScore {
+                flex: 2;
+            }
+
+            .timer {
+                flex: 3;
+            }
+
+            .emptySpace {
+                flex: 2;
+            }
+
+            circle {
+                fill: #37c0fb;
+            }
+
+            .names {
+                font-size: 2.5vw;
+                height: 0;
+                white-space: nowrap;
+            }
+
+            @media all and (max-width: 939px) {
+                .emptySpace {
+                    display: none;
+                }
+                .spinner {
+                    margin-top: 25%;
+                    margin-bottom: 25%;
+                }
+            }
+
+            .spinner {
+                margin-top: 105px;
+                margin-bottom: 105px;
+                width: 100px;
+                height: 100px;
+                --paper-spinner-stroke-width: 5px;
+                --paper-spinner-color: #37c0fb;
+            }
+        </style>
+        <div class="container">
+            <template is="dom-if" if="{{isLoading}}">
+                <!-- Implement fancy spinner -->
+                <div class="loading">
+                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                </div>
+            </template>
+            <template is="dom-if" if="{{!isLoading}}">
+            <div class="emptySpace"></div>
+            <div class="homeScore">
+                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                          font-size="8em" fill="black">[[homeScore]]
+                    </text>
+                </svg>
+                <div class="names">
+                    [[homeName]]
+                </div>
+            </div>
+            <div class="timer">
+                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                          font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
+                    </text>
+                    <text x="50%" y="78%" text-anchor="middle" dy=".3em"
+                          font-size="3em" font-weight="bold" fill="black">[[half]]
+                    </text>
+                </svg>
+            </div>
+            <div class="guestScore">
+                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                          font-size="8em" fill="black">[[guestScore]]
+                    </text>
+                </svg>
+                <div class="names">
+                    [[guestName]]
+                </div>
+            </div>
+            <div class="emptySpace"></div>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        class ScoreboardDetail extends Polymer.Element {
+            static get is() {
+                return 'score-board-detail';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'score-board-detail',
+                    },
+                    subpage: {
+                        type: String,
+                        observer: '_updateScore',
+                    },
+                    isLoading: {
+                        type: Boolean,
+                        value: true,
+                    },
+                    homeScore: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '0',
+                    },
+                    guestScore: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '0',
+                    },
+                    homeName: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: 'EKC 2000',
+                    },
+                    guestName: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: 'Gast',
+                    },
+                    time: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '00:00',
+                    },
+                    timeMinutes: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '00',
+                    },
+                    timeSeconds: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '00',
+                    },
+                    half: {
+                        type: String,
+                        observer: '_updateScore',
+                        value: '0',
+                    },
+                };
+            }
+
+            _updateScore() {
+                database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
+                    this.isLoading = false;
+                    this.homeScore = doc.data().homeScore.toString();
+                    this.guestScore = doc.data().guestScore.toString();
+                    this.homeName = doc.data().homeName.toString();
+                    this.guestName = doc.data().guestName.toString();
+                    this.time = doc.data().time.toString();
+                    this.timeMinutes = doc.data().timeMinutes.toString();
+                    this.timeSeconds = doc.data().timeSeconds.toString();
+                    this.half = doc.data().half.toString();
+                });
+            }
+
+        }
+
+        window.customElements.define(ScoreboardDetail.is, ScoreboardDetail);
+    </script>
+</dom-module>
