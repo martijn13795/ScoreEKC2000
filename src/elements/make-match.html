@@ -88,14 +88,9 @@
                         timeSeconds: '00',
                         date: new Date(),
                     }).then(function(querySnapshot) {
-                        database.collection('matches').doc(querySnapshot.id).collection('scores').doc('score').set({
-                            homeOrGuest: 'Home',
-                            description: 'Test',
-                        }).then(function() {
-                            console.log('Match made');
-                            window.location.href = 'http://127.0.0.1/includes/activateScoreboard.php' +
-                                '?scoreboard=1&scoreboardID=' + querySnapshot.id;
-                        });
+                        console.log('Match made');
+                        window.location.href = 'http://127.0.0.1/includes/activateScoreboard.php' +
+                            '?scoreboard=1&scoreboardID=' + querySnapshot.id;
                     }).catch(function(error) {
                         console.error('Error adding document: ', error);
                     });

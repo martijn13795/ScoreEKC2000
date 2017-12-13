@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
 
 <dom-module id="manage-scoreboard">
     <template>
@@ -16,11 +17,9 @@
                 display: flex;
                 flex-direction: column;
                 flex-wrap: nowrap;
-                text-align: center;
-                align-items: center;
-                justify-content: center;
-                max-width: 840px;
-                margin: 0 auto;
+                justify-content: space-between;
+                margin: 20px auto;
+                max-width: 800px;
             }
 
             .containerScoreboard {
@@ -71,18 +70,37 @@
                 }
             }
 
-            paper-input {
-                --paper-input-error: {
-                    white-space: normal;
-                    margin-bottom: 10px;
-                };
-            }
-
             .button {
-                background-color: #FFF;
+                background-color: #373b50;
+                color: #fff;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
+
+            app-toolbar {
+                background-color: #373b50;
+                color: #fff;
+                text-align: center;
+                font-size: 24px;
+            }
+
+            .vertical-section:not([style-scope]):not(.style-scope) {
+                background-color: white;
+                padding: 7px 24px 24px 24px;
+                margin: 0 24px 24px 24px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+
+            .bottomButtons {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                margin-bottom: 50px;
+            }
         </style>
+        <app-toolbar>
+            <div main-title>[[homeName]] - [[guestName]]</div>
+        </app-toolbar>
         <div class="containerScoreboard">
             <div class="emptySpace"></div>
             <div class="homeScore">
@@ -122,22 +140,30 @@
         </div>
         <div class="container">
             <div>
-                <h3>[[homeName]] - [[guestName]]</h3>
                 <template is="dom-if" if="{{_isEqualTo(half)}}">
-                    <div>
-                        <paper-textarea label="Hoe is er gescoord?"></paper-textarea>
-                        <paper-button class="button" name="scorePlus" id="homeScore" on-click="_homeScorePlus">add score home
-                        </paper-button>
+                    <div class="vertical center-justified layout">
+                        <div class="vertical-section">
+                            <paper-textarea name="homeDescription" id="homeDescription" value="{{homeDescription}}" label="Hoe is er gescoord?"></paper-textarea>
+                            <br>
+                            <paper-button class="button" name="scorePlus" id="homeScore" on-click="_homeScorePlus">Thuis score toevoegen</paper-button>
+                        </div>
                     </div>
-                    <div style="margin-top: 10px;">
-                        <paper-button class="button" name="scorePlus" id="guestScore" on-click="_guestScorePlus">add score Guest
-                        </paper-button>
+                    <div class="vertical center-justified layout">
+                        <div class="vertical-section">
+                            <paper-textarea name="guestDescription" id="guestDescription" value="{{guestDescription}}" label="Hoe is er gescoord?"></paper-textarea>
+                            <br>
+                            <paper-button class="button" name="scorePlus" id="guestScore" on-click="_guestScorePlus">Gast score toevoegen</paper-button>
+                        </div>
                     </div>
-                    <div style="margin-top: 10px;">
-                        <paper-button class="button" name="timer" id="timer" on-click="_timer">[[timerText]]</paper-button>
-                    </div>
-                    <div style="margin-top: 10px; margin-bottom: 60px;">
-                        <paper-button class="button" name="half" id="half" on-click="_half">[[halfText]]</paper-button>
+                    <div class="bottomButtons">
+                        <div></div>
+                        <div>
+                            <paper-button class="button" name="timer" id="timer" on-click="_timer">[[timerText]]</paper-button>
+                        </div>
+                        <div>
+                            <paper-button class="button" name="half" id="half" on-click="_half">[[halfText]]</paper-button>
+                        </div>
+                        <div></div>
                     </div>
                 </template>
             </div>
@@ -207,6 +233,12 @@
                     timerText: {
                         type: String,
                         value: 'Start timer',
+                    },
+                    homeDescription: {
+                        type: String,
+                    },
+                    guestDescription: {
+                        type: String,
                     },
                 };
             }
@@ -324,12 +356,21 @@
             _homeScorePlus() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let homeScoreToSave;
-                docRef.get().then(function(querySnapshot) {
+                docRef.get().then((querySnapshot) => {
                     const myData = querySnapshot.data();
                     homeScoreToSave = myData.homeScore;
                     homeScoreToSave++;
                     docRef.update({
                         homeScore: homeScoreToSave,
+                    }).then(() => {
+                        database.collection('matches').doc(this.subpage).collection('scores').add({
+                            description: this.homeDescription,
+                            home: homeScoreToSave,
+                            guest: myData.guestScore,
+                            minutes: myData.timeMinutes,
+                            seconds: myData.timeSeconds,
+                            date: new Date(),
+                        });
                     });
                 });
             }
@@ -337,12 +378,21 @@
             _guestScorePlus() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let guestScoreToSave;
-                docRef.get().then(function(querySnapshot) {
+                docRef.get().then((querySnapshot) => {
                     const myData = querySnapshot.data();
                     guestScoreToSave = myData.guestScore;
                     guestScoreToSave++;
                     docRef.update({
                         guestScore: guestScoreToSave,
+                    }).then(() => {
+                        database.collection('matches').doc(this.subpage).collection('scores').add({
+                            description: this.guestDescription,
+                            home: myData.homeScore,
+                            guest: guestScoreToSave,
+                            minutes: myData.timeMinutes,
+                            seconds: myData.timeSeconds,
+                            date: new Date(),
+                        });
                     });
                 });
             }

@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 
 <dom-module id="score-board">
     <template>
@@ -8,22 +10,58 @@
             :host {
                 display: block;
                 height: 100%;
-                background-color: white;
             }
 
             .container {
-                margin: 0 auto;
+                margin: 24px auto;
+                max-width: 800px;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .box {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
                 text-align: center;
                 align-items: center;
                 justify-content: center;
-                background-color: #f5f5f5;
-                border: 1px solid #e3e3e3;
-                border-radius: 4px;
-                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05)
+                background-color: white;
+                padding: 7px 24px 24px 24px;
+                margin: 0 24px 24px 24px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+
+            .scoreContainer {
+                flex-direction: column;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                background-color: white;
+                padding: 7px 24px 24px 24px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+
+            .scoreTop {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .scoreBottom {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                text-align: left;
+                align-items: left;
+                justify-content: left;
             }
 
             .homeScore {
@@ -47,7 +85,7 @@
             }
 
             .names {
-                font-size: 2.5vw;
+                font-size: 12px;
                 height: 0;
                 white-space: nowrap;
             }
@@ -62,6 +100,13 @@
                 }
             }
 
+            app-toolbar {
+                background-color: #373b50;
+                color: #fff;
+                text-align: center;
+                font-size: 24px;
+            }
+
             .spinner {
                 margin-top: 105px;
                 margin-bottom: 105px;
@@ -71,49 +116,91 @@
                 --paper-spinner-color: #37c0fb;
             }
         </style>
-        <div class="container">
+        <app-toolbar>
             <template is="dom-if" if="{{isLoading}}">
                 <!-- Implement fancy spinner -->
-                <div class="loading">
-                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                <div class="loading" style="margin: 0 auto">
+                    <paper-spinner-lite active></paper-spinner-lite>
                 </div>
             </template>
             <template is="dom-if" if="{{!isLoading}}">
-            <div class="emptySpace"></div>
-            <div class="homeScore">
-                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
-                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                          font-size="8em" fill="black">[[homeScore]]
-                    </text>
-                </svg>
-                <div class="names">
-                    [[homeName]]
+                <div main-title>[[homeName]] - [[guestName]]</div>
+            </template>
+        </app-toolbar>
+        <div class="container">
+            <div class="box">
+                <template is="dom-if" if="{{isLoading}}">
+                    <!-- Implement fancy spinner -->
+                    <div class="loading">
+                        <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                    </div>
+                </template>
+                <template is="dom-if" if="{{!isLoading}}">
+                    <div class="emptySpace"></div>
+                    <div class="homeScore">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[homeScore]]
+                            </text>
+                        </svg>
+                        <span class="names">
+                            [[homeName]]
+                        </span>
+                    </div>
+                    <div class="timer">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
+                            </text>
+                            <text x="50%" y="78%" text-anchor="middle" dy=".3em"
+                                  font-size="3em" font-weight="bold" fill="black">[[half]]
+                            </text>
+                        </svg>
+                    </div>
+                    <div class="guestScore">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[guestScore]]
+                            </text>
+                        </svg>
+                        <span class="names">
+                            [[guestName]]
+                        </span>
+                    </div>
+                    <div class="emptySpace"></div>
+                </template>
+            </div>
+            <template is="dom-if" if="{{scores.length}}">
+                <iron-list id="list" items="[[scores]]" as="score" scroll-target="document">
+                    <template>
+                        <div class="scoreContainer">
+                            <div class="scoreTop">
+                                <div class="home" style="flex: 1">
+                                    [[score.home]]
+                                </div>
+                                <div class="time" style="flex: 2">
+                                    [[score.minutes]]:[[score.seconds]]
+                                </div>
+                                <div class="guest" style="flex: 1">
+                                    [[score.guest]]
+                                </div>
+                            </div>
+                            <div class="scoreBottom">
+                                <div class="description" style="flex: 1">
+                                    [[score.description]]
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </iron-list>
+            </template>
+            <template is="dom-if" if="{{!scores.length}}">
+                <div style="margin: 0 10px 10px 10px">
+                    <h1>Er is nog niet gescoord</h1>
                 </div>
-            </div>
-            <div class="timer">
-                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
-                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                          font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
-                    </text>
-                    <text x="50%" y="78%" text-anchor="middle" dy=".3em"
-                          font-size="3em" font-weight="bold" fill="black">[[half]]
-                    </text>
-                </svg>
-            </div>
-            <div class="guestScore">
-                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
-                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                          font-size="8em" fill="black">[[guestScore]]
-                    </text>
-                </svg>
-                <div class="names">
-                    [[guestName]]
-                </div>
-            </div>
-            <div class="emptySpace"></div>
             </template>
         </div>
     </template>
@@ -137,6 +224,11 @@
                     isLoading: {
                         type: Boolean,
                         value: true,
+                    },
+                    scores: {
+                        type: Array,
+                        value: [],
+                        notify: true,
                     },
                     homeScore: {
                         type: String,
@@ -192,6 +284,31 @@
                     this.timeMinutes = doc.data().timeMinutes.toString();
                     this.timeSeconds = doc.data().timeSeconds.toString();
                     this.half = doc.data().half.toString();
+                });
+
+                database.collection('matches').doc(this.subpage).collection('scores').onSnapshot((doc) => {
+                    this.isLoading = false;
+                    let i = -1;
+                    doc.forEach((val) => {
+                        i++;
+                        if (this.scores[i]) {
+                            this.set('scores.' + i, {
+                                description: val.data().description,
+                                home: val.data().home,
+                                guest: val.data().guest,
+                                minutes: val.data().minutes,
+                                seconds: val.data().seconds,
+                            });
+                        } else {
+                            this.push('scores', {
+                                description: val.data().description,
+                                home: val.data().home,
+                                guest: val.data().guest,
+                                minutes: val.data().minutes,
+                                seconds: val.data().seconds,
+                            });
+                        }
+                    });
                 });
             }
 
