@@ -23,11 +23,6 @@
                 justify-content: space-between;
             }
 
-            .headerText {
-                font-weight: bold;
-                font-size: 26px;
-            }
-
             #list {
                 @apply (--layout-flex);
                 --iron-list-items-container: {
@@ -46,7 +41,6 @@
                 }
             }
 
-
             .hover :hover {
                 cursor: pointer;
             }
@@ -58,8 +52,6 @@
                 --paper-spinner-stroke-width: 5px
             }
         </style>
-
-
         <div class="container">
             <template is="dom-if" if="{{isLoading}}">
                 <div class="loading">
@@ -113,6 +105,7 @@
                         type: Array,
                         value: [],
                         notify: true,
+                        observer: '_getMatches',
                     },
                     clubName: {
                         type: String,
@@ -125,8 +118,7 @@
                 };
             }
 
-            constructor() {
-                super();
+            _getMatches() {
                 database.collection('matches').onSnapshot((doc) => {
                     this.isLoading = false;
                     let i = -1;
