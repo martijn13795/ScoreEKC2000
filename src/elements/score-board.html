@@ -124,6 +124,7 @@
                 </div>
             </template>
             <template is="dom-if" if="{{!isLoading}}">
+                <iron-icon icon="icons:arrow-back" onclick="window.history.back()"></iron-icon>
                 <div main-title>[[homeName]] - [[guestName]]</div>
             </template>
         </app-toolbar>
