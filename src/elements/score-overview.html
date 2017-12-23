@@ -122,21 +122,28 @@
                 database.collection('matches').onSnapshot((doc) => {
                     this.isLoading = false;
                     let i = -1;
+                    if (doc) {
+                        if (this.matches.length > doc.size) {
+                            this.matches = [];
+                        }
+                    }
                     doc.forEach((val) => {
                         i++;
                         if (this.matches[i]) {
-                            this.set('matches.' + i, {
-                                id: val.id,
-                                name: val.data().name,
-                                homeName: val.data().homeName,
-                                guestName: val.data().guestName,
-                                homeScore: val.data().homeScore,
-                                guestScore: val.data().guestScore,
-                                timeMinutes: val.data().timeMinutes,
-                                timeSeconds: val.data().timeSeconds,
-                                time: val.data().time,
-                                half: val.data().half,
-                            });
+                            if (this.matches[i].id === val.id) {
+                                this.set('matches.' + i, {
+                                    id: val.id,
+                                    name: val.data().name,
+                                    homeName: val.data().homeName,
+                                    guestName: val.data().guestName,
+                                    homeScore: val.data().homeScore,
+                                    guestScore: val.data().guestScore,
+                                    timeMinutes: val.data().timeMinutes,
+                                    timeSeconds: val.data().timeSeconds,
+                                    time: val.data().time,
+                                    half: val.data().half,
+                                });
+                            }
                         } else {
                             this.push('matches', {
                                 id: val.id,

@@ -14,28 +14,25 @@
             }
 
             .container {
-                display: flex;
+                margin: 24px auto;
+                max-width: 800px;
                 flex-direction: column;
                 flex-wrap: nowrap;
+                align-items: center;
                 justify-content: space-between;
-                margin: 20px auto;
-                max-width: 800px;
             }
 
-            .containerScoreboard {
-                /*max-width: 840px;*/
-                margin: 0 auto;
+            .box {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
                 text-align: center;
                 align-items: center;
                 justify-content: center;
-                background-color: #f5f5f5;
-                border: 1px solid #e3e3e3;
-                border-radius: 4px;
-                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05)
+                background-color: white;
+                padding: 7px 24px 24px 24px;
+                margin: 0 24px 24px 24px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
             .homeScore {
@@ -59,7 +56,7 @@
             }
 
             .names {
-                font-size: 2.5vw;
+                font-size: 12px;
                 height: 0;
                 white-space: nowrap;
             }
@@ -70,17 +67,17 @@
                 }
             }
 
-            .button {
-                background-color: #373b50;
-                color: #fff;
-                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-            }
-
             app-toolbar {
                 background-color: #373b50;
                 color: #fff;
                 text-align: center;
                 font-size: 24px;
+            }
+
+            .button {
+                background-color: #373b50;
+                color: #fff;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
             .vertical-section:not([style-scope]):not(.style-scope) {
@@ -95,49 +92,47 @@
                 flex-direction: row;
                 flex-wrap: nowrap;
                 justify-content: space-between;
-                margin-bottom: 50px;
+                margin-bottom: 70px;
             }
         </style>
         <app-toolbar>
             <iron-icon icon="icons:arrow-back" onclick="window.location.href = '/score-overview'"></iron-icon>
             <div main-title>[[homeName]] - [[guestName]]</div>
         </app-toolbar>
-        <div class="containerScoreboard">
-            <div class="emptySpace"></div>
-            <div class="homeScore">
-                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
-                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                          font-size="8em" fill="black">[[homeScore]]
-                    </text>
-                </svg>
-                <div class="names">
-                    [[homeName]]
+        <div class="container">
+            <div class="box">
+                <div class="emptySpace"></div>
+                <div class="homeScore">
+                    <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                        <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                        <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                              font-size="8em" fill="black">[[homeScore]]
+                        </text>
+                    </svg>
+                    <span class="names">[[homeName]]</span>
                 </div>
-            </div>
-            <div class="timer">
-                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
-                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                          font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
-                    </text>
-                    <text x="50%" y="78%" text-anchor="middle" dy=".3em"
-                          font-size="3em" font-weight="bold" fill="black">[[half]]
-                    </text>
-                </svg>
-            </div>
-            <div class="guestScore">
-                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
-                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                          font-size="8em" fill="black">[[guestScore]]
-                    </text>
-                </svg>
-                <div class="names">
-                    [[guestName]]
+                <div class="timer">
+                    <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                        <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                        <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                              font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
+                        </text>
+                        <text x="50%" y="78%" text-anchor="middle" dy=".3em"
+                              font-size="3em" font-weight="bold" fill="black">[[half]]
+                        </text>
+                    </svg>
                 </div>
+                <div class="guestScore">
+                    <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                        <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                        <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                              font-size="8em" fill="black">[[guestScore]]
+                        </text>
+                    </svg>
+                    <span class="names">[[guestName]]</span>
+                </div>
+                <div class="emptySpace"></div>
             </div>
-            <div class="emptySpace"></div>
         </div>
         <div class="container">
             <div>
@@ -160,6 +155,7 @@
                         <div></div>
                         <div>
                             <paper-button class="button" name="timer" id="timer" on-click="_timer">[[timerText]]</paper-button>
+                            <!--<paper-button class="button" name="start" id="start" on-click="_startChild">Start</paper-button>-->
                         </div>
                         <div>
                             <paper-button class="button" name="half" id="half" on-click="_half">[[halfText]]</paper-button>
@@ -243,6 +239,101 @@
                     },
                 };
             }
+
+            // _startChild() {
+            //     database.child('running').set(true);
+            // }
+
+            // constructor() {
+            //     super();
+            //     var myOffset = 0;
+            //     var myId = database.collection('timer').doc('123'); // a random id
+            //     var RESET_SECONDS = 15;
+            //
+            //     // CLIENT FUNCTIONS
+            //     database.collection('timer').doc('123').onSnapshot(function(snap) {
+            //         myOffset = snap.val()||0;
+            //     });
+            //
+            //     let endsAt = 0,
+            //         timeout;
+            //
+            //     database.doc('running').on('value', toggleRunning);
+            //     database.doc('endtime').on('value', updateEndTime);
+            //
+            //     function toggleRunning(snap) {
+            //         var b = !! snap.val();
+            //         if (b) {
+            //             countDown();
+            //             timeout = setInterval(countDown, 1000);
+            //         } else {
+            //             timeout && clearTimeout(timeout);
+            //             timeout = null;
+            //         }
+            //     }
+            //
+            //     function updateEndTime(snap) {
+            //         endsAt = snap.val()||0;
+            //         countDown();
+            //     }
+            //
+            //     function countDown() {
+            //         setTime(Math.max(0, endsAt - now()));
+            //     }
+            //
+            //     function setTime(remaining) {
+            //         var minutes = Math.floor(remaining / 60000);
+            //         var seconds = Math.round(remaining / 1000);
+            //         $('#timer').text(lpad(minutes) + ':' + lpad(seconds));
+            //     }
+            //
+            //     // MASTER FUNCTIONS
+            //     let masterTimeout;
+            //     database.child('master').on('value', masterUpdated);
+            //
+            //     function masterUpdated(snap) {
+            //         var isMe = snap.val() === myId;
+            //         $('[data-master]').toggleClass('hide', !isMe);
+            //         console.log('master', isMe, snap.val());
+            //         $('#master').prop('disabled', snap.val() !== null);
+            //         if (isMe) {
+            //             $('#master').text('I am master');
+            //         }
+            //     }
+            //
+            //     $('#start').click(function() {
+            //         database.child('running').set(true);
+            //     });
+            //
+            //     $('#stop').click(function() {
+            //         database.child('running').set(false);
+            //     });
+            //
+            //     $('#reset').click(function() {
+            //         database.child('running').set(false);
+            //         database.child('endtime').set(now() + RESET_SECONDS * 1000);
+            //     });
+            //
+            //     $('#master').click(function() {
+            //         database.child('master').set(myId);
+            //         database.child('master').onDisconnect().remove();
+            //     });
+            //
+            //     // UTILS
+            //
+            //     function now() {
+            //         return Date.now() + myOffset;
+            //     }
+            //
+            //     function lpad(n) {
+            //         if (n < 10) {
+            //             return '0' + n;
+            //         }
+            //         else {
+            //             return n;
+            //         }
+            //     }
+            // }
 
             _updateScore() {
                 database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
@@ -340,7 +431,7 @@
                             half: '0',
                             timeMinutes: '00',
                             timeSeconds: '00',
-                        }).then(window.location.href = 'http://ekc.dev/includes/activateScoreboard.php' +
+                        }).then(window.location.href = 'http://ekc2000.nl/includes/activateScoreboard.php' +
                             '?scoreboard=false&scoreboardID=' + querySnapshot.id);
                     }
                 });

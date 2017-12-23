@@ -89,7 +89,7 @@
                         date: new Date(),
                     }).then(function(querySnapshot) {
                         console.log('Match made');
-                        window.location.href = 'http://127.0.0.1/includes/activateScoreboard.php' +
+                        window.location.href = 'http://ekc2000.nl/includes/activateScoreboard.php' +
                             '?scoreboard=1&scoreboardID=' + querySnapshot.id;
                     }).catch(function(error) {
                         console.error('Error adding document: ', error);
