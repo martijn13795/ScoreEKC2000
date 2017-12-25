@@ -8,6 +8,10 @@
         <style>
             :host {
                 display: block;
+
+                --paper-button-flat-keyboard-focus: {
+                    font-weight: normal;
+                };
             }
 
             .container {
@@ -35,11 +39,12 @@
         <div class="container">
             <div class="vertical center-justified layout">
                 <div class="vertical-section">
-                    <paper-input label="Thuis" value="{{homeName}}" required auto-validate
+                    <paper-input id="homeNameInput" label="Thuis" value="{{homeName}}" required auto-validate
                                  error-message="Vul een teamnaam in"></paper-input>
-                    <paper-input label="Gasten" value="{{guestName}}" required auto-validate
+                    <paper-input id="guestNameInput" label="Gasten" value="{{guestName}}" required auto-validate
                                  error-message="Vul een teamnaam in"></paper-input>
-                    <paper-input label="Minuten per helft" value="{{timeMatch}}" type="number"></paper-input>
+                    <paper-input id="timeMatchInput" label="Minuten per helft" value="{{timeMatch}}" type="number" required auto-validate
+                                 error-message="Vul het aantal minuten van &eacute;&eacute;n helft in"></paper-input>
                     <br>
                     <paper-button id="submit" on-click="_submit">Start scoreboard</paper-button>
                 </div>
@@ -73,7 +78,12 @@
             }
 
             _submit() {
-                if (this.homeName != '' && this.guestName != '' && this.timeMatch > 0) {
+                this.$.homeNameInput.validate();
+                this.$.guestNameInput.validate();
+                this.$.timeMatchInput.validate();
+                if (this.homeName !== undefined && this.homeName !== '' &&
+                    this.guestName !== undefined && this.guestName !== ''
+                    && this.timeMatch > 0) {
                     let name = this.homeName + ' - ' + this.guestName;
 
                     database.collection('matches').add({

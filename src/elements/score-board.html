@@ -285,7 +285,7 @@
                     this.half = doc.data().half.toString();
                 });
 
-                database.collection('matches').doc(this.subpage).collection('scores').onSnapshot((doc) => {
+                database.collection('matches').doc(this.subpage).collection('scores').orderBy('date', 'desc').onSnapshot((doc) => {
                     this.isLoading = false;
                     let i = -1;
                     doc.forEach((val) => {
