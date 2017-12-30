@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../elements/match-detail-widget.html">
 
@@ -11,7 +12,7 @@
         <style>
             :host {
                 display: block;
-                padding-top: 35px;
+                padding-top: 15px;
             }
 
             .container {
@@ -19,30 +20,37 @@
                 flex-direction: column;
                 flex-wrap: nowrap;
                 text-align: center;
-                max-height: 450px;
-                justify-content: space-between;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 48px;
             }
 
-            #list {
-                @apply (--layout-flex);
-                --iron-list-items-container: {
-                    max-width: 800px;
-                    margin: 0 auto 48px;
-                };
+            .list {
+                width: 100%;
+                max-width: 800px;
             }
 
             @media all and (max-width: 800px) {
-                #list {
-                    @apply (--layout-flex);
-                    --iron-list-items-container: {
-                        max-width: 800px;
-                        margin: 0 10px 48px;
-                    };
+                .container {
+                    margin: 0 10px 48px;
                 }
             }
 
             .hover :hover {
                 cursor: pointer;
+            }
+
+            .date {
+                background-color: #4b4e61;
+                color: #fff;
+                text-align: center;
+                font-weight: bold;
+                font-size: 12px;
+                border-radius: 25px;
+                padding-top: 1px;
+                padding-bottom: 1px;
+                width: 80px;
+                margin: 0 auto 15px;
             }
 
             .spinner {
@@ -53,15 +61,18 @@
             }
         </style>
         <div class="container">
-            <template is="dom-if" if="{{isLoading}}">
-                <div class="loading">
-                    <paper-spinner class="spinner" active></paper-spinner>
-                </div>
-            </template>
-            <template is="dom-if" if="{{!isLoading}}">
-                <template is="dom-if" if="{{matches.length}}">
-                    <iron-list id="list" items="[[matches]]" as="match" scroll-target="document">
-                        <template>
+            <div class="list">
+                <template is="dom-if" if="{{isLoading}}">
+                    <div class="loading">
+                        <paper-spinner class="spinner" active></paper-spinner>
+                    </div>
+                </template>
+                <template is="dom-if" if="{{!isLoading}}">
+                    <template is="dom-if" if="{{matches.length}}">
+                        <template is="dom-repeat" items={{matches}} as="match">
+                            <template is="dom-if" if="{{_isEqualTo(match.date)}}">
+                                <div class="date">{{getFormattedDate(match.date)}}</div>
+                            </template>
                             <div class="hover">
                                 <match-detail-widget
                                         class="match"
@@ -74,18 +85,20 @@
                                         time-minutes="[[match.timeMinutes]]"
                                         time-seconds="[[match.timeSeconds]]"
                                         half="[[match.half]]"
-                                        date="[[match.date]]">
+                                        date="[[match.date]]"
+                                        end-date="[[match.endDate]]"
+                                        previous-date="{{previousDate}}">
                                 </match-detail-widget>
                             </div>
                         </template>
-                    </iron-list>
+                    </template>
+                    <template is="dom-if" if="{{!matches.length}}">
+                        <div style="margin: 0 10px 10px 10px">
+                            <h1>Er zijn nog geen wedstrijden aanwezig!</h1>
+                        </div>
+                    </template>
                 </template>
-                <template is="dom-if" if="{{!matches.length}}">
-                    <div style="margin: 0 10px 10px 10px">
-                        <h1>Er zijn nog geen wedstrijden aanwezig!</h1>
-                    </div>
-                </template>
-            </template>
+            </div>
         </div>
 
     </template>
@@ -116,7 +129,95 @@
                         type: Boolean,
                         value: true,
                     },
+                    previousDate: {
+                        type: Date,
+                        notify: true,
+                    },
                 };
+            }
+
+            getFormattedDate(date) {
+                const currentDate = new Date();
+                let formattedDate;
+                if (currentDate.getDate() + currentDate.getMonth() + currentDate.getFullYear() ===
+                    date.getDate() + date.getMonth() + date.getFullYear()) {
+                    formattedDate = 'Vandaag';
+                } else if (currentDate.getDate() + currentDate.getMonth() + currentDate.getFullYear() - 1 ===
+                    date.getDate() + date.getMonth() + date.getFullYear()) {
+                    formattedDate = 'Gisteren';
+                } else {
+                    let dayLet = date.getDay();
+                    let dayNum = date.getDate();
+                    let monthLet = date.getMonth();
+                    switch (dayLet) {
+                        case 0:
+                            dayLet = 'Zo';
+                            break;
+                        case 1:
+                            dayLet = 'Ma';
+                            break;
+                        case 2:
+                            dayLet = 'Di';
+                            break;
+                        case 3:
+                            dayLet = 'Wo';
+                            break;
+                        case 4:
+                            dayLet = 'Do';
+                            break;
+                        case 5:
+                            dayLet = 'Vr';
+                            break;
+                        case 6:
+                            dayLet = 'Za';
+                            break;
+                        default:
+                            dayLet = 'N/A';
+                    }
+
+                    switch (monthLet) {
+                        case 0:
+                            monthLet = 'jan.';
+                            break;
+                        case 1:
+                            monthLet = 'feb.';
+                            break;
+                        case 2:
+                            monthLet = 'maa.';
+                            break;
+                        case 3:
+                            monthLet = 'apr.';
+                            break;
+                        case 4:
+                            monthLet = 'mei.';
+                            break;
+                        case 5:
+                            monthLet = 'jun.';
+                            break;
+                        case 6:
+                            monthLet = 'jul.';
+                            break;
+                        case 7:
+                            monthLet = 'aug.';
+                            break;
+                        case 8:
+                            monthLet = 'sep.';
+                            break;
+                        case 9:
+                            monthLet = 'okt.';
+                            break;
+                        case 10:
+                            monthLet = 'nov.';
+                            break;
+                        case 11:
+                            monthLet = 'dec.';
+                            break;
+                        default:
+                            monthLet = 'N/A';
+                    }
+                    formattedDate = dayLet.toString() + ' ' + dayNum.toString() + ' ' + monthLet.toString();
+                }
+                return formattedDate;
             }
 
             _getMatches() {
@@ -132,6 +233,7 @@
                         i++;
                         if (this.matches[i]) {
                             if (this.matches[i].id === val.id) {
+                                this.previousDate = val.data().date;
                                 this.set('matches.' + i, {
                                     id: val.id,
                                     name: val.data().name,
@@ -144,6 +246,7 @@
                                     time: val.data().time,
                                     half: val.data().half,
                                     date: val.data().date,
+                                    endDate: val.data().endDate,
                                 });
                             }
                         } else {
@@ -159,10 +262,28 @@
                                 time: val.data().time,
                                 half: val.data().half,
                                 date: val.data().date,
+                                endDate: val.data().endDate,
                             });
                         }
                     });
                 });
+            }
+
+            _isEqualTo(date) {
+                if (this.previousDate) {
+                    if (date.getDate() + date.getMonth() + date.getFullYear() ===
+                        this.previousDate.getDate() + this.previousDate.getMonth() +
+                        this.previousDate.getFullYear()) {
+                        this.previousDate = date;
+                        return false;
+                    } else {
+                        this.previousDate = date;
+                        return true;
+                    }
+                } else {
+                    this.previousDate = date;
+                    return true;
+                }
             }
 
             _goToScoreboard(id) {

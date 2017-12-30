@@ -23,6 +23,7 @@
                 text-align: center;
                 align-items: center;
                 justify-content: center;
+                position: relative;
             }
 
             .middle {
@@ -61,11 +62,23 @@
             .name {
                 font-weight: bold;
             }
+
+            .playedTime {
+                right: 0;
+                top: 0;
+                position: absolute;
+                font-size: 11px;
+                margin-right: 3px;
+                flex: 0;
+            }
         </style>
 
 
         <div class="match">
             <div class="top">
+                <span class="playedTime">
+                    {{getFormattedDate(date)}}
+                </span>
                 <div class="left">
                     <span class="name">[[homeName]]</span>
                 </div>
@@ -148,7 +161,19 @@
                         type: String,
                         notify: true,
                     },
+                    endDate: {
+                        type: String,
+                        notify: true,
+                    },
                 };
+            }
+
+            getFormattedDate(date) {
+                if (this.endDate === undefined || this.endDate === '') {
+                    return 'Live';
+                } else {
+                    return date.getHours().toString() + ':' + date.getMinutes().toString();
+                }
             }
         }
 
