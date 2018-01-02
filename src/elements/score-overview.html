@@ -41,15 +41,14 @@
             }
 
             .date {
+                display: inline-block;
                 background-color: #4b4e61;
                 color: #fff;
                 text-align: center;
                 font-weight: bold;
                 font-size: 12px;
                 border-radius: 25px;
-                padding-top: 1px;
-                padding-bottom: 1px;
-                width: 80px;
+                padding: 1px 8px 1px 8px;
                 margin: 0 auto 15px;
             }
 
@@ -216,6 +215,10 @@
                             monthLet = 'N/A';
                     }
                     formattedDate = dayLet.toString() + ' ' + dayNum.toString() + ' ' + monthLet.toString();
+
+                    if (currentDate.getFullYear() !== date.getFullYear()) {
+                        formattedDate = formattedDate.slice(0, - 1) + ' ' + date.getFullYear() + '.';
+                    }
                 }
                 return formattedDate;
             }
