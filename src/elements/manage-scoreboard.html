@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <dom-module id="manage-scoreboard">
     <template>
@@ -78,6 +79,20 @@
                 font-size: 24px;
             }
 
+            .spinner {
+                margin: 0 auto;
+                --paper-spinner-stroke-width: 4px;
+                --paper-spinner-color: #37c0fb;
+            }
+
+            .spinnerBig {
+                margin-top: 15px;
+                width: 100px;
+                height: 100px;
+                --paper-spinner-stroke-width: 5px;
+                --paper-spinner-color: #37c0fb;
+            }
+
             .button {
                 background-color: #373b50;
                 color: #fff;
@@ -101,41 +116,57 @@
         </style>
         <app-toolbar>
             <iron-icon icon="icons:arrow-back" onclick="window.location.href = '/score-overview'"></iron-icon>
-            <div main-title>[[homeName]] - [[guestName]]</div>
+            <template is="dom-if" if="{{isLoading}}">
+                <div main-title>
+                    <div class="loading">
+                        <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                    </div>
+                </div>
+            </template>
+            <template is="dom-if" if="{{!isLoading}}">
+                <div main-title>[[homeName]] - [[guestName]]</div>
+            </template>
         </app-toolbar>
         <div class="container">
             <div class="box">
-                <div class="emptySpace"></div>
-                <div class="homeScore">
-                    <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                        <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
-                        <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                              font-size="8em" fill="black">[[homeScore]]
-                        </text>
-                    </svg>
-                    <span class="names">[[homeName]]</span>
-                </div>
-                <div class="timer">
-                    <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                        <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
-                        <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                              font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
-                        </text>
-                        <text x="50%" y="78%" text-anchor="middle" dy=".3em"
-                              font-size="3em" font-weight="bold" fill="black">[[half]]
-                        </text>
-                    </svg>
-                </div>
-                <div class="guestScore">
-                    <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                        <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
-                        <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                              font-size="8em" fill="black">[[guestScore]]
-                        </text>
-                    </svg>
-                    <span class="names">[[guestName]]</span>
-                </div>
-                <div class="emptySpace"></div>
+                <template is="dom-if" if="{{isLoading}}">
+                    <div class="loading">
+                        <paper-spinner-lite active class="spinnerBig"></paper-spinner-lite>
+                    </div>
+                </template>
+                <template is="dom-if" if="{{!isLoading}}">
+                    <div class="emptySpace"></div>
+                    <div class="homeScore">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[homeScore]]
+                            </text>
+                        </svg>
+                        <span class="names">[[homeName]]</span>
+                    </div>
+                    <div class="timer">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
+                            </text>
+                            <text x="50%" y="78%" text-anchor="middle" dy=".3em"
+                                  font-size="3em" font-weight="bold" fill="black">[[half]]
+                            </text>
+                        </svg>
+                    </div>
+                    <div class="guestScore">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[guestScore]]
+                            </text>
+                        </svg>
+                        <span class="names">[[guestName]]</span>
+                    </div>
+                    <div class="emptySpace"></div>
+                </template>
             </div>
         </div>
         <div class="container">
@@ -187,6 +218,10 @@
                         type: String,
                         observer: '_updateScore',
                     },
+                    isLoading: {
+                        type: Boolean,
+                        value: true,
+                    },
                     homeScore: {
                         type: String,
                         observer: '_updateScore',
@@ -200,12 +235,12 @@
                     homeName: {
                         type: String,
                         observer: '_updateScore',
-                        value: 'EKC 2000',
+                        value: 'Thuis',
                     },
                     guestName: {
                         type: String,
                         observer: '_updateScore',
-                        value: 'Gast',
+                        value: 'Gasten',
                     },
                     time: {
                         type: String,
@@ -352,6 +387,7 @@
                     if (this.half === '2') {
                         this.halfText = 'Beëindig wedstrijd';
                     }
+                    this.isLoading = false;
                 });
             }
 
@@ -453,6 +489,8 @@
             _homeScorePlus() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let homeScoreToSave;
+                let description = this.homeDescription;
+                this.homeDescription = null;
                 docRef.get().then((querySnapshot) => {
                     const myData = querySnapshot.data();
                     homeScoreToSave = myData.homeScore;
@@ -461,7 +499,7 @@
                         homeScore: homeScoreToSave,
                     }).then(() => {
                         database.collection('matches').doc(this.subpage).collection('scores').add({
-                            description: this.homeDescription,
+                            description: description,
                             home: homeScoreToSave,
                             guest: myData.guestScore,
                             minutes: myData.timeMinutes,
@@ -475,6 +513,8 @@
             _guestScorePlus() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let guestScoreToSave;
+                let description = this.guestDescription;
+                this.guestDescription = null;
                 docRef.get().then((querySnapshot) => {
                     const myData = querySnapshot.data();
                     guestScoreToSave = myData.guestScore;
@@ -483,7 +523,7 @@
                         guestScore: guestScoreToSave,
                     }).then(() => {
                         database.collection('matches').doc(this.subpage).collection('scores').add({
-                            description: this.guestDescription,
+                            description: description,
                             home: myData.homeScore,
                             guest: guestScoreToSave,
                             minutes: myData.timeMinutes,
