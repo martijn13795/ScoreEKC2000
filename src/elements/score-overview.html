@@ -224,61 +224,59 @@
             }
 
             _getMatches() {
-                database.collection('matches').orderBy('date', 'desc').onSnapshot((doc) => {
-                    this.isLoading = false;
-                    let i = -1;
-                    if (doc) {
-                        if (this.matches.length > doc.size) {
-                            this.matches = [];
-                        }
-                    }
-                    doc.forEach((val) => {
-                        i++;
-                        if (this.matches[i]) {
-                            if (this.matches[i].id === val.id) {
-                                this.previousDate = val.data().date;
-                                this.set('matches.' + i, {
-                                    id: val.id,
-                                    name: val.data().name,
-                                    homeName: val.data().homeName,
-                                    guestName: val.data().guestName,
-                                    homeScore: val.data().homeScore,
-                                    guestScore: val.data().guestScore,
-                                    timeMinutes: val.data().timeMinutes,
-                                    timeSeconds: val.data().timeSeconds,
-                                    time: val.data().time,
-                                    half: val.data().half,
-                                    date: val.data().date,
-                                    endDate: val.data().endDate,
-                                });
-                            }
-                        } else {
+                database.collection('matches').orderBy('date', 'desc').onSnapshot((snapshot) => {
+                    snapshot.docChanges.forEach((change) => {
+                        if (change.type === 'added') {
                             this.push('matches', {
-                                id: val.id,
-                                name: val.data().name,
-                                homeName: val.data().homeName,
-                                guestName: val.data().guestName,
-                                homeScore: val.data().homeScore,
-                                guestScore: val.data().guestScore,
-                                timeMinutes: val.data().timeMinutes,
-                                timeSeconds: val.data().timeSeconds,
-                                time: val.data().time,
-                                half: val.data().half,
-                                date: val.data().date,
-                                endDate: val.data().endDate,
+                                id: change.doc.id,
+                                name: change.doc.data().name,
+                                homeName: change.doc.data().homeName,
+                                guestName: change.doc.data().guestName,
+                                homeScore: change.doc.data().homeScore,
+                                guestScore: change.doc.data().guestScore,
+                                timeMinutes: change.doc.data().timeMinutes,
+                                timeSeconds: change.doc.data().timeSeconds,
+                                time: change.doc.data().time,
+                                half: change.doc.data().half,
+                                date: change.doc.data().date,
+                                endDate: change.doc.data().endDate,
                             });
                         }
+                        if (change.type === 'modified') {
+                            this.set('matches.' + change.newIndex, {
+                                id: change.doc.id,
+                                name: change.doc.data().name,
+                                homeName: change.doc.data().homeName,
+                                guestName: change.doc.data().guestName,
+                                homeScore: change.doc.data().homeScore,
+                                guestScore: change.doc.data().guestScore,
+                                timeMinutes: change.doc.data().timeMinutes,
+                                timeSeconds: change.doc.data().timeSeconds,
+                                time: change.doc.data().time,
+                                half: change.doc.data().half,
+                                date: change.doc.data().date,
+                                endDate: change.doc.data().endDate,
+                            });
+                        }
+                        if (change.type === 'removed') {
+                            this.splice('matches', change.oldIndex, 1);
+                        }
+                        this.isLoading = false;
                     });
                 });
             }
 
             _isEqualTo(date) {
-                if (this.previousDate) {
+                if (this.previousDate !== undefined) {
                     if (date.getDate() + date.getMonth() + date.getFullYear() ===
                         this.previousDate.getDate() + this.previousDate.getMonth() +
                         this.previousDate.getFullYear()) {
                         this.previousDate = date;
-                        return false;
+                        if (this.previousDate === this.matches[0].date) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     } else {
                         this.previousDate = date;
                         return true;
