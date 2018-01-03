@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
 
 <dom-module id="page-404">
     <template>
@@ -6,14 +7,24 @@
             :host {
                 display: block;
                 height: 100%;
-                margin-top: -21px;
             }
             .container {
                 text-align: center;
                 max-width: 800px;
                 margin: 0 auto;
             }
+
+            app-toolbar {
+                background-color: #373b50;
+                color: #fff;
+                text-align: center;
+                font-size: 24px;
+            }
         </style>
+        <app-toolbar>
+            <iron-icon icon="icons:arrow-back" onclick="window.location.href = '/score-overview'"></iron-icon>
+            <div main-title></div>
+        </app-toolbar>
         <div class="container">
             <div class="content">
                 <h1>[[error]]</h1>

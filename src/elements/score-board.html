@@ -2,7 +2,6 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 
 <dom-module id="score-board">
     <template>
@@ -43,6 +42,7 @@
                 justify-content: center;
                 background-color: white;
                 padding: 7px 24px 24px 24px;
+                margin: 0 24px 24px 24px;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
@@ -115,6 +115,10 @@
                 --paper-spinner-stroke-width: 5px;
                 --paper-spinner-color: #37c0fb;
             }
+
+            .matches {
+                margin-bottom: 75px;
+            }
         </style>
         <app-toolbar>
             <template is="dom-if" if="{{isLoading}}">
@@ -172,34 +176,41 @@
                     <div class="emptySpace"></div>
                 </template>
             </div>
-            <template is="dom-if" if="{{scores.length}}">
-                <iron-list id="list" items="[[scores]]" as="score" scroll-target="document">
-                    <template>
-                        <div class="scoreContainer">
-                            <div class="scoreTop">
-                                <div class="home" style="flex: 1">
-                                    [[score.home]]
-                                </div>
-                                <div class="time" style="flex: 2">
-                                    [[score.minutes]]:[[score.seconds]]
-                                </div>
-                                <div class="guest" style="flex: 1">
-                                    [[score.guest]]
-                                </div>
-                            </div>
-                            <div class="scoreBottom">
-                                <div class="description" style="flex: 1">
-                                    [[score.description]]
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                </iron-list>
-            </template>
-            <template is="dom-if" if="{{!scores.length}}">
-                <div style="margin: 0 10px 10px 10px">
-                    <h1>Er is nog niet gescoord</h1>
+            <template is="dom-if" if="{{isLoading}}">
+                <div class="loading" style="margin: 0 auto">
+                    <paper-spinner-lite active></paper-spinner-lite>
                 </div>
+            </template>
+            <template is="dom-if" if="{{!isLoading}}">
+                <template is="dom-if" if="{{scores.length}}">
+                    <div class="matches">
+                        <template is="dom-repeat" items={{scores}} as="score">
+                            <div class="scoreContainer">
+                                <div class="scoreTop">
+                                    <div class="home" style="flex: 1">
+                                        [[score.home]]
+                                    </div>
+                                    <div class="time" style="flex: 2">
+                                        [[score.minutes]]:[[score.seconds]]
+                                    </div>
+                                    <div class="guest" style="flex: 1">
+                                        [[score.guest]]
+                                    </div>
+                                </div>
+                                <div class="scoreBottom">
+                                    <div class="description" style="flex: 1">
+                                        [[score.description]]
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template is="dom-if" if="{{!scores.length}}">
+                    <div style="margin: 0 10px 10px 10px">
+                        <h1>Er is nog niet gescoord</h1>
+                    </div>
+                </template>
             </template>
         </div>
     </template>
@@ -274,7 +285,6 @@
 
             _updateScore() {
                 database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
-                    this.isLoading = false;
                     this.homeScore = doc.data().homeScore.toString();
                     this.guestScore = doc.data().guestScore.toString();
                     this.homeName = doc.data().homeName.toString();
@@ -287,29 +297,34 @@
 
                 database.collection('matches').doc(this.subpage).collection('scores')
                     .orderBy('date', 'desc').onSnapshot((doc) => {
-                    this.isLoading = false;
+                    this.set('scores', []);
                     let i = -1;
-                    doc.forEach((val) => {
-                        i++;
-                        if (this.scores[i]) {
-                            this.set('scores.' + i, {
-                                description: val.data().description,
-                                home: val.data().home,
-                                guest: val.data().guest,
-                                minutes: val.data().minutes,
-                                seconds: val.data().seconds,
-                            });
-                        } else {
-                            this.push('scores', {
-                                description: val.data().description,
-                                home: val.data().home,
-                                guest: val.data().guest,
-                                minutes: val.data().minutes,
-                                seconds: val.data().seconds,
-                            });
-                        }
-                    });
+                    if (doc.size) {
+                        doc.forEach((val) => {
+                            i++;
+                            if (this.scores[i]) {
+                                this.set('scores.' + i, {
+                                    description: val.data().description,
+                                    home: val.data().home,
+                                    guest: val.data().guest,
+                                    minutes: val.data().minutes,
+                                    seconds: val.data().seconds,
+                                });
+                            } else {
+                                this.push('scores', {
+                                    description: val.data().description,
+                                    home: val.data().home,
+                                    guest: val.data().guest,
+                                    minutes: val.data().minutes,
+                                    seconds: val.data().seconds,
+                                });
+                            }
+                        });
+                    } else {
+                        this.set('scores', []);
+                    }
                 });
+                this.isLoading = false;
             }
 
         }
