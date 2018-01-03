@@ -224,10 +224,10 @@
             }
 
             _getMatches() {
-                database.collection('matches').orderBy('date', 'desc').onSnapshot((snapshot) => {
+                database.collection('matches').orderBy('date', 'asc').onSnapshot((snapshot) => {
                     snapshot.docChanges.forEach((change) => {
                         if (change.type === 'added') {
-                            this.push('matches', {
+                            this.unshift('matches', {
                                 id: change.doc.id,
                                 name: change.doc.data().name,
                                 homeName: change.doc.data().homeName,
@@ -243,20 +243,28 @@
                             });
                         }
                         if (change.type === 'modified') {
-                            this.set('matches.' + change.newIndex, {
-                                id: change.doc.id,
-                                name: change.doc.data().name,
-                                homeName: change.doc.data().homeName,
-                                guestName: change.doc.data().guestName,
-                                homeScore: change.doc.data().homeScore,
-                                guestScore: change.doc.data().guestScore,
-                                timeMinutes: change.doc.data().timeMinutes,
-                                timeSeconds: change.doc.data().timeSeconds,
-                                time: change.doc.data().time,
-                                half: change.doc.data().half,
-                                date: change.doc.data().date,
-                                endDate: change.doc.data().endDate,
-                            });
+                            let d = -1;
+                            for (let i = 0; i < this.matches.length; i++) {
+                                if (this.matches[i].id === change.doc.id) {
+                                    d = i;
+                                }
+                            }
+                            if (this.matches[d].id === change.doc.id) {
+                                this.set('matches.' + d, {
+                                    id: change.doc.id,
+                                    name: change.doc.data().name,
+                                    homeName: change.doc.data().homeName,
+                                    guestName: change.doc.data().guestName,
+                                    homeScore: change.doc.data().homeScore,
+                                    guestScore: change.doc.data().guestScore,
+                                    timeMinutes: change.doc.data().timeMinutes,
+                                    timeSeconds: change.doc.data().timeSeconds,
+                                    time: change.doc.data().time,
+                                    half: change.doc.data().half,
+                                    date: change.doc.data().date,
+                                    endDate: change.doc.data().endDate,
+                                });
+                            }
                         }
                         if (change.type === 'removed') {
                             this.splice('matches', change.oldIndex, 1);
