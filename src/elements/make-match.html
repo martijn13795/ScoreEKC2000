@@ -85,6 +85,10 @@
                     this.guestName !== undefined && this.guestName !== ''
                     && this.timeMatch > 0) {
                     let name = this.homeName + ' - ' + this.guestName;
+                    let minutes = this.timeMatch.toString();
+                    if (minutes < 10) {
+                        minutes = '0' + minutes;
+                    }
 
                     database.collection('matches').add({
                         name: name.toString(),
@@ -94,7 +98,7 @@
                         guestScore: 0,
                         half: '1',
                         time: this.timeMatch.toString(),
-                        timeMinutes: this.timeMatch.toString(),
+                        timeMinutes: minutes,
                         timeSeconds: '00',
                         date: new Date(),
                         endDate: '',

@@ -456,7 +456,8 @@
                             } else if (timerMinutes >= 0) {
                                 if (timerSeconds === 0 || timerSeconds === '00') {
                                     timerMinutes = timerMinutes - 1;
-                                    if (timerMinutes >= 0 && timerMinutes < timer) {
+                                    timerSeconds = 60;
+                                    if (timerMinutes >= 0 && timerMinutes <= timer) {
                                         if (timerMinutes <= 9) {
                                             docRef.update({
                                                 timeMinutes: '0' + timerMinutes.toString(),
@@ -469,7 +470,6 @@
                                     } else {
                                         return;
                                     }
-                                    timerSeconds = 60;
                                 }
                                 timerSeconds = timerSeconds - 1;
                                 if (timerSeconds >= 0 && timerSeconds < 60) {
@@ -486,6 +486,8 @@
                                     return;
                                 }
                             } else {
+                                this.timerText = 'Start timer';
+                                clearInterval(interval);
                                 return;
                             }
                         }, 1000);
@@ -504,7 +506,12 @@
                     const myData = querySnapshot.data();
                     half = myData.half;
                     time = myData.time;
+                    if (time < 10) {
+                        time = '0' + time.toString();
+                    }
                     if (this.halfText === 'Begin tweede helft' && half === '1') {
+                        this.timerText = 'Start timer';
+                        clearInterval(this.interval);
                         this.halfText = 'Beëindig wedstrijd';
                         docRef.update({
                             half: '2',
@@ -512,6 +519,8 @@
                             timeSeconds: '00',
                         });
                     } else if (this.halfText === 'Beëindig wedstrijd' && half === '2') {
+                        this.timerText = 'Start timer';
+                        clearInterval(this.interval);
                         docRef.update({
                             half: '0',
                             timeMinutes: '00',
