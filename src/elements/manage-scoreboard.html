@@ -5,6 +5,10 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
 
 <dom-module id="manage-scoreboard">
     <template>
@@ -96,6 +100,7 @@
             .button {
                 background-color: #373b50;
                 color: #fff;
+                margin: 7px 0 0 0;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
@@ -112,6 +117,10 @@
                 flex-wrap: nowrap;
                 justify-content: space-between;
                 margin-bottom: 70px;
+            }
+
+            .dropdown {
+                width: 100%;
             }
         </style>
         <app-toolbar>
@@ -174,15 +183,57 @@
                 <template is="dom-if" if="{{_isEqualTo(half)}}">
                     <div class="vertical center-justified layout">
                         <div class="vertical-section">
-                            <paper-textarea name="homeDescription" id="homeDescription" value="{{homeDescription}}" label="Hoe is er gescoord?"></paper-textarea>
+                            <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                    <paper-item style="display:none"></paper-item>
+                                    <paper-item>Patrick</paper-item>
+                                    <paper-item>Erwin</paper-item>
+                                    <paper-item>Peter</paper-item>
+                                    <paper-item>Elise</paper-item>
+                                    <paper-item>Tjarda</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu>
                             <br>
+                            <paper-dropdown-menu name="homeScoreDescription" class="dropdown" id="homeScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
+                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                    <paper-item style="display:none"></paper-item>
+                                    <paper-item>Afstandsschot</paper-item>
+                                    <paper-item>Korte kans</paper-item>
+                                    <paper-item>Doorloopbal</paper-item>
+                                    <paper-item>Vrije worp</paper-item>
+                                    <paper-item>Strafworp</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu>
+                            <br>
+                            <div id="messageHome" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out;">Score toegevoegd.</div>
                             <paper-button class="button" name="scorePlus" id="homeScore" on-click="_homeScorePlus">Thuis score toevoegen</paper-button>
                         </div>
                     </div>
                     <div class="vertical center-justified layout">
                         <div class="vertical-section">
-                            <paper-textarea name="guestDescription" id="guestDescription" value="{{guestDescription}}" label="Hoe is er gescoord?"></paper-textarea>
+                            <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                    <paper-item style="display:none"></paper-item>
+                                    <paper-item>Patrick</paper-item>
+                                    <paper-item>Erwin</paper-item>
+                                    <paper-item>Peter</paper-item>
+                                    <paper-item>Elise</paper-item>
+                                    <paper-item>Tjarda</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu>
                             <br>
+                            <paper-dropdown-menu name="guestScoreDescription" class="dropdown" id="guestScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
+                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                    <paper-item style="display:none"></paper-item>
+                                    <paper-item>Afstandsschot</paper-item>
+                                    <paper-item>Korte kans</paper-item>
+                                    <paper-item>Doorloopbal</paper-item>
+                                    <paper-item>Vrije worp</paper-item>
+                                    <paper-item>Strafworp</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu>
+                            <br>
+                            <div id="messageGuest" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out;">Score toegevoegd.</div>
                             <paper-button class="button" name="scorePlus" id="guestScore" on-click="_guestScorePlus">Gast score toevoegen</paper-button>
                         </div>
                     </div>
@@ -269,12 +320,6 @@
                     timerText: {
                         type: String,
                         value: 'Start timer',
-                    },
-                    homeDescription: {
-                        type: String,
-                    },
-                    guestDescription: {
-                        type: String,
                     },
                 };
             }
@@ -489,49 +534,65 @@
             _homeScorePlus() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let homeScoreToSave;
-                let description = this.homeDescription;
-                this.homeDescription = null;
-                docRef.get().then((querySnapshot) => {
-                    const myData = querySnapshot.data();
-                    homeScoreToSave = myData.homeScore;
-                    homeScoreToSave++;
-                    docRef.update({
-                        homeScore: homeScoreToSave,
-                    }).then(() => {
-                        database.collection('matches').doc(this.subpage).collection('scores').add({
-                            description: description,
-                            home: homeScoreToSave,
-                            guest: myData.guestScore,
-                            minutes: myData.timeMinutes,
-                            seconds: myData.timeSeconds,
-                            date: new Date(),
+                Polymer.dom(this.root).querySelector('#homeScoreDescription').validate();
+                let homeScoreDescription = Polymer.dom(this.root).querySelector('#homeScoreDescription').value;
+                if (homeScoreDescription) {
+                    Polymer.dom(this.root).querySelector('#homeScoreDescription').contentElement.selected = 0;
+                    docRef.get().then((querySnapshot) => {
+                        const myData = querySnapshot.data();
+                        homeScoreToSave = myData.homeScore;
+                        homeScoreToSave++;
+                        docRef.update({
+                            homeScore: homeScoreToSave,
+                        }).then(() => {
+                            database.collection('matches').doc(this.subpage).collection('scores').add({
+                                description: homeScoreDescription,
+                                home: homeScoreToSave,
+                                guest: myData.guestScore,
+                                minutes: myData.timeMinutes,
+                                seconds: myData.timeSeconds,
+                                date: new Date(),
+                            }).then(() => {
+                                Polymer.dom(this.root).querySelector('#messageHome').style.opacity = '1';
+                                setTimeout(() => {
+                                    Polymer.dom(this.root).querySelector('#messageHome').style.opacity = '0';
+                                }, 2000);
+                            });
                         });
                     });
-                });
+                }
             }
 
             _guestScorePlus() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let guestScoreToSave;
-                let description = this.guestDescription;
-                this.guestDescription = null;
-                docRef.get().then((querySnapshot) => {
-                    const myData = querySnapshot.data();
-                    guestScoreToSave = myData.guestScore;
-                    guestScoreToSave++;
-                    docRef.update({
-                        guestScore: guestScoreToSave,
-                    }).then(() => {
-                        database.collection('matches').doc(this.subpage).collection('scores').add({
-                            description: description,
-                            home: myData.homeScore,
-                            guest: guestScoreToSave,
-                            minutes: myData.timeMinutes,
-                            seconds: myData.timeSeconds,
-                            date: new Date(),
+                Polymer.dom(this.root).querySelector('#guestScoreDescription').validate();
+                let guestScoreDescription = Polymer.dom(this.root).querySelector('#guestScoreDescription').value;
+                if (guestScoreDescription) {
+                    Polymer.dom(this.root).querySelector('#guestScoreDescription').contentElement.selected = 0;
+                    docRef.get().then((querySnapshot) => {
+                        const myData = querySnapshot.data();
+                        guestScoreToSave = myData.guestScore;
+                        guestScoreToSave++;
+                        docRef.update({
+                            guestScore: guestScoreToSave,
+                        }).then(() => {
+                            database.collection('matches').doc(this.subpage).collection('scores').add({
+                                description: guestScoreDescription,
+                                home: myData.homeScore,
+                                guest: guestScoreToSave,
+                                minutes: myData.timeMinutes,
+                                seconds: myData.timeSeconds,
+                                date: new Date(),
+                            }).then(() => {
+                                Polymer.dom(this.root).querySelector('#messageGuest').style.opacity = '1';
+                                setTimeout(() => {
+                                    Polymer.dom(this.root).querySelector('#messageGuest').style.opacity = '0';
+                                }, 2000);
+                            });
                         });
                     });
-                });
+                }
             }
         }
 
