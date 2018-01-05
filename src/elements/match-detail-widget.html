@@ -163,7 +163,11 @@
                 if (this.endDate === undefined || this.endDate === '') {
                     return 'Live';
                 } else {
-                    return date.getHours().toString() + ':' + date.getMinutes().toString();
+                    if (date.getMinutes() < 10) {
+                        return date.getHours().toString() + ':0' + date.getMinutes().toString();
+                    } else {
+                        return date.getHours().toString() + ':' + date.getMinutes().toString();
+                    }
                 }
             }
         }
