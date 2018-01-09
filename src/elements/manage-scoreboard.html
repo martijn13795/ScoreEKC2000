@@ -194,7 +194,7 @@
                                 </paper-listbox>
                             </paper-dropdown-menu>
                             <br>
-                            <paper-dropdown-menu name="homeScoreDescription" class="dropdown" id="homeScoreDescription" label="Hoe is er gescoord?" onClick="event.preventDefault();" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
+                            <paper-dropdown-menu name="homeScoreDescription" class="dropdown" id="homeScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
                                 <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                     <paper-item style="display:none"></paper-item>
                                     <paper-item>Afstandsschot</paper-item>
@@ -556,6 +556,7 @@
                         }).then(() => {
                             database.collection('matches').doc(this.subpage).collection('scores').add({
                                 description: homeScoreDescription,
+                                homeOrGuest: 'home',
                                 home: homeScoreToSave,
                                 guest: myData.guestScore,
                                 minutes: myData.timeMinutes,
@@ -588,6 +589,7 @@
                         }).then(() => {
                             database.collection('matches').doc(this.subpage).collection('scores').add({
                                 description: guestScoreDescription,
+                                homeOrGuest: 'guest',
                                 home: myData.homeScore,
                                 guest: guestScoreToSave,
                                 minutes: myData.timeMinutes,

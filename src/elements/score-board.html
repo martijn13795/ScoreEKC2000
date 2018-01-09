@@ -46,6 +46,19 @@
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
+            .scoreSummary {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                text-align: left;
+                align-items: center;
+                justify-content: center;
+                background-color: white;
+                padding: 10px 10px 10px 10px;
+                margin: 0 24px 24px 24px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+
             .scoreTop {
                 display: flex;
                 flex-direction: row;
@@ -182,6 +195,30 @@
                 </div>
             </template>
             <template is="dom-if" if="{{!isLoading}}">
+                <template is="dom-if" if="{{endDate}}">
+                    <div class="scoreSummary">
+                        <div style="flex: 1; display: inline-block; vertical-align: middle; margin-right: 10px;">
+                            <table style="margin: 0 auto;">
+                                <tr><th>[[homeName]]</th></tr>
+                                <tr><td style="padding-right: 12px;">Afstandsschoten: </td><td>[[homeAfs]]</td></tr>
+                                <tr><td>Korte kansen: </td><td>[[homeKor]]</td></tr>
+                                <tr><td>Doorloopbalen: </td><td>[[homeDoo]]</td></tr>
+                                <tr><td>Vrije worpen: </td><td>[[homeVri]]</td></tr>
+                                <tr><td>Strafworpen: </td><td>[[homeStr]]</td></tr>
+                            </table>
+                        </div>
+                        <div style="flex: 1; display: inline-block; vertical-align: middle;">
+                            <table style="margin: 0 auto;">
+                                <tr><th>[[guestName]]</th></tr>
+                                <tr><td style="padding-right: 12px;">Afstandsschoten: </td><td>[[guestAfs]]</td></tr>
+                                <tr><td>Korte kansen: </td><td>[[guestKor]]</td></tr>
+                                <tr><td>Doorloopbalen: </td><td>[[guestDoo]]</td></tr>
+                                <tr><td>Vrije worpen: </td><td>[[guestVri]]</td></tr>
+                                <tr><td>Strafworpen: </td><td>[[guestStr]]</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </template>
                 <template is="dom-if" if="{{scores.length}}">
                     <div class="matches">
                         <template is="dom-repeat" items={{scores}} as="score">
@@ -280,6 +317,50 @@
                         observer: '_updateScore',
                         value: '0',
                     },
+                    endDate: {
+                        type: String,
+                        observer: '_updateScore',
+                    },
+                    homeAfs: {
+                        type: Number,
+                        value: 0,
+                    },
+                    homeKor: {
+                        type: Number,
+                        value: 0,
+                    },
+                    homeDoo: {
+                        type: Number,
+                        value: 0,
+                    },
+                    homeVri: {
+                        type: Number,
+                        value: 0,
+                    },
+                    homeStr: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestAfs: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestKor: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestDoo: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestVri: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestStr: {
+                        type: Number,
+                        value: 0,
+                    },
                 };
             }
 
@@ -293,6 +374,7 @@
                     this.timeMinutes = doc.data().timeMinutes.toString();
                     this.timeSeconds = doc.data().timeSeconds.toString();
                     this.half = doc.data().half.toString();
+                    this.endDate = doc.data().endDate.toString();
                 });
 
                 database.collection('matches').doc(this.subpage).collection('scores')
@@ -324,9 +406,68 @@
                         this.set('scores', []);
                     }
                 });
+
+                if (this.endDate !== undefined || this.endDate !== '') {
+                    database.collection('matches').doc(this.subpage).collection('scores').get().then((doc) => {
+                        this.homeAfs = 0;
+                        this.homeKor = 0;
+                        this.homeDoo = 0;
+                        this.homeVri = 0;
+                        this.homeStr = 0;
+                        this.guestAfs = 0;
+                        this.guestKor = 0;
+                        this.guestDoo = 0;
+                        this.guestVri = 0;
+                        this.guestStr = 0;
+                        if (doc.size) {
+                            doc.forEach((val) => {
+                                if (val.data().homeOrGuest === 'home') {
+                                    switch (val.data().description) {
+                                        case 'Afstandsschot':
+                                            this.homeAfs++;
+                                            break;
+                                        case 'Korte kans':
+                                            this.homeKor++;
+                                            break;
+                                        case 'Doorloopbal':
+                                            this.homeDoo++;
+                                            break;
+                                        case 'Vrije worp':
+                                            this.homeVri++;
+                                            break;
+                                        case 'Strafworp':
+                                            this.homeStr++;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                } else if (val.data().homeOrGuest === 'guest') {
+                                    switch (val.data().description) {
+                                        case 'Afstandsschot':
+                                            this.guestAfs++;
+                                            break;
+                                        case 'Korte kans':
+                                            this.guestKor++;
+                                            break;
+                                        case 'Doorloopbal':
+                                            this.guestDoo++;
+                                            break;
+                                        case 'Vrije worp':
+                                            this.guestVri++;
+                                            break;
+                                        case 'Strafworp':
+                                            this.guestStr++;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
                 this.isLoading = false;
             }
-
         }
 
         window.customElements.define(Scoreboard.is, Scoreboard);
