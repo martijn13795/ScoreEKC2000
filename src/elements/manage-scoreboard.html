@@ -9,6 +9,8 @@
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 
 <dom-module id="manage-scoreboard">
     <template>
@@ -116,7 +118,7 @@
                 flex-direction: row;
                 flex-wrap: nowrap;
                 justify-content: space-between;
-                margin-bottom: 70px;
+                margin-bottom: 80px;
             }
 
             .dropdown {
@@ -183,16 +185,30 @@
                 <template is="dom-if" if="{{_isEqualTo(half)}}">
                     <div class="vertical center-justified layout">
                         <div class="vertical-section">
-                            <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
-                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
-                                    <paper-item style="display:none"></paper-item>
-                                    <paper-item>Patrick</paper-item>
-                                    <paper-item>Erwin</paper-item>
-                                    <paper-item>Peter</paper-item>
-                                    <paper-item>Elise</paper-item>
-                                    <paper-item>Tjarda</paper-item>
-                                </paper-listbox>
-                            </paper-dropdown-menu>
+                            <template is="dom-if" if="{{_isEqualToHome(homeOrGuest)}}">
+                                <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                        <paper-item style="display:none"></paper-item>
+                                        <paper-item>Patrick</paper-item>
+                                        <paper-item>Erwin</paper-item>
+                                        <paper-item>Peter</paper-item>
+                                        <paper-item>Elise</paper-item>
+                                        <paper-item>Tjarda</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                            </template>
+                            <template is="dom-if" if="{{_isEqualToGuest(homeOrGuest)}}">
+                                <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                        <paper-item style="display:none"></paper-item>
+                                        <paper-item>Patrick</paper-item>
+                                        <paper-item>Erwin</paper-item>
+                                        <paper-item>Peter</paper-item>
+                                        <paper-item>Elise</paper-item>
+                                        <paper-item>Tjarda</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                            </template>
                             <br>
                             <paper-dropdown-menu name="homeScoreDescription" class="dropdown" id="homeScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
                                 <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
@@ -211,16 +227,30 @@
                     </div>
                     <div class="vertical center-justified layout">
                         <div class="vertical-section">
-                            <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
-                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
-                                    <paper-item style="display:none"></paper-item>
-                                    <paper-item>Patrick</paper-item>
-                                    <paper-item>Erwin</paper-item>
-                                    <paper-item>Peter</paper-item>
-                                    <paper-item>Elise</paper-item>
-                                    <paper-item>Tjarda</paper-item>
-                                </paper-listbox>
-                            </paper-dropdown-menu>
+                            <template is="dom-if" if="{{_isEqualToGuest(homeOrGuest)}}">
+                                <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                        <paper-item style="display:none"></paper-item>
+                                        <paper-item>Patrick</paper-item>
+                                        <paper-item>Erwin</paper-item>
+                                        <paper-item>Peter</paper-item>
+                                        <paper-item>Elise</paper-item>
+                                        <paper-item>Tjarda</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                            </template>
+                            <template is="dom-if" if="{{_isEqualToHome(homeOrGuest)}}">
+                                <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                        <paper-item style="display:none"></paper-item>
+                                        <paper-item>Patrick</paper-item>
+                                        <paper-item>Erwin</paper-item>
+                                        <paper-item>Peter</paper-item>
+                                        <paper-item>Elise</paper-item>
+                                        <paper-item>Tjarda</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                            </template>
                             <br>
                             <paper-dropdown-menu name="guestScoreDescription" class="dropdown" id="guestScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
                                 <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
@@ -320,6 +350,9 @@
                     timerText: {
                         type: String,
                         value: 'Start timer',
+                    },
+                    homeOrGuest: {
+                        type: String,
                     },
                 };
             }
@@ -429,6 +462,7 @@
                     this.timeMinutes = doc.data().timeMinutes.toString();
                     this.timeSeconds = doc.data().timeSeconds.toString();
                     this.half = doc.data().half.toString();
+                    this.homeOrGuest = doc.data().homeOrGuest;
                     if (this.half === '2') {
                         this.halfText = 'Beëindig wedstrijd';
                     }
@@ -534,6 +568,22 @@
 
             _isEqualTo(string) {
                 if (string === '1' || string === '2') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            _isEqualToHome(string) {
+                if (string === 'home') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            _isEqualToGuest(string) {
+                if (string === 'guest') {
                     return true;
                 } else {
                     return false;

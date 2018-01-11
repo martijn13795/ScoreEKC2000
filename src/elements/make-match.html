@@ -1,6 +1,14 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 
 
 <dom-module id="make-match">
@@ -42,7 +50,22 @@
                     <paper-input id="homeNameInput" label="Thuis" value="{{homeName}}" required auto-validate
                                  error-message="Vul een teamnaam in"></paper-input>
                     <paper-input id="guestNameInput" label="Gasten" value="{{guestName}}" required auto-validate
-                                 error-message="Vul een teamnaam in"></paper-input>
+                                 error-message="Vul een teamnaam in"></paper-input><br>
+                    <label id="label1">Speelt EKC 2000 thuis of uit:</label><br>
+                    <paper-radio-group selected="{{homeOrGuest}}" aria-labelledby="label1">
+                        <paper-radio-button name="home">Thuis</paper-radio-button>
+                        <paper-radio-button name="guest">Uit</paper-radio-button>
+                    </paper-radio-group>
+                    <paper-dropdown-menu name="team" class="dropdown" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" required auto-validate error-message="Selecteer een team" horizontal-align="left" disabled>
+                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                            <paper-item style="display:none"></paper-item>
+                            <paper-item>1</paper-item>
+                            <paper-item>2</paper-item>
+                            <paper-item>A1</paper-item>
+                            <paper-item>B1</paper-item>
+                            <paper-item>C1</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
                     <paper-input id="timeMatchInput" label="Minuten per helft" value="{{timeMatch}}" type="number" required auto-validate
                                  error-message="Vul het aantal minuten van &eacute;&eacute;n helft in"></paper-input>
                     <br>
@@ -70,6 +93,10 @@
                     guestName: {
                         type: String,
                     },
+                    homeOrGuest: {
+                        type: String,
+                        value: 'home',
+                    },
                     timeMatch: {
                         type: Number,
                         value: 30,
@@ -96,6 +123,7 @@
                         guestName: this.guestName.toString(),
                         homeScore: 0,
                         guestScore: 0,
+                        homeOrGuest: this.homeOrGuest,
                         half: '1',
                         time: this.timeMatch.toString(),
                         timeMinutes: minutes,
