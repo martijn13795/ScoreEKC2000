@@ -56,16 +56,27 @@
                         <paper-radio-button name="home">Thuis</paper-radio-button>
                         <paper-radio-button name="guest">Uit</paper-radio-button>
                     </paper-radio-group>
-                    <paper-dropdown-menu name="team" class="dropdown" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" required auto-validate error-message="Selecteer een team" horizontal-align="left" disabled>
-                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
-                            <paper-item style="display:none"></paper-item>
-                            <paper-item>1</paper-item>
-                            <paper-item>2</paper-item>
-                            <paper-item>A1</paper-item>
-                            <paper-item>B1</paper-item>
-                            <paper-item>C1</paper-item>
-                        </paper-listbox>
-                    </paper-dropdown-menu>
+                    <div id="dropdownContainer" style="width: 100%; height: 62px; position: relative;">
+                        <div id="overlay" on-click="_openDropdown" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                        <div id="dropdownMenu" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                            <paper-dropdown-menu name="team" class="dropdown" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" required auto-validate error-message="Selecteer een team" horizontal-align="left">
+                                <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                    <paper-item style="display:none"></paper-item>
+                                    <paper-item>1</paper-item>
+                                    <paper-item>2</paper-item>
+                                    <paper-item>A1</paper-item>
+                                    <paper-item>A2</paper-item>
+                                    <paper-item>B1</paper-item>
+                                    <paper-item>C1</paper-item>
+                                    <paper-item>C2</paper-item>
+                                    <paper-item>D1</paper-item>
+                                    <paper-item>D2</paper-item>
+                                    <paper-item>F1</paper-item>
+                                    <paper-item>MW1</paper-item>
+                                </paper-listbox>
+                            </paper-dropdown-menu>
+                        </div>
+                    </div>
                     <paper-input id="timeMatchInput" label="Minuten per helft" value="{{timeMatch}}" type="number" required auto-validate
                                  error-message="Vul het aantal minuten van &eacute;&eacute;n helft in"></paper-input>
                     <br>
@@ -102,6 +113,10 @@
                         value: 30,
                     },
                 };
+            }
+
+            _openDropdown() {
+                this.$.team.open();
             }
 
             _submit() {
