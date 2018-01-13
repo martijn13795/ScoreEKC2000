@@ -655,6 +655,7 @@
                                 guest: myData.guestScore,
                                 minutes: myData.timeMinutes,
                                 seconds: myData.timeSeconds,
+                                half: this.half.toString(),
                                 date: new Date(),
                             }).then(() => {
                                 Polymer.dom(this.root).querySelector('#messageHome').style.opacity = '1';
@@ -688,6 +689,7 @@
                                 guest: guestScoreToSave,
                                 minutes: myData.timeMinutes,
                                 seconds: myData.timeSeconds,
+                                half: this.half.toString(),
                                 date: new Date(),
                             }).then(() => {
                                 Polymer.dom(this.root).querySelector('#messageGuest').style.opacity = '1';

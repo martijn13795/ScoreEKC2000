@@ -41,7 +41,7 @@
                 align-items: center;
                 justify-content: center;
                 background-color: white;
-                padding: 7px 24px 24px 24px;
+                padding: 10px 24px 10px 24px;
                 margin: 0 24px 24px 24px;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
@@ -224,18 +224,40 @@
                         <template is="dom-repeat" items={{scores}} as="score">
                             <div class="scoreContainer">
                                 <div class="scoreTop">
-                                    <div class="home" style="flex: 1">
-                                        [[score.home]]
-                                    </div>
-                                    <div class="time" style="flex: 2">
+                                    <template is="dom-if" if="{{!_isEqualTo(score.homeOrGuest)}}">
+                                        <div class="home" style="flex: 1; font-size: 25px;">
+                                            [[score.home]]
+                                        </div>
+                                    </template>
+                                    <template is="dom-if" if="{{_isEqualTo(score.homeOrGuest)}}">
+                                        <div class="home" style="flex: 1; font-size: 25px; font-weight: bold;">
+                                            [[score.home]]
+                                        </div>
+                                    </template>
+                                    <div class="time" style="flex: 2; font-size: 16px; margin-top: -7px">
                                         [[score.minutes]]:[[score.seconds]]
                                     </div>
-                                    <div class="guest" style="flex: 1">
-                                        [[score.guest]]
+                                    <template is="dom-if" if="{{_isEqualTo(score.homeOrGuest)}}">
+                                        <div class="guest" style="flex: 1; font-size: 25px;">
+                                            [[score.guest]]
+                                        </div>
+                                    </template>
+                                    <template is="dom-if" if="{{!_isEqualTo(score.homeOrGuest)}}">
+                                        <div class="guest" style="flex: 1; font-size: 25px; font-weight: bold;">
+                                            [[score.guest]]
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="scoreCenter">
+                                    <div class="halfCenter" style="flex: 1; font-size: 11px; margin-top: -10px;">
+                                        [[score.half]]<hr>
                                     </div>
                                 </div>
                                 <div class="scoreBottom">
-                                    <div class="description" style="flex: 1">
+                                    <div class="description" style="flex: 1; text-align: left;">
+                                        John Doe
+                                    </div>
+                                    <div class="description" style="flex: 1; text-align: right;">
                                         [[score.description]]
                                     </div>
                                 </div>
@@ -364,6 +386,14 @@
                 };
             }
 
+            _isEqualTo(string) {
+                if (string === 'home') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
             _updateScore() {
                 database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
                     this.homeScore = doc.data().homeScore.toString();
@@ -391,6 +421,8 @@
                                     guest: val.data().guest,
                                     minutes: val.data().minutes,
                                     seconds: val.data().seconds,
+                                    homeOrGuest: val.data().homeOrGuest,
+                                    half: val.data().half,
                                 });
                             } else {
                                 this.push('scores', {
@@ -399,6 +431,8 @@
                                     guest: val.data().guest,
                                     minutes: val.data().minutes,
                                     seconds: val.data().seconds,
+                                    homeOrGuest: val.data().homeOrGuest,
+                                    half: val.data().half,
                                 });
                             }
                         });
