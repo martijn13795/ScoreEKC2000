@@ -63,9 +63,10 @@
                 <page-scoreboard name="scoreboard" subpage="{{subpage}}"></page-scoreboard>
                 <page-scoreboard-detail name="scoreboard-detail" subpage="{{subpage}}"></page-scoreboard-detail>
                 <page-manage-scoreboard name="manage-scoreboard" subpage="{{subpage}}"></page-manage-scoreboard>
+                <page-manage-players name="manage-players"></page-manage-players>
                 <page-404 name="fallback"></page-404>
             </iron-pages>
-            <paper-tabs id="tabs" selected="{{nav}}" align-bottom>
+            <paper-tabs id="tabs" selected="{{nav}}" align-bottom style="z-index: 11;">
                 <paper-tab name="score-overview" on-tap="navigate">
                     <iron-icon icon="icons:home"></iron-icon>
                 </paper-tab>
@@ -150,6 +151,10 @@
                     case 'start-scoreboard':
                         this.$.tabs.style.display = 'block';
                         i = 1;
+                        break;
+                    case 'manage-players':
+                        this.$.tabs.style.display = 'block';
+                        i = 98;
                         break;
                     case 'scoreboard':
                         this.$.tabs.style.display = 'block';

@@ -1,0 +1,72 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="manage-players">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+                background-color: white;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 48px;
+            }
+
+            .list {
+                width: 100%;
+                max-width: 800px;
+                margin-top: 24px;
+            }
+
+            @media all and (max-width: 800px) {
+                .container {
+                    margin: 0 10px 48px;
+                }
+            }
+
+            .box {
+                background-color: white;
+                padding: 24px 24px 24px 24px;
+                margin-bottom: 24px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                max-width: 800px;
+            }
+        </style>
+        <div class="container">
+            <div class="list">
+                <div class="box">
+                    Teams
+                </div>
+                <div class="box">
+                    Spelers
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        class ManagePlayers extends Polymer.Element {
+            static get is() {
+                return 'manage-players';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'manage-players',
+                    },
+                };
+            }
+        }
+
+        window.customElements.define(ManagePlayers.is, ManagePlayers);
+    </script>
+</dom-module>

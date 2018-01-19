@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../elements/manage-players.html">
+
+<dom-module id="page-manage-players">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+            }
+
+            app-toolbar {
+                background-color: #373b50;
+                color: #fff;
+                text-align: center;
+                font-size: 24px;
+            }
+        </style>
+        <div onClick="window.location.reload();">
+            <app-toolbar>
+                <div main-title>Spelers aanpassen</div>
+            </app-toolbar>
+        </div>
+        <manage-players></manage-players>
+    </template>
+
+    <script>
+        class PageManagePlayers extends Polymer.Element {
+            static get is() {
+                return 'page-manage-players';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'page-manage-players',
+                    },
+                };
+            }
+        }
+
+        window.customElements.define(PageManagePlayers.is, PageManagePlayers);
+    </script>
+</dom-module>
