@@ -8,7 +8,8 @@
     "src/pages/page-scoreboard.html",
     "src/pages/page-scoreboard-detail.html",
     "src/pages/page-start-scoreboard.html",
-    "src/pages/page-manage-players.html"
+    "src/pages/page-manage-players.html",
+    "src/pages/createCookie.html"
   ],
   "sources": [
     "src/**/*",
