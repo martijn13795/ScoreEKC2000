@@ -1,0 +1,12 @@
+<script>
+    let url = document.URL;
+    const darkThemeT = 'darkTheme=true';
+    const darkThemeF = 'darkTheme=false';
+
+    if (url.includes(darkThemeT)) {
+        document.cookie = 'darkTheme=true';
+    }
+    if (url.includes(darkThemeF)) {
+        document.cookie = 'darkTheme=false';
+    }
+</script>
