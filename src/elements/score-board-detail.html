@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <dom-module id="score-board-detail">
@@ -8,22 +9,21 @@
             :host {
                 display: block;
                 height: 100%;
-                background-color: white;
+                background-color: transparent;
             }
 
             .container {
                 margin: 0 auto;
+            }
+
+            .box {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
                 text-align: center;
                 align-items: center;
                 justify-content: center;
-                background-color: #f5f5f5;
-                border: 1px solid #e3e3e3;
-                border-radius: 4px;
-                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05)
+                padding-top: 5px;
             }
 
             .homeScore {
@@ -47,7 +47,7 @@
             }
 
             .names {
-                font-size: 2.5vw;
+                font-size: 12px;
                 height: 0;
                 white-space: nowrap;
             }
@@ -72,47 +72,54 @@
             }
         </style>
         <div class="container">
+            <div class="box">
+                <template is="dom-if" if="{{isLoading}}">
+                    <div class="loading">
+                        <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                    </div>
+                </template>
+                <template is="dom-if" if="{{!isLoading}}">
+                    <div class="emptySpace"></div>
+                    <div class="homeScore">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[homeScore]]
+                            </text>
+                        </svg>
+                        <span class="names">
+                            [[homeName]]
+                        </span>
+                    </div>
+                    <div class="timer">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
+                            </text>
+                            <text x="50%" y="78%" text-anchor="middle" dy=".3em"
+                                  font-size="3em" font-weight="bold" fill="black">[[half]]
+                            </text>
+                        </svg>
+                    </div>
+                    <div class="guestScore">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[guestScore]]
+                            </text>
+                        </svg>
+                        <span class="names">
+                            [[guestName]]
+                        </span>
+                    </div>
+                    <div class="emptySpace"></div>
+                </template>
+            </div>
             <template is="dom-if" if="{{isLoading}}">
-                <div class="loading">
-                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                <div class="loading" style="margin: 0 auto">
+                    <paper-spinner-lite active></paper-spinner-lite>
                 </div>
-            </template>
-            <template is="dom-if" if="{{!isLoading}}">
-            <div class="emptySpace"></div>
-            <div class="homeScore">
-                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
-                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                          font-size="8em" fill="black">[[homeScore]]
-                    </text>
-                </svg>
-                <div class="names">
-                    [[homeName]]
-                </div>
-            </div>
-            <div class="timer">
-                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
-                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                          font-size="8em" fill="black">[[timeMinutes]]:[[timeSeconds]]
-                    </text>
-                    <text x="50%" y="78%" text-anchor="middle" dy=".3em"
-                          font-size="3em" font-weight="bold" fill="black">[[half]]
-                    </text>
-                </svg>
-            </div>
-            <div class="guestScore">
-                <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                    <circle cx="250" cy="250" r="200" stroke="white" stroke-width="15px"></circle>
-                    <text x="50%" y="50%" text-anchor="middle" dy=".3em"
-                          font-size="8em" fill="black">[[guestScore]]
-                    </text>
-                </svg>
-                <div class="names">
-                    [[guestName]]
-                </div>
-            </div>
-            <div class="emptySpace"></div>
             </template>
         </div>
     </template>
@@ -136,6 +143,11 @@
                     isLoading: {
                         type: Boolean,
                         value: true,
+                    },
+                    scores: {
+                        type: Array,
+                        value: [],
+                        notify: true,
                     },
                     homeScore: {
                         type: String,
@@ -180,9 +192,20 @@
                 };
             }
 
+            constructor() {
+                super();
+                let cookie = document.cookie;
+                const darkTheme = 'darkTheme=true';
+                cookie.includes(darkTheme);
+                if (cookie.includes(darkTheme)) {
+                    document.body.style.backgroundColor = '#454545';
+                } else {
+                    document.body.style.backgroundColor = '#f5f5f5';
+                }
+            }
+
             _updateScore() {
                 database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
-                    this.isLoading = false;
                     this.homeScore = doc.data().homeScore.toString();
                     this.guestScore = doc.data().guestScore.toString();
                     this.homeName = doc.data().homeName.toString();
@@ -192,8 +215,8 @@
                     this.timeSeconds = doc.data().timeSeconds.toString();
                     this.half = doc.data().half.toString();
                 });
+                this.isLoading = false;
             }
-
         }
 
         window.customElements.define(ScoreboardDetail.is, ScoreboardDetail);
