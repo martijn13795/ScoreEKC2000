@@ -9,7 +9,7 @@
     "src/pages/page-scoreboard-detail.html",
     "src/pages/page-start-scoreboard.html",
     "src/pages/page-manage-players.html",
-    "src/pages/createCookie.html"
+    "src/pages/page-create-cookie.html"
   ],
   "sources": [
     "src/**/*",
