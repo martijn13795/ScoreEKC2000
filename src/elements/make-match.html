@@ -10,6 +10,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
 <link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 
 
 <dom-module id="make-match">
@@ -57,14 +58,16 @@
                         <paper-radio-button name="home">Thuis</paper-radio-button>
                         <paper-radio-button name="guest">Uit</paper-radio-button>
                     </paper-radio-group>
-                    <div style="width: 100%; height: 62px; position: relative;">
+                    <div style="width: 100%; height: 62px; position: relative; margin-bottom: 5px; margin-top: -10px;">
                         <div on-click="_openDropdown" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                         <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
                             <paper-dropdown-menu-multi name="team" class="dropdown" value="{{teams}}" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" selections="[&quot;1&quot;,&quot;2&quot;,&quot;A1&quot;,&quot;A2&quot;,&quot;B1&quot;,&quot;C1&quot;,&quot;C2&quot;,&quot;D1&quot;,&quot;D2&quot;,&quot;F1&quot;,&quot;MW1&quot;]" maxdisplay="3"></paper-dropdown-menu-multi>
                         </div>
                     </div>
                     <paper-input id="timeMatchInput" label="Minuten per helft" value="{{timeMatch}}" type="number" required auto-validate
-                                 error-message="Vul het aantal minuten van &eacute;&eacute;n helft in"></paper-input>
+                                 error-message="Vul het aantal minuten van &eacute;&eacute;n helft in"></paper-input><br>
+                    <label>Scoreboard laten zien op website van EKC 2000:</label><br>
+                    <paper-toggle-button name="showOnSite" id="showOnSite" style="margin-left: 12px; margin-top: 10px; margin-bottom: 5px;" checked></paper-toggle-button>
                     <br>
                     <paper-button id="submit" on-click="_submit">Start scoreboard</paper-button>
                 </div>
@@ -98,6 +101,10 @@
                         type: Number,
                         value: 30,
                     },
+                    teams: {
+                        type: Array,
+                        value: [],
+                    },
                 };
             }
 
@@ -121,12 +128,15 @@
                 Polymer.dom(this.root).querySelectorAll('#team')[0].$.dropdownMenu.validate();
                 if (this.homeName !== undefined && this.homeName !== '' &&
                     this.guestName !== undefined && this.guestName !== ''
-                    && this.timeMatch > 0) {
+                    && this.timeMatch > 0 && this.teams !== undefined && this.teams !== [] &&
+                    this.teams.length > 0) {
                     let name = this.homeName + ' - ' + this.guestName;
                     let minutes = this.timeMatch.toString();
                     if (minutes < 10) {
                         minutes = '0' + minutes;
                     }
+                    let teams = this.teams.join();
+                    let showOnSite = this.$.showOnSite.checked;
 
                     database.collection('matches').add({
                         name: name.toString(),
@@ -139,12 +149,17 @@
                         time: this.timeMatch.toString(),
                         timeMinutes: minutes,
                         timeSeconds: '00',
+                        teams: teams.toString(),
                         date: new Date(),
                         endDate: '',
                     }).then(function(querySnapshot) {
                         console.log('Match made');
-                        window.location.href = 'http://ekc2000.nl/includes/activateScoreboard.php' +
-                            '?scoreboard=true&scoreboardID=' + querySnapshot.id;
+                        if (showOnSite === true) {
+                            window.location.href = 'http://ekc2000.nl/includes/activateScoreboard.php' +
+                                '?scoreboard=true&scoreboardID=' + querySnapshot.id;
+                        } else {
+                            window.location = '/manage-scoreboard/' + querySnapshot.id;
+                        }
                     }).catch(function(error) {
                         console.error('Error adding document: ', error);
                     });
