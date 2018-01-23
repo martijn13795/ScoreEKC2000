@@ -34,12 +34,6 @@
             }
 
             .box {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                text-align: center;
-                align-items: center;
-                justify-content: center;
                 background-color: white;
                 padding: 7px 24px 24px 24px;
                 margin: 0 24px 24px 24px;
@@ -106,13 +100,6 @@
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
-            .vertical-section:not([style-scope]):not(.style-scope) {
-                background-color: white;
-                padding: 7px 24px 24px 24px;
-                margin: 0 24px 24px 24px;
-                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-            }
-
             .bottomButtons {
                 display: flex;
                 flex-direction: row;
@@ -139,7 +126,7 @@
             </template>
         </app-toolbar>
         <div class="container">
-            <div class="box">
+            <div class="box" style="display: flex; flex-direction: row; flex-wrap: nowrap; text-align: center; align-items: center; justify-content: center; padding: 0;">
                 <template is="dom-if" if="{{isLoading}}">
                     <div class="loading">
                         <paper-spinner-lite active class="spinnerBig"></paper-spinner-lite>
@@ -183,117 +170,113 @@
         <div class="container">
             <div>
                 <template is="dom-if" if="{{_isEqualTo(half)}}">
-                    <div class="vertical center-justified layout">
-                        <div class="vertical-section">
-                            <template is="dom-if" if="{{_isEqualToHome(homeOrGuest)}}">
-                                <div style="width: 100%; height: 62px; position: relative;">
-                                    <div on-click="_openDropdownHomeScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
-                                    <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                        <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
-                                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
-                                                <paper-item style="display:none"></paper-item>
-                                                <paper-item>Patrick</paper-item>
-                                                <paper-item>Erwin</paper-item>
-                                                <paper-item>Peter</paper-item>
-                                                <paper-item>Elise</paper-item>
-                                                <paper-item>Tjarda</paper-item>
-                                            </paper-listbox>
-                                        </paper-dropdown-menu>
-                                    </div>
-                                </div>
-                            </template>
-                            <template is="dom-if" if="{{_isEqualToGuest(homeOrGuest)}}">
-                                <div style="width: 100%; height: 62px; position: relative;">
-                                    <div on-click="_openDropdownHomeScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
-                                    <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                        <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
-                                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
-                                                <paper-item style="display:none"></paper-item>
-                                                <paper-item>Patrick</paper-item>
-                                                <paper-item>Erwin</paper-item>
-                                                <paper-item>Peter</paper-item>
-                                                <paper-item>Elise</paper-item>
-                                                <paper-item>Tjarda</paper-item>
-                                            </paper-listbox>
-                                        </paper-dropdown-menu>
-                                    </div>
-                                </div>
-                            </template>
+                    <div class="box">
+                        <template is="dom-if" if="{{_isEqualToHome(homeOrGuest)}}">
                             <div style="width: 100%; height: 62px; position: relative;">
-                                <div on-click="_openDropdownHomeScoreDescription" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                                <div on-click="_openDropdownHomeScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="homeScoreDescription" class="dropdown" id="homeScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
+                                    <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
-                                            <paper-item>Afstandsschot</paper-item>
-                                            <paper-item>Korte kans</paper-item>
-                                            <paper-item>Doorloopbal</paper-item>
-                                            <paper-item>Vrije worp</paper-item>
-                                            <paper-item>Strafworp</paper-item>
+                                            <paper-item>Patrick</paper-item>
+                                            <paper-item>Erwin</paper-item>
+                                            <paper-item>Peter</paper-item>
+                                            <paper-item>Elise</paper-item>
+                                            <paper-item>Tjarda</paper-item>
                                         </paper-listbox>
                                     </paper-dropdown-menu>
                                 </div>
                             </div>
-                            <br>
-                            <div id="messageHome" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out;">Score toegevoegd.</div>
-                            <paper-button class="button" name="scorePlus" id="homeScore" on-click="_homeScorePlus">Thuis score toevoegen</paper-button>
+                        </template>
+                        <template is="dom-if" if="{{_isEqualToGuest(homeOrGuest)}}">
+                            <div style="width: 100%; height: 62px; position: relative;">
+                                <div on-click="_openDropdownHomeScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                                <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                                    <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                            <paper-item style="display:none"></paper-item>
+                                            <paper-item>Patrick</paper-item>
+                                            <paper-item>Erwin</paper-item>
+                                            <paper-item>Peter</paper-item>
+                                            <paper-item>Elise</paper-item>
+                                            <paper-item>Tjarda</paper-item>
+                                        </paper-listbox>
+                                    </paper-dropdown-menu>
+                                </div>
+                            </div>
+                        </template>
+                        <div style="width: 100%; height: 62px; position: relative;">
+                            <div on-click="_openDropdownHomeScoreDescription" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                            <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                                <paper-dropdown-menu name="homeScoreDescription" class="dropdown" id="homeScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
+                                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                        <paper-item style="display:none"></paper-item>
+                                        <paper-item>Afstandsschot</paper-item>
+                                        <paper-item>Korte kans</paper-item>
+                                        <paper-item>Doorloopbal</paper-item>
+                                        <paper-item>Vrije worp</paper-item>
+                                        <paper-item>Strafworp</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                            </div>
                         </div>
+                        <br>
+                        <div id="messageHome" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out;">Score toegevoegd.</div>
+                        <paper-button class="button" name="scorePlus" id="homeScore" on-click="_homeScorePlus">Thuis score toevoegen</paper-button>
                     </div>
-                    <div class="vertical center-justified layout">
-                        <div class="vertical-section">
-                            <template is="dom-if" if="{{_isEqualToGuest(homeOrGuest)}}">
-                                <div style="width: 100%; height: 62px; position: relative;">
-                                    <div on-click="_openDropdownGuestScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
-                                    <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                        <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
-                                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
-                                                <paper-item style="display:none"></paper-item>
-                                                <paper-item>Patrick</paper-item>
-                                                <paper-item>Erwin</paper-item>
-                                                <paper-item>Peter</paper-item>
-                                                <paper-item>Elise</paper-item>
-                                                <paper-item>Tjarda</paper-item>
-                                            </paper-listbox>
-                                        </paper-dropdown-menu>
-                                    </div>
-                                </div>
-                            </template>
-                            <template is="dom-if" if="{{_isEqualToHome(homeOrGuest)}}">
-                                <div style="width: 100%; height: 62px; position: relative;">
-                                    <div on-click="_openDropdownGuestScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
-                                    <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                        <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
-                                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
-                                                <paper-item style="display:none"></paper-item>
-                                                <paper-item>Patrick</paper-item>
-                                                <paper-item>Erwin</paper-item>
-                                                <paper-item>Peter</paper-item>
-                                                <paper-item>Elise</paper-item>
-                                                <paper-item>Tjarda</paper-item>
-                                            </paper-listbox>
-                                        </paper-dropdown-menu>
-                                    </div>
-                                </div>
-                            </template>
+                    <div class="box">
+                        <template is="dom-if" if="{{_isEqualToGuest(homeOrGuest)}}">
                             <div style="width: 100%; height: 62px; position: relative;">
-                                <div on-click="_openDropdownGuestScoreDescription" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                                <div on-click="_openDropdownGuestScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="guestScoreDescription" class="dropdown" id="guestScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
+                                    <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
-                                            <paper-item>Afstandsschot</paper-item>
-                                            <paper-item>Korte kans</paper-item>
-                                            <paper-item>Doorloopbal</paper-item>
-                                            <paper-item>Vrije worp</paper-item>
-                                            <paper-item>Strafworp</paper-item>
+                                            <paper-item>Patrick</paper-item>
+                                            <paper-item>Erwin</paper-item>
+                                            <paper-item>Peter</paper-item>
+                                            <paper-item>Elise</paper-item>
+                                            <paper-item>Tjarda</paper-item>
                                         </paper-listbox>
                                     </paper-dropdown-menu>
                                 </div>
                             </div>
-                            <br>
-                            <div id="messageGuest" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out;">Score toegevoegd.</div>
-                            <paper-button class="button" name="scorePlus" id="guestScore" on-click="_guestScorePlus">Gast score toevoegen</paper-button>
+                        </template>
+                        <template is="dom-if" if="{{_isEqualToHome(homeOrGuest)}}">
+                            <div style="width: 100%; height: 62px; position: relative;">
+                                <div on-click="_openDropdownGuestScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                                <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                                    <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                        <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                            <paper-item style="display:none"></paper-item>
+                                            <paper-item>Patrick</paper-item>
+                                            <paper-item>Erwin</paper-item>
+                                            <paper-item>Peter</paper-item>
+                                            <paper-item>Elise</paper-item>
+                                            <paper-item>Tjarda</paper-item>
+                                        </paper-listbox>
+                                    </paper-dropdown-menu>
+                                </div>
+                            </div>
+                        </template>
+                        <div style="width: 100%; height: 62px; position: relative;">
+                            <div on-click="_openDropdownGuestScoreDescription" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                            <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                                <paper-dropdown-menu name="guestScoreDescription" class="dropdown" id="guestScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
+                                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                        <paper-item style="display:none"></paper-item>
+                                        <paper-item>Afstandsschot</paper-item>
+                                        <paper-item>Korte kans</paper-item>
+                                        <paper-item>Doorloopbal</paper-item>
+                                        <paper-item>Vrije worp</paper-item>
+                                        <paper-item>Strafworp</paper-item>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                            </div>
                         </div>
+                        <br>
+                        <div id="messageGuest" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out;">Score toegevoegd.</div>
+                        <paper-button class="button" name="scorePlus" id="guestScore" on-click="_guestScorePlus">Gast score toevoegen</paper-button>
                     </div>
                     <div class="bottomButtons">
                         <div></div>

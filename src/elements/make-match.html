@@ -39,7 +39,7 @@
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
-            .vertical-section:not([style-scope]):not(.style-scope) {
+            .box {
                 background-color: white;
                 padding: 7px 24px 24px 24px;
                 margin: 0 24px 24px 24px;
@@ -47,30 +47,28 @@
             }
         </style>
         <div class="container">
-            <div class="vertical center-justified layout">
-                <div class="vertical-section">
-                    <paper-input id="homeNameInput" label="Thuis" value="{{homeName}}" required auto-validate
-                                 error-message="Vul een teamnaam in"></paper-input>
-                    <paper-input id="guestNameInput" label="Gasten" value="{{guestName}}" required auto-validate
-                                 error-message="Vul een teamnaam in"></paper-input><br>
-                    <label id="label1">Speelt EKC 2000 thuis of uit:</label><br>
-                    <paper-radio-group selected="{{homeOrGuest}}" aria-labelledby="label1">
-                        <paper-radio-button name="home">Thuis</paper-radio-button>
-                        <paper-radio-button name="guest">Uit</paper-radio-button>
-                    </paper-radio-group>
-                    <div style="width: 100%; height: 62px; position: relative; margin-bottom: 5px; margin-top: -10px;">
-                        <div on-click="_openDropdown" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
-                        <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                            <paper-dropdown-menu-multi name="team" class="dropdown" value="{{teams}}" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" selections="[&quot;1&quot;,&quot;2&quot;,&quot;A1&quot;,&quot;A2&quot;,&quot;B1&quot;,&quot;C1&quot;,&quot;C2&quot;,&quot;D1&quot;,&quot;D2&quot;,&quot;F1&quot;,&quot;MW1&quot;]" maxdisplay="3"></paper-dropdown-menu-multi>
-                        </div>
+            <div class="box">
+                <paper-input id="homeNameInput" label="Thuis" value="{{homeName}}" required auto-validate
+                             error-message="Vul een teamnaam in"></paper-input>
+                <paper-input id="guestNameInput" label="Gasten" value="{{guestName}}" required auto-validate
+                             error-message="Vul een teamnaam in"></paper-input><br>
+                <label id="label1">Speelt EKC 2000 thuis of uit:</label><br>
+                <paper-radio-group selected="{{homeOrGuest}}" aria-labelledby="label1">
+                    <paper-radio-button name="home">Thuis</paper-radio-button>
+                    <paper-radio-button name="guest">Uit</paper-radio-button>
+                </paper-radio-group>
+                <div style="width: 100%; height: 62px; position: relative; margin-bottom: 5px; margin-top: -10px;">
+                    <div on-click="_openDropdown" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                    <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                        <paper-dropdown-menu-multi name="team" class="dropdown" value="{{teams}}" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" selections="[&quot;1&quot;,&quot;2&quot;,&quot;A1&quot;,&quot;A2&quot;,&quot;B1&quot;,&quot;C1&quot;,&quot;C2&quot;,&quot;D1&quot;,&quot;D2&quot;,&quot;F1&quot;,&quot;MW1&quot;]" maxdisplay="3"></paper-dropdown-menu-multi>
                     </div>
-                    <paper-input id="timeMatchInput" label="Minuten per helft" value="{{timeMatch}}" type="number" required auto-validate
-                                 error-message="Vul het aantal minuten van &eacute;&eacute;n helft in"></paper-input><br>
-                    <label>Scoreboard laten zien op website van EKC 2000:</label><br>
-                    <paper-toggle-button name="showOnSite" id="showOnSite" style="margin-left: 12px; margin-top: 10px; margin-bottom: 5px;" checked></paper-toggle-button>
-                    <br>
-                    <paper-button id="submit" on-click="_submit">Start scoreboard</paper-button>
                 </div>
+                <paper-input id="timeMatchInput" label="Minuten per helft" value="{{timeMatch}}" type="number" required auto-validate
+                             error-message="Vul het aantal minuten van &eacute;&eacute;n helft in"></paper-input><br>
+                <label>Scoreboard laten zien op website van EKC 2000:</label><br>
+                <paper-toggle-button name="showOnSite" id="showOnSite" style="margin-left: 12px; margin-top: 10px; margin-bottom: 5px;" checked></paper-toggle-button>
+                <br>
+                <paper-button id="submit" on-click="_submit">Start scoreboard</paper-button>
             </div>
         </div>
     </template>
