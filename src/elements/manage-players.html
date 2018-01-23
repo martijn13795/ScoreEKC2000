@@ -1,50 +1,71 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
 <dom-module id="manage-players">
     <template>
         <style>
             :host {
                 display: block;
+
+                --paper-button-flat-keyboard-focus: {
+                    font-weight: normal;
+                };
             }
 
             .container {
                 display: flex;
                 flex-direction: column;
                 flex-wrap: nowrap;
-                text-align: center;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto 48px;
-            }
-
-            .list {
-                width: 100%;
+                justify-content: space-between;
+                margin: 20px auto;
                 max-width: 800px;
-                margin-top: 24px;
             }
 
-            @media all and (max-width: 800px) {
-                .container {
-                    margin: 0 10px 48px;
-                }
+            .submit {
+                background-color: #373b50;
+                color: #fff;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
             .box {
                 background-color: white;
-                padding: 24px 24px 24px 24px;
-                margin-bottom: 24px;
+                padding: 7px 24px 24px 24px;
+                margin: 0 24px 24px 24px;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-                max-width: 800px;
             }
         </style>
         <div class="container">
-            <div class="list">
-                <div class="box">
-                    Teams
+            <div class="box">
+                <paper-input id="teamNameInput" label="Team toevoegen" value="{{teamName}}" required
+                             error-message="Vul een teamnaam in" style="padding-bottom: 10px;"></paper-input>
+                <div id="messageTeam" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out; padding-bottom: 5px;">Team toegevoegd.</div>
+                <paper-button class="submit" on-click="_submitTeam">Team toevoegen</paper-button>
+            </div>
+            <div class="box">
+                <paper-input id="playerNameInput" label="Speler toevoegen" value="{{playerName}}" required
+                             error-message="Vul de naam van een speler in"></paper-input>
+                <div style="width: 100%; height: 62px; position: relative; margin-bottom: 10px;">
+                    <div on-click="_openDropdownTeam" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                    <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                        <paper-dropdown-menu name="dropdownTeam" class="dropdown" id="dropdownTeam" style="width: 100%;" label="Selecteer een team" required auto-validate error-message="Kies een team" horizontal-align="left">
+                            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                <paper-item style="display:none"></paper-item>
+                                <template is="dom-repeat" items="{{teams}}">
+                                    <paper-item>{{item.team}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                    </div>
                 </div>
-                <div class="box">
-                    Spelers
-                </div>
+                <div id="messagePlayer" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out; padding-bottom: 5px;">speler toegevoegd.</div>
+                <paper-button class="submit" on-click="_submitPlayer">Speler toevoegen</paper-button>
             </div>
         </div>
     </template>
@@ -61,7 +82,76 @@
                         type: String,
                         value: 'manage-players',
                     },
+                    teamName: {
+                        type: String,
+                    },
+                    playerName: {
+                        type: String,
+                    },
+                    teams: {
+                        type: Array,
+                        observer: '_getTeams',
+                        value: [],
+                    },
                 };
+            }
+
+            _getTeams() {
+                database.collection('teams').orderBy('date', 'desc').onSnapshot((snapshot) => {
+                    snapshot.docChanges.forEach((change) => {
+                        if (change.type === 'added') {
+                            this.unshift('teams', {
+                                team: change.doc.data().teamName,
+                            });
+                        }
+                    });
+                });
+            }
+
+            _submitTeam() {
+                this.$.teamNameInput.validate();
+                if (this.teamName !== undefined && this.teamName !== '') {
+                    let teamName = this.teamName;
+                    this.teamName = null;
+                    database.collection('teams').add({
+                        teamName: teamName.toString(),
+                        date: new Date(),
+                    }).then((querySnapshot) => {
+                        Polymer.dom(this.root).querySelector('#messageTeam').style.opacity = '1';
+                        setTimeout(() => {
+                            Polymer.dom(this.root).querySelector('#messageTeam').style.opacity = '0';
+                        }, 2000);
+                    }).catch(function(error) {
+                        console.error('Error adding document: ', error);
+                    });
+                }
+            }
+
+            _openDropdownTeam() {
+                Polymer.dom(this.root).querySelector('#dropdownTeam').open();
+            }
+
+            _submitPlayer() {
+                this.$.playerNameInput.validate();
+                Polymer.dom(this.root).querySelector('#dropdownTeam').validate();
+                let team = Polymer.dom(this.root).querySelector('#dropdownTeam').value;
+                if (this.playerName !== undefined && this.playerName !== '' && team !== undefined && team !== '') {
+                    let playerName = this.playerName;
+                    Polymer.dom(this.root).querySelector('#dropdownTeam').contentElement.selected = 0;
+                    this.playerName = null;
+                    database.collection('players').add({
+                        playerName: playerName.toString(),
+                        team: team,
+                        date: new Date(),
+                    }).then((querySnapshot) => {
+                        Polymer.dom(this.root).querySelector('#messagePlayer').style.opacity = '1';
+                        setTimeout(() => {
+                            Polymer.dom(this.root).querySelector('#messagePlayer').style.opacity = '0';
+                        }, 2000);
+                    }).catch(function(error) {
+                        console.error('Error adding document: ', error);
+                    });
+                }
             }
         }
 

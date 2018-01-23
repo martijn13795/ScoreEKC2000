@@ -175,14 +175,12 @@
                             <div style="width: 100%; height: 62px; position: relative;">
                                 <div on-click="_openDropdownHomeScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                    <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
-                                            <paper-item>Patrick</paper-item>
-                                            <paper-item>Erwin</paper-item>
-                                            <paper-item>Peter</paper-item>
-                                            <paper-item>Elise</paper-item>
-                                            <paper-item>Tjarda</paper-item>
+                                            <template is="dom-repeat" items="{{players}}">
+                                                <paper-item>{{item.player}}</paper-item>
+                                            </template>
                                         </paper-listbox>
                                     </paper-dropdown-menu>
                                 </div>
@@ -192,14 +190,12 @@
                             <div style="width: 100%; height: 62px; position: relative;">
                                 <div on-click="_openDropdownHomeScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                    <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
-                                            <paper-item>Patrick</paper-item>
-                                            <paper-item>Erwin</paper-item>
-                                            <paper-item>Peter</paper-item>
-                                            <paper-item>Elise</paper-item>
-                                            <paper-item>Tjarda</paper-item>
+                                            <template is="dom-repeat" items="{{players}}">
+                                                <paper-item>{{item.player}}</paper-item>
+                                            </template>
                                         </paper-listbox>
                                     </paper-dropdown-menu>
                                 </div>
@@ -229,14 +225,12 @@
                             <div style="width: 100%; height: 62px; position: relative;">
                                 <div on-click="_openDropdownGuestScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                    <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
-                                            <paper-item>Patrick</paper-item>
-                                            <paper-item>Erwin</paper-item>
-                                            <paper-item>Peter</paper-item>
-                                            <paper-item>Elise</paper-item>
-                                            <paper-item>Tjarda</paper-item>
+                                            <template is="dom-repeat" items="{{players}}">
+                                                <paper-item>{{item.player}}</paper-item>
+                                            </template>
                                         </paper-listbox>
                                     </paper-dropdown-menu>
                                 </div>
@@ -246,14 +240,12 @@
                             <div style="width: 100%; height: 62px; position: relative;">
                                 <div on-click="_openDropdownGuestScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left" disabled>
+                                    <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
-                                            <paper-item>Patrick</paper-item>
-                                            <paper-item>Erwin</paper-item>
-                                            <paper-item>Peter</paper-item>
-                                            <paper-item>Elise</paper-item>
-                                            <paper-item>Tjarda</paper-item>
+                                            <template is="dom-repeat" items="{{players}}">
+                                                <paper-item>{{item.player}}</paper-item>
+                                            </template>
                                         </paper-listbox>
                                     </paper-dropdown-menu>
                                 </div>
@@ -365,6 +357,14 @@
                     homeOrGuest: {
                         type: String,
                     },
+                    players: {
+                        type: Array,
+                        value: [],
+                    },
+                    teams: {
+                        type: String,
+                        observer: '_getPlayers',
+                    },
                 };
             }
 
@@ -474,6 +474,7 @@
                     this.timeSeconds = doc.data().timeSeconds.toString();
                     this.half = doc.data().half.toString();
                     this.homeOrGuest = doc.data().homeOrGuest;
+                    this.teams = doc.data().teams;
                     if (this.half === '2') {
                         this.halfText = 'Beëindig wedstrijd';
                     }
@@ -541,6 +542,21 @@
                     this.timerText = 'Start timer';
                     clearInterval(this.interval);
                 }
+            }
+
+            _getPlayers() {
+                let teams = this.teams.split(',');
+                teams.forEach((team) => {
+                    database.collection('players').where('team', '==', team).get().then((snapshot) => {
+                        snapshot.docChanges.forEach((change) => {
+                            if (change.type === 'added') {
+                                this.unshift('players', {
+                                    player: change.doc.data().playerName,
+                                });
+                            }
+                        });
+                    });
+                });
             }
 
             _half() {
@@ -622,8 +638,10 @@
                 let homeScoreToSave;
                 Polymer.dom(this.root).querySelector('#homeScoreDescription').validate();
                 let homeScoreDescription = Polymer.dom(this.root).querySelector('#homeScoreDescription').value;
-                if (homeScoreDescription) {
+                let homeScorePlayer = Polymer.dom(this.root).querySelector('#homeScorePlayer').value;
+                if (homeScoreDescription && homeScorePlayer) {
                     Polymer.dom(this.root).querySelector('#homeScoreDescription').contentElement.selected = 0;
+                    Polymer.dom(this.root).querySelector('#homeScorePlayer').contentElement.selected = 0;
                     docRef.get().then((querySnapshot) => {
                         const myData = querySnapshot.data();
                         homeScoreToSave = myData.homeScore;
@@ -633,6 +651,7 @@
                         }).then(() => {
                             database.collection('matches').doc(this.subpage).collection('scores').add({
                                 description: homeScoreDescription,
+                                player: homeScorePlayer,
                                 homeOrGuest: 'home',
                                 home: homeScoreToSave,
                                 guest: myData.guestScore,
@@ -656,8 +675,10 @@
                 let guestScoreToSave;
                 Polymer.dom(this.root).querySelector('#guestScoreDescription').validate();
                 let guestScoreDescription = Polymer.dom(this.root).querySelector('#guestScoreDescription').value;
-                if (guestScoreDescription) {
+                let guestScorePlayer = Polymer.dom(this.root).querySelector('#guestScorePlayer').value;
+                if (guestScoreDescription && guestScorePlayer) {
                     Polymer.dom(this.root).querySelector('#guestScoreDescription').contentElement.selected = 0;
+                    Polymer.dom(this.root).querySelector('#guestScorePlayer').contentElement.selected = 0;
                     docRef.get().then((querySnapshot) => {
                         const myData = querySnapshot.data();
                         guestScoreToSave = myData.guestScore;
@@ -667,6 +688,7 @@
                         }).then(() => {
                             database.collection('matches').doc(this.subpage).collection('scores').add({
                                 description: guestScoreDescription,
+                                player: guestScorePlayer,
                                 homeOrGuest: 'guest',
                                 home: myData.homeScore,
                                 guest: guestScoreToSave,

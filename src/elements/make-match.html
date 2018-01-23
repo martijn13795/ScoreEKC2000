@@ -60,12 +60,12 @@
                 <div style="width: 100%; height: 62px; position: relative; margin-bottom: 5px; margin-top: -10px;">
                     <div on-click="_openDropdown" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                     <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                        <paper-dropdown-menu-multi name="team" class="dropdown" value="{{teams}}" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" selections="[&quot;1&quot;,&quot;2&quot;,&quot;A1&quot;,&quot;A2&quot;,&quot;B1&quot;,&quot;C1&quot;,&quot;C2&quot;,&quot;D1&quot;,&quot;D2&quot;,&quot;F1&quot;,&quot;MW1&quot;]" maxdisplay="3"></paper-dropdown-menu-multi>
+                        <paper-dropdown-menu-multi name="team" class="dropdown" value="{{teams}}" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" selections="{{setTeams}}" maxdisplay="3"></paper-dropdown-menu-multi>
                     </div>
                 </div>
                 <paper-input id="timeMatchInput" label="Minuten per helft" value="{{timeMatch}}" type="number" required auto-validate
                              error-message="Vul het aantal minuten van &eacute;&eacute;n helft in"></paper-input><br>
-                <label>Scoreboard laten zien op website van EKC 2000:</label><br>
+                <label>Scoreboard weergeven op website van EKC 2000:</label><br>
                 <paper-toggle-button name="showOnSite" id="showOnSite" style="margin-left: 12px; margin-top: 10px; margin-bottom: 5px;" checked></paper-toggle-button>
                 <br>
                 <paper-button id="submit" on-click="_submit">Start scoreboard</paper-button>
@@ -103,6 +103,10 @@
                         type: Array,
                         value: [],
                     },
+                    setTeams: {
+                        type: Array,
+                        value: [],
+                    },
                 };
             }
 
@@ -113,6 +117,15 @@
                 Polymer.dom(this.root).querySelectorAll('#team')[0].$.dropdownMenu.setAttribute('required', '');
                 Polymer.dom(this.root).querySelectorAll('#team')[0].$.dropdownMenu.
                 setAttribute('error-message', 'Selecteer een team');
+                database.collection('teams').orderBy('date', 'desc').get().then((doc) => {
+                    doc.docChanges.forEach((change) => {
+                        if (change.type === 'added') {
+                            this.unshift('setTeams', [
+                                change.doc.data().teamName,
+                            ]);
+                        }
+                    });
+                });
             }
 
             _openDropdown() {

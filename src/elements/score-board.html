@@ -145,7 +145,7 @@
             </template>
         </app-toolbar>
         <div class="container">
-            <div class="box">
+            <div class="box" style="padding: 0;">
                 <template is="dom-if" if="{{isLoading}}">
                     <div class="loading">
                         <paper-spinner-lite active class="spinner"></paper-spinner-lite>
@@ -255,7 +255,7 @@
                                 </div>
                                 <div class="scoreBottom">
                                     <div class="description" style="flex: 1; text-align: left;">
-                                        John Doe
+                                        [[score.player]]
                                     </div>
                                     <div class="description" style="flex: 1; text-align: right;">
                                         [[score.description]]
@@ -417,6 +417,7 @@
                             if (this.scores[i]) {
                                 this.set('scores.' + i, {
                                     description: val.data().description,
+                                    player: val.data().player,
                                     home: val.data().home,
                                     guest: val.data().guest,
                                     minutes: val.data().minutes,
@@ -427,6 +428,7 @@
                             } else {
                                 this.push('scores', {
                                     description: val.data().description,
+                                    player: val.data().player,
                                     home: val.data().home,
                                     guest: val.data().guest,
                                     minutes: val.data().minutes,
