@@ -60,10 +60,10 @@
                 <div style="width: 100%; height: 62px; position: relative; margin-bottom: 5px; margin-top: -10px;">
                     <div on-click="_openDropdown" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                     <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                        <paper-dropdown-menu-multi name="team" class="dropdown" value="{{teams}}" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" selections="{{setTeams}}" maxdisplay="3"></paper-dropdown-menu-multi>
+                        <paper-dropdown-menu-multi name="team" class="dropdown" value="{{teams}}" on-value-changed="_validate" style="width: 100%;" id="team" label="Selecteer uit welk team de spelers komen" selections="{{setTeams}}" maxdisplay="3"></paper-dropdown-menu-multi>
                     </div>
                 </div>
-                <paper-input id="timeMatchInput" label="Minuten per helft" value="{{timeMatch}}" type="number" required auto-validate
+                <paper-input id="timeMatchInput" label="Minuten per helft" value="{{timeMatch}}" type="number" min="1" max="99" pattern="[0-9]+([\.][0-9]+)?" required auto-validate
                              error-message="Vul het aantal minuten van &eacute;&eacute;n helft in"></paper-input><br>
                 <label>Scoreboard weergeven op website van EKC 2000:</label><br>
                 <paper-toggle-button name="showOnSite" id="showOnSite" style="margin-left: 12px; margin-top: 10px; margin-bottom: 5px;" checked></paper-toggle-button>
@@ -128,6 +128,10 @@
                 });
             }
 
+            _validate() {
+                Polymer.dom(this.root).querySelectorAll('#team')[0].$.dropdownMenu.validate();
+            }
+
             _openDropdown() {
                 Polymer.dom(this.root).querySelectorAll('#team')[0].$.dropdownMenu.open();
             }
@@ -139,7 +143,8 @@
                 Polymer.dom(this.root).querySelectorAll('#team')[0].$.dropdownMenu.validate();
                 if (this.homeName !== undefined && this.homeName !== '' &&
                     this.guestName !== undefined && this.guestName !== ''
-                    && this.timeMatch > 0 && this.teams !== undefined && this.teams !== [] &&
+                    && this.timeMatch >= 1 && this.timeMatch <= 99 && !this.timeMatch.includes('.')
+                    && this.teams !== undefined && this.teams !== [] &&
                     this.teams.length > 0) {
                     let name = this.homeName + ' - ' + this.guestName;
                     let minutes = this.timeMatch.toString();

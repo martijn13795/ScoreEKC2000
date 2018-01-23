@@ -230,9 +230,16 @@
                                         </div>
                                     </template>
                                     <template is="dom-if" if="{{_isEqualTo(score.homeOrGuest)}}">
-                                        <div class="home" style="flex: 1; font-size: 25px; font-weight: bold;">
-                                            [[score.home]]
-                                        </div>
+                                        <template is="dom-if" if="{{_isEqualTo(homeOrGuestMatch)}}">
+                                            <div class="home" style="flex: 1; font-size: 25px; font-weight: bolder; color: green;">
+                                                [[score.home]]
+                                            </div>
+                                        </template>
+                                        <template is="dom-if" if="{{!_isEqualTo(homeOrGuestMatch)}}">
+                                            <div class="home" style="flex: 1; font-size: 25px; font-weight: bolder; color: red;">
+                                                [[score.home]]
+                                            </div>
+                                        </template>
                                     </template>
                                     <div class="time" style="flex: 2; font-size: 16px; margin-top: -7px">
                                         [[score.minutes]]:[[score.seconds]]
@@ -243,9 +250,16 @@
                                         </div>
                                     </template>
                                     <template is="dom-if" if="{{!_isEqualTo(score.homeOrGuest)}}">
-                                        <div class="guest" style="flex: 1; font-size: 25px; font-weight: bold;">
-                                            [[score.guest]]
-                                        </div>
+                                        <template is="dom-if" if="{{!_isEqualTo(homeOrGuestMatch)}}">
+                                            <div class="guest" style="flex: 1; font-size: 25px; font-weight: bolder; color: green;">
+                                                [[score.guest]]
+                                            </div>
+                                        </template>
+                                        <template is="dom-if" if="{{_isEqualTo(homeOrGuestMatch)}}">
+                                            <div class="guest" style="flex: 1; font-size: 25px; font-weight: bolder; color: red;">
+                                                [[score.guest]]
+                                            </div>
+                                        </template>
                                     </template>
                                 </div>
                                 <div class="scoreCenter">
@@ -293,6 +307,9 @@
                     isLoading: {
                         type: Boolean,
                         value: true,
+                    },
+                    homeOrGuestMatch: {
+                        type: String,
                     },
                     scores: {
                         type: Array,
@@ -405,6 +422,7 @@
                     this.timeSeconds = doc.data().timeSeconds.toString();
                     this.half = doc.data().half.toString();
                     this.endDate = doc.data().endDate.toString();
+                    this.homeOrGuestMatch = doc.data().homeOrGuest.toString();
                 });
 
                 database.collection('matches').doc(this.subpage).collection('scores')

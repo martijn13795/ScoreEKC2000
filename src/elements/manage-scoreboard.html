@@ -175,7 +175,7 @@
                             <div style="width: 100%; height: 62px; position: relative;">
                                 <div on-click="_openDropdownHomeScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
+                                    <paper-dropdown-menu name="homeScorePlayer" on-value-changed="_validate" class="dropdown" id="homeScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
                                             <template is="dom-repeat" items="{{players}}">
@@ -190,7 +190,7 @@
                             <div style="width: 100%; height: 62px; position: relative;">
                                 <div on-click="_openDropdownHomeScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="homeScorePlayer" class="dropdown" id="homeScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
+                                    <paper-dropdown-menu name="homeScorePlayer" on-value-changed="_validate" class="dropdown" id="homeScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
                                             <template is="dom-repeat" items="{{players}}">
@@ -204,7 +204,7 @@
                         <div style="width: 100%; height: 62px; position: relative;">
                             <div on-click="_openDropdownHomeScoreDescription" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                             <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                <paper-dropdown-menu name="homeScoreDescription" class="dropdown" id="homeScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
+                                <paper-dropdown-menu name="homeScoreDescription" on-value-changed="_validate" class="dropdown" id="homeScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
                                     <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                         <paper-item style="display:none"></paper-item>
                                         <paper-item>Afstandsschot</paper-item>
@@ -225,7 +225,7 @@
                             <div style="width: 100%; height: 62px; position: relative;">
                                 <div on-click="_openDropdownGuestScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
+                                    <paper-dropdown-menu name="guestScorePlayer" on-value-changed="_validate" class="dropdown" id="guestScorePlayer" label="Wie heeft er gescoord?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
                                             <template is="dom-repeat" items="{{players}}">
@@ -240,7 +240,7 @@
                             <div style="width: 100%; height: 62px; position: relative;">
                                 <div on-click="_openDropdownGuestScorePlayer" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                                 <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                    <paper-dropdown-menu name="guestScorePlayer" class="dropdown" id="guestScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er gescoord heeft" horizontal-align="left">
+                                    <paper-dropdown-menu name="guestScorePlayer" on-value-changed="_validate" class="dropdown" id="guestScorePlayer" label="Wie heeft er een doelpunt tegen gekregen?" required auto-validate error-message="Kies wie er een doelpunt tegen heeft gekregen" horizontal-align="left">
                                         <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                             <paper-item style="display:none"></paper-item>
                                             <template is="dom-repeat" items="{{players}}">
@@ -254,7 +254,7 @@
                         <div style="width: 100%; height: 62px; position: relative;">
                             <div on-click="_openDropdownGuestScoreDescription" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                             <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                <paper-dropdown-menu name="guestScoreDescription" class="dropdown" id="guestScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
+                                <paper-dropdown-menu name="guestScoreDescription" on-value-changed="_validate" class="dropdown" id="guestScoreDescription" label="Hoe is er gescoord?" required auto-validate error-message="Kies hoe er gescoord is" horizontal-align="left">
                                     <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                         <paper-item style="display:none"></paper-item>
                                         <paper-item>Afstandsschot</paper-item>
@@ -559,6 +559,12 @@
                 });
             }
 
+            _validate(e) {
+                if (e.detail.value !== '') {
+                    e.target.validate();
+                }
+            }
+
             _half() {
                 const docRef = database.collection('matches').doc(this.subpage);
                 let half;
@@ -637,6 +643,7 @@
                 const docRef = database.collection('matches').doc(this.subpage);
                 let homeScoreToSave;
                 Polymer.dom(this.root).querySelector('#homeScoreDescription').validate();
+                Polymer.dom(this.root).querySelector('#homeScorePlayer').validate();
                 let homeScoreDescription = Polymer.dom(this.root).querySelector('#homeScoreDescription').value;
                 let homeScorePlayer = Polymer.dom(this.root).querySelector('#homeScorePlayer').value;
                 if (homeScoreDescription && homeScorePlayer) {
@@ -674,6 +681,7 @@
                 const docRef = database.collection('matches').doc(this.subpage);
                 let guestScoreToSave;
                 Polymer.dom(this.root).querySelector('#guestScoreDescription').validate();
+                Polymer.dom(this.root).querySelector('#guestScorePlayer').validate();
                 let guestScoreDescription = Polymer.dom(this.root).querySelector('#guestScoreDescription').value;
                 let guestScorePlayer = Polymer.dom(this.root).querySelector('#guestScorePlayer').value;
                 if (guestScoreDescription && guestScorePlayer) {
