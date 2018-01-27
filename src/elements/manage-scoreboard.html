@@ -546,8 +546,9 @@
 
             _getPlayers() {
                 let teams = this.teams.split(',');
+                teams = teams.reverse();
                 teams.forEach((team) => {
-                    database.collection('players').where('team', '==', team).get().then((snapshot) => {
+                    database.collection('players').where('team', '==', team).orderBy('date', 'desc').get().then((snapshot) => {
                         snapshot.docChanges.forEach((change) => {
                             if (change.type === 'added') {
                                 this.unshift('players', {
