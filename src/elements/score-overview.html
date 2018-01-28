@@ -75,6 +75,7 @@
                                         class="match"
                                         on-click="_goToScoreboard"
                                         id="[[match.id]]"
+                                        match-id="[[match.id]]"
                                         home-name="[[match.homeName]]"
                                         home-score="[[match.homeScore]]"
                                         guest-name="[[match.guestName]]"
@@ -232,8 +233,6 @@
                                 guestName: change.doc.data().guestName,
                                 homeScore: change.doc.data().homeScore,
                                 guestScore: change.doc.data().guestScore,
-                                timeMinutes: change.doc.data().timeMinutes,
-                                timeSeconds: change.doc.data().timeSeconds,
                                 time: change.doc.data().time,
                                 half: change.doc.data().half,
                                 date: change.doc.data().date,

@@ -147,10 +147,6 @@
                     && this.teams !== undefined && this.teams !== [] &&
                     this.teams.length > 0) {
                     let name = this.homeName + ' - ' + this.guestName;
-                    let minutes = this.timeMatch.toString();
-                    if (minutes < 10) {
-                        minutes = '0' + minutes;
-                    }
                     let teams = this.teams.join();
                     let showOnSite = this.$.showOnSite.checked;
 
@@ -163,10 +159,9 @@
                         homeOrGuest: this.homeOrGuest,
                         half: '1',
                         time: this.timeMatch.toString(),
-                        timeMinutes: minutes,
-                        timeSeconds: '00',
                         teams: teams.toString(),
                         date: new Date(),
+                        timeRunning: false,
                         endDate: '',
                     }).then(function(querySnapshot) {
                         console.log('Match made');
