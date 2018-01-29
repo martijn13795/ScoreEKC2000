@@ -117,7 +117,6 @@
                         type: Array,
                         value: [],
                         notify: true,
-                        observer: '_getMatches',
                     },
                     clubName: {
                         type: String,
@@ -222,7 +221,9 @@
                 return formattedDate;
             }
 
-            _getMatches() {
+            constructor() {
+                super();
+                this.matches = [];
                 database.collection('matches').orderBy('date', 'asc').onSnapshot((snapshot) => {
                     snapshot.docChanges.forEach((change) => {
                         if (change.type === 'added') {
@@ -233,7 +234,6 @@
                                 guestName: change.doc.data().guestName,
                                 homeScore: change.doc.data().homeScore,
                                 guestScore: change.doc.data().guestScore,
-                                time: change.doc.data().time,
                                 half: change.doc.data().half,
                                 date: change.doc.data().date,
                                 endDate: change.doc.data().endDate,
@@ -254,9 +254,6 @@
                                     guestName: change.doc.data().guestName,
                                     homeScore: change.doc.data().homeScore,
                                     guestScore: change.doc.data().guestScore,
-                                    timeMinutes: change.doc.data().timeMinutes,
-                                    timeSeconds: change.doc.data().timeSeconds,
-                                    time: change.doc.data().time,
                                     half: change.doc.data().half,
                                     date: change.doc.data().date,
                                     endDate: change.doc.data().endDate,
