@@ -15,7 +15,6 @@
             :host {
                 display: block;
                 height: 100%;
-                margin-bottom: 25px;
             }
 
             .container {
@@ -197,12 +196,12 @@
                         </table>
                     </div>
                 </div>
-                <div class="box2">
+                <div class="box2" style="margin-bottom: 70px;">
                     <div style="padding-left: 5px; padding-right: 5px;">
                         <div style="width: 100%; height: 62px; position: relative;">
                             <div on-click="_openDropdown" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
                             <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-                                <paper-dropdown-menu name="players" on-value-changed="_getPlayerData" class="dropdown" id="players" label="Selecteer een speler" horizontal-align="left">
+                                <paper-dropdown-menu name="players" on-value-changed="_getPlayerData" class="dropdown" id="players" label="Selecteer een speler" vertical-align="bottom" horizontal-align="left">
                                     <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
                                         <paper-item style="display:none"></paper-item>
                                         <template is="dom-repeat" items="{{players}}">
