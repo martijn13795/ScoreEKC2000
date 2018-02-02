@@ -1,0 +1,546 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-form-element-behavior/iron-form-element-behavior.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+
+<dom-module id="score-board-summary">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+                margin-bottom: 25px;
+            }
+
+            .container {
+                margin: 24px auto;
+                max-width: 800px;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .box {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                text-align: left;
+                align-items: center;
+                justify-content: center;
+                background-color: white;
+                padding: 10px 10px 10px 10px;
+                margin: 0 24px 24px 24px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+
+            .box2 {
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                padding: 10px 10px 10px 10px;
+                margin: 0 24px 24px 24px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+
+            app-toolbar {
+                background-color: #373b50;
+                color: #fff;
+                text-align: center;
+                font-size: 24px;
+            }
+            .homeScore {
+                flex: 2;
+            }
+
+            .guestScore {
+                flex: 2;
+            }
+
+            .timer {
+                flex: 3;
+            }
+
+            .emptySpace {
+                flex: 2;
+            }
+
+            circle {
+                fill: #37c0fb;
+            }
+
+            .names {
+                font-size: 12px;
+                height: 0;
+                white-space: nowrap;
+            }
+
+            @media all and (max-width: 939px) {
+                .emptySpace {
+                    display: none;
+                }
+                .spinner {
+                    margin-top: 25%;
+                    margin-bottom: 25%;
+                }
+            }
+
+            .spinner {
+                margin-top: 105px;
+                margin-bottom: 105px;
+                width: 100px;
+                height: 100px;
+                --paper-spinner-stroke-width: 5px;
+                --paper-spinner-color: #37c0fb;
+            }
+
+            .dropdown {
+                width: 100%;
+            }
+        </style>
+        <app-toolbar>
+            <template is="dom-if" if="{{isLoading}}">
+                <div class="loading" style="margin: 0 auto">
+                    <paper-spinner-lite active></paper-spinner-lite>
+                </div>
+            </template>
+            <template is="dom-if" if="{{!isLoading}}">
+                <iron-icon icon="icons:arrow-back" onclick="window.history.back()"></iron-icon>
+                <div main-title>[[homeName]] - [[guestName]]</div>
+            </template>
+        </app-toolbar>
+        <div class="container">
+            <template is="dom-if" if="{{isLoading}}">
+                <div class="loading">
+                    <paper-spinner-lite active class="spinner"></paper-spinner-lite>
+                </div>
+            </template>
+            <template is="dom-if" if="{{!isLoading}}">
+                <div class="box" style="text-align: center; padding: 0;">
+                    <div class="emptySpace"></div>
+                    <div class="homeScore">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[homeScore]]
+                            </text>
+                        </svg>
+                        <span class="names">
+                            [[homeName]]
+                        </span>
+                    </div>
+                    <div class="timer">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">00:00
+                            </text>
+                            <text x="50%" y="78%" text-anchor="middle" dy=".3em"
+                                  font-size="3em" font-weight="bold" fill="black">0
+                            </text>
+                        </svg>
+                    </div>
+                    <div class="guestScore">
+                        <svg version="1.1" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <circle cx="250" cy="250" r="200" stroke="#2e2e2e" stroke-width="16px"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dy=".3em"
+                                  font-size="8em" fill="black">[[guestScore]]
+                            </text>
+                        </svg>
+                        <span class="names">
+                            [[guestName]]
+                        </span>
+                    </div>
+                    <div class="emptySpace"></div>
+                </div>
+                <div class="box2">
+                    <h3 style="margin-top: 0; margin-bottom: 10px;">Gemiddelde tijd tot scoren</h3>
+                    <div style="display: flex; flex-direction: row; text-align: center;">
+                        <div style="flex: 1; display: inline-block; vertical-align: middle; margin-right: 10px;">
+                            <table style="margin: 0 auto;">
+                                <tr><td style="padding-right: 9px;"><b>[[homeName]]:</b> </td><td>[[homeScoreAvg]] min</td></tr>
+                            </table>
+                        </div>
+                        <div style="flex: 1; display: inline-block; vertical-align: middle;">
+                            <table style="margin: 0 auto;">
+                                <tr><td style="padding-right: 9px;"><b>[[guestName]]:</b> </td><td>[[guestScoreAvg]] min</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div style="flex: 1; display: inline-block; vertical-align: middle; margin-right: 10px;">
+                        <table style="margin: 0 auto;">
+                            <tr><th>[[homeName]]</th></tr>
+                            <tr><td style="padding-right: 9px;">Afstandsschoten: </td><td>[[homeAfs]]</td></tr>
+                            <tr><td>Korte kansen: </td><td>[[homeKor]]</td></tr>
+                            <tr><td>Doorloopbalen: </td><td>[[homeDoo]]</td></tr>
+                            <tr><td>Vrije worpen: </td><td>[[homeVri]]</td></tr>
+                            <tr><td>Strafworpen: </td><td>[[homeStr]]</td></tr>
+                        </table>
+                    </div>
+                    <div style="flex: 1; display: inline-block; vertical-align: middle;">
+                        <table style="margin: 0 auto;">
+                            <tr><th>[[guestName]]</th></tr>
+                            <tr><td style="padding-right: 9px;">Afstandsschoten: </td><td>[[guestAfs]]</td></tr>
+                            <tr><td>Korte kansen: </td><td>[[guestKor]]</td></tr>
+                            <tr><td>Doorloopbalen: </td><td>[[guestDoo]]</td></tr>
+                            <tr><td>Vrije worpen: </td><td>[[guestVri]]</td></tr>
+                            <tr><td>Strafworpen: </td><td>[[guestStr]]</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="box2">
+                    <div style="padding-left: 5px; padding-right: 5px;">
+                        <div style="width: 100%; height: 62px; position: relative;">
+                            <div on-click="_openDropdown" style="width: 100%; height: 100%; position: absolute; cursor: pointer; top: 0; left: 0; z-index: 10;"><paper-ripple></paper-ripple></div>
+                            <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                                <paper-dropdown-menu name="players" on-value-changed="_getPlayerData" class="dropdown" id="players" label="Selecteer een speler" horizontal-align="left">
+                                    <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                                        <paper-item style="display:none"></paper-item>
+                                        <template is="dom-repeat" items="{{players}}">
+                                            <paper-item>{{item.player}}</paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </paper-dropdown-menu>
+                            </div>
+                        </div>
+                    </div>
+                    <template is="dom-if" if="{{player}}">
+                        <div style="display: flex; flex-direction: row; text-align: left;  margin-left: -5px;">
+                            <div style="flex: 1; display: inline-block; vertical-align: middle; margin-right: 10px;">
+                                <table style="margin: 0 auto;">
+                                    <tr><th>Voor</th></tr>
+                                    <tr><td style="padding-right: 9px;">Afstandsschoten: </td><td>[[playerAfs]]</td></tr>
+                                    <tr><td>Korte kansen: </td><td>[[playerKor]]</td></tr>
+                                    <tr><td>Doorloopbalen: </td><td>[[playerDoo]]</td></tr>
+                                    <tr><td>Vrije worpen: </td><td>[[playerVri]]</td></tr>
+                                    <tr><td>Strafworpen: </td><td>[[playerStr]]</td></tr>
+                                </table>
+                            </div>
+                            <div style="flex: 1; display: inline-block; vertical-align: middle;">
+                                <table style="margin: 0 auto;">
+                                    <tr><th>Tegen</th></tr>
+                                    <tr><td style="padding-right: 9px;">Afstandsschoten: </td><td>[[againstPlayerAfs]]</td></tr>
+                                    <tr><td>Korte kansen: </td><td>[[againstPlayerKor]]</td></tr>
+                                    <tr><td>Doorloopbalen: </td><td>[[againstPlayerDoo]]</td></tr>
+                                    <tr><td>Vrije worpen: </td><td>[[againstPlayerVri]]</td></tr>
+                                    <tr><td>Strafworpen: </td><td>[[againstPlayerStr]]</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        class ScoreboardSummary extends Polymer.Element {
+            static get is() {
+                return 'score-board-summary';
+            }
+
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'score-board-summary',
+                    },
+                    subpage: {
+                        type: String,
+                        observer: '_updateSummary',
+                    },
+                    isLoading: {
+                        type: Boolean,
+                        value: true,
+                    },
+                    homeScore: {
+                        type: String,
+                        value: '0',
+                    },
+                    guestScore: {
+                        type: String,
+                        value: '0',
+                    },
+                    homeName: {
+                        type: String,
+                        value: 'EKC 2000',
+                    },
+                    guestName: {
+                        type: String,
+                        value: 'Gast',
+                    },
+                    homeAfs: {
+                        type: Number,
+                        value: 0,
+                    },
+                    homeKor: {
+                        type: Number,
+                        value: 0,
+                    },
+                    homeDoo: {
+                        type: Number,
+                        value: 0,
+                    },
+                    homeVri: {
+                        type: Number,
+                        value: 0,
+                    },
+                    homeStr: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestAfs: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestKor: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestDoo: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestVri: {
+                        type: Number,
+                        value: 0,
+                    },
+                    guestStr: {
+                        type: Number,
+                        value: 0,
+                    },
+                    player: {
+                        type: String,
+                        value: 'Speler',
+                    },
+                    playerAfs: {
+                        type: Number,
+                        value: 0,
+                    },
+                    playerKor: {
+                        type: Number,
+                        value: 0,
+                    },
+                    playerDoo: {
+                        type: Number,
+                        value: 0,
+                    },
+                    playerVri: {
+                        type: Number,
+                        value: 0,
+                    },
+                    playerStr: {
+                        type: Number,
+                        value: 0,
+                    },
+                    againstPlayerAfs: {
+                        type: Number,
+                        value: 0,
+                    },
+                    againstPlayerKor: {
+                        type: Number,
+                        value: 0,
+                    },
+                    againstPlayerDoo: {
+                        type: Number,
+                        value: 0,
+                    },
+                    againstPlayerVri: {
+                        type: Number,
+                        value: 0,
+                    },
+                    againstPlayerStr: {
+                        type: Number,
+                        value: 0,
+                    },
+                    homeOrGuest: {
+                        type: String,
+                    },
+                    players: {
+                        type: Array,
+                        value: [],
+                    },
+                    teams: {
+                        type: String,
+                    },
+                    homeScoreAvg: {
+                        type: Number,
+                    },
+                    guestScoreAvg: {
+                        type: Number,
+                    },
+                    time: {
+                        type: Number,
+                    },
+                };
+            }
+
+            _updateSummary() {
+                database.collection('matches').doc(this.subpage).get().then((doc) => {
+                    this.homeScore = doc.data().homeScore.toString();
+                    this.guestScore = doc.data().guestScore.toString();
+                    this.homeName = doc.data().homeName.toString();
+                    this.guestName = doc.data().guestName.toString();
+                    this.teams = doc.data().teams.toString();
+                    this.homeOrGuest = doc.data().homeOrGuest.toString();
+                    this.time = doc.data().time;
+                }).then(() => {
+                    this.homeScoreAvg = Math.round(((this.time * 2) / this.homeScore) * 10 ) / 10;
+                    this.guestScoreAvg = Math.round(((this.time * 2) / this.guestScore) * 10 ) / 10;
+                    let teams = this.teams.split(',');
+                    teams = teams.reverse();
+                    teams.forEach((team) => {
+                        database.collection('players').where('team', '==', team).orderBy('date', 'desc')
+                            .get().then((snapshot) => {
+                            snapshot.docChanges.forEach((change) => {
+                                if (change.type === 'added') {
+                                    this.unshift('players', {
+                                        player: change.doc.data().playerName,
+                                    });
+                                }
+                            });
+                        });
+                    });
+                }).then(() => {
+                    this.isLoading = false;
+                });
+
+                database.collection('matches').doc(this.subpage).collection('scores').get().then((doc) => {
+                    this.homeAfs = 0;
+                    this.homeKor = 0;
+                    this.homeDoo = 0;
+                    this.homeVri = 0;
+                    this.homeStr = 0;
+                    this.guestAfs = 0;
+                    this.guestKor = 0;
+                    this.guestDoo = 0;
+                    this.guestVri = 0;
+                    this.guestStr = 0;
+                    if (doc.size) {
+                        doc.forEach((val) => {
+                            if (val.data().homeOrGuest === 'home') {
+                                switch (val.data().description) {
+                                    case 'Afstandsschot':
+                                        this.homeAfs++;
+                                        break;
+                                    case 'Korte kans':
+                                        this.homeKor++;
+                                        break;
+                                    case 'Doorloopbal':
+                                        this.homeDoo++;
+                                        break;
+                                    case 'Vrije worp':
+                                        this.homeVri++;
+                                        break;
+                                    case 'Strafworp':
+                                        this.homeStr++;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } else if (val.data().homeOrGuest === 'guest') {
+                                switch (val.data().description) {
+                                    case 'Afstandsschot':
+                                        this.guestAfs++;
+                                        break;
+                                    case 'Korte kans':
+                                        this.guestKor++;
+                                        break;
+                                    case 'Doorloopbal':
+                                        this.guestDoo++;
+                                        break;
+                                    case 'Vrije worp':
+                                        this.guestVri++;
+                                        break;
+                                    case 'Strafworp':
+                                        this.guestStr++;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            _openDropdown() {
+                Polymer.dom(this.root).querySelector('#players').open();
+            }
+
+            _getPlayerData() {
+                this.player = Polymer.dom(this.root).querySelector('#players').value;
+                if (this.player !== undefined && this.player !== '') {
+                    database.collection('matches').doc(this.subpage).collection('scores').get().then((doc) => {
+                        this.playerAfs = 0;
+                        this.playerKor = 0;
+                        this.playerDoo = 0;
+                        this.playerVri = 0;
+                        this.playerStr = 0;
+                        this.againstPlayerAfs = 0;
+                        this.againstPlayerKor = 0;
+                        this.againstPlayerDoo = 0;
+                        this.againstPlayerVri = 0;
+                        this.againstPlayerStr = 0;
+                        if (doc.size) {
+                            doc.forEach((val) => {
+                                if (this.homeOrGuest === val.data().homeOrGuest && val.data().player === this.player) {
+                                    switch (val.data().description) {
+                                        case 'Afstandsschot':
+                                            this.playerAfs++;
+                                            break;
+                                        case 'Korte kans':
+                                            this.playerKor++;
+                                            break;
+                                        case 'Doorloopbal':
+                                            this.playerDoo++;
+                                            break;
+                                        case 'Vrije worp':
+                                            this.playerVri++;
+                                            break;
+                                        case 'Strafworp':
+                                            this.playerStr++;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                } else if (this.homeOrGuest !== val.data().homeOrGuest && val.data().player === this.player) {
+                                    switch (val.data().description) {
+                                        case 'Afstandsschot':
+                                            this.againstPlayerAfs++;
+                                            break;
+                                        case 'Korte kans':
+                                            this.againstPlayerKor++;
+                                            break;
+                                        case 'Doorloopbal':
+                                            this.againstPlayerDoo++;
+                                            break;
+                                        case 'Vrije worp':
+                                            this.againstPlayerVri++;
+                                            break;
+                                        case 'Strafworp':
+                                            this.againstPlayerStr++;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        }
+
+        window.customElements.define(ScoreboardSummary.is, ScoreboardSummary);
+    </script>
+</dom-module>

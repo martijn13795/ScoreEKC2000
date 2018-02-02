@@ -7,6 +7,7 @@
     "src/pages/page-score-overview.html",
     "src/pages/page-scoreboard.html",
     "src/pages/page-scoreboard-detail.html",
+    "src/pages/page-scoreboard-summary.html",
     "src/pages/page-start-scoreboard.html",
     "src/pages/page-manage-players.html",
     "src/pages/page-create-cookie.html"

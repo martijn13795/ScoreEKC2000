@@ -57,6 +57,7 @@
                 padding: 10px 10px 10px 10px;
                 margin: 0 24px 24px 24px;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                cursor: pointer;
             }
 
             .scoreTop {
@@ -196,27 +197,8 @@
             </template>
             <template is="dom-if" if="{{!isLoading}}">
                 <template is="dom-if" if="{{endDate}}">
-                    <div class="scoreSummary">
-                        <div style="flex: 1; display: inline-block; vertical-align: middle; margin-right: 10px;">
-                            <table style="margin: 0 auto;">
-                                <tr><th>[[homeName]]</th></tr>
-                                <tr><td style="padding-right: 12px;">Afstandsschoten: </td><td>[[homeAfs]]</td></tr>
-                                <tr><td>Korte kansen: </td><td>[[homeKor]]</td></tr>
-                                <tr><td>Doorloopbalen: </td><td>[[homeDoo]]</td></tr>
-                                <tr><td>Vrije worpen: </td><td>[[homeVri]]</td></tr>
-                                <tr><td>Strafworpen: </td><td>[[homeStr]]</td></tr>
-                            </table>
-                        </div>
-                        <div style="flex: 1; display: inline-block; vertical-align: middle;">
-                            <table style="margin: 0 auto;">
-                                <tr><th>[[guestName]]</th></tr>
-                                <tr><td style="padding-right: 12px;">Afstandsschoten: </td><td>[[guestAfs]]</td></tr>
-                                <tr><td>Korte kansen: </td><td>[[guestKor]]</td></tr>
-                                <tr><td>Doorloopbalen: </td><td>[[guestDoo]]</td></tr>
-                                <tr><td>Vrije worpen: </td><td>[[guestVri]]</td></tr>
-                                <tr><td>Strafworpen: </td><td>[[guestStr]]</td></tr>
-                            </table>
-                        </div>
+                    <div class="scoreSummary" on-click="_openSummary">
+                        <h2>Wedstrijd samenvatting</h2>
                     </div>
                 </template>
                 <template is="dom-if" if="{{scores.length}}">
@@ -415,6 +397,14 @@
                 } else {
                     return false;
                 }
+            }
+
+            _openSummary() {
+                this.dispatchEvent(new CustomEvent('requestChangePage', {
+                    bubbles: true,
+                    composed: true,
+                    detail: {route: '/scoreboard-summary/' + this.subpage},
+                }));
             }
 
             _updateScore() {

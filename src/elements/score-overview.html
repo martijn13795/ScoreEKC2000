@@ -261,7 +261,8 @@
                             }
                         }
                         if (change.type === 'removed') {
-                            this.splice('matches', change.oldIndex, 1);
+                            let index = this.matches.length - (change.oldIndex + 1);
+                            this.splice('matches', index, 1);
                         }
                         this.isLoading = false;
                     });
