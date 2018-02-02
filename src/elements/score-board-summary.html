@@ -255,6 +255,9 @@
                     },
                     subpage: {
                         type: String,
+                    },
+                    page: {
+                        type: String,
                         observer: '_updateSummary',
                     },
                     isLoading: {
@@ -385,6 +388,7 @@
 
             _updateSummary() {
                 database.collection('matches').doc(this.subpage).get().then((doc) => {
+                    this.splice('players', 0, this.players.length);
                     this.homeScore = doc.data().homeScore.toString();
                     this.guestScore = doc.data().guestScore.toString();
                     this.homeName = doc.data().homeName.toString();
@@ -411,6 +415,9 @@
                     });
                 }).then(() => {
                     this.isLoading = false;
+                    if (Polymer.dom(this.root).querySelector('#players')) {
+                        Polymer.dom(this.root).querySelector('#players').contentElement.selected = 0;
+                    }
                 });
 
                 database.collection('matches').doc(this.subpage).collection('scores').get().then((doc) => {
@@ -477,7 +484,10 @@
             }
 
             _getPlayerData() {
-                this.player = Polymer.dom(this.root).querySelector('#players').value;
+                this.player = '';
+                if (Polymer.dom(this.root).querySelector('#players')) {
+                    this.player = Polymer.dom(this.root).querySelector('#players').value;
+                }
                 if (this.player !== undefined && this.player !== '') {
                     database.collection('matches').doc(this.subpage).collection('scores').get().then((doc) => {
                         this.playerAfs = 0;
