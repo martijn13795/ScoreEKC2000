@@ -134,6 +134,7 @@
             }
 
             getFormattedDate(date) {
+                date = date.toDate();
                 const currentDate = new Date();
                 let formattedDate;
                 if (currentDate.getDate() === date.getDate() && currentDate.getMonth() === date.getMonth()
@@ -225,7 +226,7 @@
                 super();
                 this.matches = [];
                 database.collection('matches').orderBy('date', 'asc').onSnapshot((snapshot) => {
-                    snapshot.docChanges.forEach((change) => {
+                    snapshot.docChanges().forEach((change) => {
                         if (change.type === 'added') {
                             this.unshift('matches', {
                                 id: change.doc.id,
@@ -268,8 +269,10 @@
                     });
                 });
             }
-
+            // const timestamp = snapshot.get('created_at');
+            // const date = timestamp.toDate();
             _isEqualTo(date) {
+                date = date.toDate();
                 if (this.previousDate !== undefined) {
                     if (date.getDate() + date.getMonth() + date.getFullYear() ===
                         this.previousDate.getDate() + this.previousDate.getMonth() +

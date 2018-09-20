@@ -225,78 +225,80 @@
 
             _updateScore() {
                 database.collection('matches').doc(this.subpage).onSnapshot((doc) => {
-                    this.homeScore = doc.data().homeScore.toString();
-                    this.guestScore = doc.data().guestScore.toString();
-                    this.homeName = doc.data().homeName.toString();
-                    this.guestName = doc.data().guestName.toString();
-                    this.time = doc.data().time.toString();
-                    this.timeEnd = doc.data().timeEnd;
-                    this.timeRunning = doc.data().timeRunning;
-                    this.restSeconds = doc.data().restSeconds;
-                    this.half = doc.data().half.toString();
-                    if ((this.timeEnd === undefined || this.timeEnd === null) &&
-                        (this.restSeconds === undefined || this.restSeconds === null)) {
-                        this.timeEnd = new Date();
-                        if (this.half === '1' || this.half === '2') {
-                            this.timeEnd.setMinutes(this.timeEnd.getMinutes() + parseInt(this.time));
-                        }
-                        this.timeSeconds = undefined;
-                        this.timeMinutes = undefined;
-                    }
-                    if (this.timeSeconds === undefined && this.timeMinutes === undefined) {
-                        let totalSecondsDiff = -1;
-                        if (this.timeEnd !== undefined && this.timeEnd !== null) {
-                            totalSecondsDiff = (this.timeEnd.getTime() - new Date().getTime()) / 1000;
-                        } else {
-                            totalSecondsDiff = this.restSeconds;
-                        }
-                        if (totalSecondsDiff >= 0) {
-                            let minutes = Math.floor(totalSecondsDiff / 60);
-                            let seconds = Math.round((totalSecondsDiff - minutes * 60) - 0.1);
-                            if (minutes <= 9) {
-                                minutes = '0' + minutes.toString();
+                    if (doc.exists) {
+                        this.homeScore = doc.data().homeScore.toString();
+                        this.guestScore = doc.data().guestScore.toString();
+                        this.homeName = doc.data().homeName.toString();
+                        this.guestName = doc.data().guestName.toString();
+                        this.time = doc.data().time.toString();
+                        this.timeEnd = doc.data().timeEnd;
+                        this.timeRunning = doc.data().timeRunning;
+                        this.restSeconds = doc.data().restSeconds;
+                        this.half = doc.data().half.toString();
+                        if ((this.timeEnd === undefined || this.timeEnd === null) &&
+                            (this.restSeconds === undefined || this.restSeconds === null)) {
+                            this.timeEnd = new Date();
+                            if (this.half === '1' || this.half === '2') {
+                                this.timeEnd.setMinutes(this.timeEnd.getMinutes() + parseInt(this.time));
                             }
-                            if (seconds <= 9) {
-                                seconds = '0' + seconds.toString();
-                            }
-                            this.timeMinutes = minutes.toString();
-                            this.timeSeconds = seconds.toString();
-                        } else {
-                            this.timeMinutes = '00';
-                            this.timeSeconds = '00';
+                            this.timeSeconds = undefined;
+                            this.timeMinutes = undefined;
                         }
-                    }
-                    this.isLoading = false;
-                    if (this.timeRunning && (new Date() <= this.timeEnd)) {
-                        let interval = setInterval(() => {
-                            if (this.timeRunning && (new Date() <= this.timeEnd)) {
-                                let totalSecondsDiff = -1;
-                                if (this.timeEnd !== undefined && this.timeEnd !== null) {
-                                    totalSecondsDiff = (this.timeEnd.getTime() - new Date().getTime()) / 1000;
-                                } else {
-                                    totalSecondsDiff = this.restSeconds;
+                        if (this.timeSeconds === undefined && this.timeMinutes === undefined) {
+                            let totalSecondsDiff = -1;
+                            if (this.timeEnd !== undefined && this.timeEnd !== null) {
+                                totalSecondsDiff = (this.timeEnd.getTime() - new Date().getTime()) / 1000;
+                            } else {
+                                totalSecondsDiff = this.restSeconds;
+                            }
+                            if (totalSecondsDiff >= 0) {
+                                let minutes = Math.floor(totalSecondsDiff / 60);
+                                let seconds = Math.round((totalSecondsDiff - minutes * 60) - 0.1);
+                                if (minutes <= 9) {
+                                    minutes = '0' + minutes.toString();
                                 }
-                                if (totalSecondsDiff >= 0) {
-                                    let minutes = Math.floor(totalSecondsDiff / 60);
-                                    let seconds = Math.round((totalSecondsDiff - minutes * 60) - 0.1);
-                                    if (minutes <= 9) {
-                                        minutes = '0' + minutes.toString();
+                                if (seconds <= 9) {
+                                    seconds = '0' + seconds.toString();
+                                }
+                                this.timeMinutes = minutes.toString();
+                                this.timeSeconds = seconds.toString();
+                            } else {
+                                this.timeMinutes = '00';
+                                this.timeSeconds = '00';
+                            }
+                        }
+                        this.isLoading = false;
+                        if (this.timeRunning && (new Date() <= this.timeEnd)) {
+                            let interval = setInterval(() => {
+                                if (this.timeRunning && (new Date() <= this.timeEnd)) {
+                                    let totalSecondsDiff = -1;
+                                    if (this.timeEnd !== undefined && this.timeEnd !== null) {
+                                        totalSecondsDiff = (this.timeEnd.getTime() - new Date().getTime()) / 1000;
+                                    } else {
+                                        totalSecondsDiff = this.restSeconds;
                                     }
-                                    if (seconds <= 9) {
-                                        seconds = '0' + seconds.toString();
-                                    }
-                                    this.timeMinutes = minutes.toString();
-                                    this.timeSeconds = seconds.toString();
-                                    if (this.timeSeconds === '00' && this.timeMinutes === '00') {
+                                    if (totalSecondsDiff >= 0) {
+                                        let minutes = Math.floor(totalSecondsDiff / 60);
+                                        let seconds = Math.round((totalSecondsDiff - minutes * 60) - 0.1);
+                                        if (minutes <= 9) {
+                                            minutes = '0' + minutes.toString();
+                                        }
+                                        if (seconds <= 9) {
+                                            seconds = '0' + seconds.toString();
+                                        }
+                                        this.timeMinutes = minutes.toString();
+                                        this.timeSeconds = seconds.toString();
+                                        if (this.timeSeconds === '00' && this.timeMinutes === '00') {
+                                            clearInterval(interval);
+                                        }
+                                    } else {
                                         clearInterval(interval);
                                     }
                                 } else {
                                     clearInterval(interval);
                                 }
-                            } else {
-                                clearInterval(interval);
-                            }
-                        }, 1000);
+                            }, 1000);
+                        }
                     }
                 });
             }

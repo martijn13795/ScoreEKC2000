@@ -98,7 +98,7 @@
 
             _getTeams() {
                 database.collection('teams').orderBy('date', 'desc').onSnapshot((snapshot) => {
-                    snapshot.docChanges.forEach((change) => {
+                    snapshot.docChanges().forEach((change) => {
                         if (change.type === 'added') {
                             this.unshift('teams', {
                                 team: change.doc.data().teamName,

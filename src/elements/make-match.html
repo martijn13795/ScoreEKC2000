@@ -118,7 +118,7 @@
                 Polymer.dom(this.root).querySelectorAll('#team')[0].$.dropdownMenu.
                 setAttribute('error-message', 'Selecteer een team');
                 database.collection('teams').orderBy('date', 'desc').get().then((doc) => {
-                    doc.docChanges.forEach((change) => {
+                    doc.docChanges().forEach((change) => {
                         if (change.type === 'added') {
                             this.unshift('setTeams', [
                                 change.doc.data().teamName,
