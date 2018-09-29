@@ -186,6 +186,7 @@
                     self.player = event.detail;
                     self.player.team = self.player.value.toString().split(',')[0];
                     self.player.id = self.player.value.toString().split(',')[1];
+                    self.showDelete = false;
                     self.showEdit = true;
                     self.notifyPath('player.team', self.player.team);
                     self.notifyPath('player.id', self.player.id);
@@ -312,6 +313,7 @@
                 if (playerId !== undefined && playerId !== '') {
                     database.collection('players').doc(playerId).delete().then(() => {
                         this.showEdit = false;
+                        this.showDelete = false;
                         Polymer.dom(this.root).querySelector('#editPlayer').value = null;
                         this.player.text='';
                         this.player.id='';
