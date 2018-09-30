@@ -206,42 +206,56 @@
                         <template is="dom-repeat" items={{scores}} as="score">
                             <div class="scoreContainer">
                                 <div class="scoreTop">
-                                    <template is="dom-if" if="{{!_isEqualTo(score.homeOrGuest)}}">
+                                    <template is="dom-if" if="[[!score.eventDescription]]">
+                                        <template is="dom-if" if="{{!_isEqualTo(score.homeOrGuest)}}">
+                                            <div class="home" style="flex: 1; font-size: 25px;">
+                                                [[score.home]]
+                                            </div>
+                                        </template>
+                                        <template is="dom-if" if="{{_isEqualTo(score.homeOrGuest)}}">
+                                            <template is="dom-if" if="{{_isEqualTo(homeOrGuestMatch)}}">
+                                                <div class="home" style="flex: 1; font-size: 25px; font-weight: bolder; color: green;">
+                                                    [[score.home]]
+                                                </div>
+                                            </template>
+                                            <template is="dom-if" if="{{!_isEqualTo(homeOrGuestMatch)}}">
+                                                <div class="home" style="flex: 1; font-size: 25px; font-weight: bolder; color: red;">
+                                                    [[score.home]]
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </template>
+                                    <template is="dom-if" if="[[score.eventDescription]]">
                                         <div class="home" style="flex: 1; font-size: 25px;">
                                             [[score.home]]
                                         </div>
                                     </template>
-                                    <template is="dom-if" if="{{_isEqualTo(score.homeOrGuest)}}">
-                                        <template is="dom-if" if="{{_isEqualTo(homeOrGuestMatch)}}">
-                                            <div class="home" style="flex: 1; font-size: 25px; font-weight: bolder; color: green;">
-                                                [[score.home]]
-                                            </div>
-                                        </template>
-                                        <template is="dom-if" if="{{!_isEqualTo(homeOrGuestMatch)}}">
-                                            <div class="home" style="flex: 1; font-size: 25px; font-weight: bolder; color: red;">
-                                                [[score.home]]
-                                            </div>
-                                        </template>
-                                    </template>
                                     <div class="time" style="flex: 2; font-size: 16px; margin-top: -7px">
                                         [[score.minutes]]:[[score.seconds]]
                                     </div>
-                                    <template is="dom-if" if="{{_isEqualTo(score.homeOrGuest)}}">
+                                    <template is="dom-if" if="[[!score.eventDescription]]">
+                                        <template is="dom-if" if="{{_isEqualTo(score.homeOrGuest)}}">
+                                            <div class="guest" style="flex: 1; font-size: 25px;">
+                                                [[score.guest]]
+                                            </div>
+                                        </template>
+                                        <template is="dom-if" if="{{!_isEqualTo(score.homeOrGuest)}}">
+                                            <template is="dom-if" if="{{!_isEqualTo(homeOrGuestMatch)}}">
+                                                <div class="guest" style="flex: 1; font-size: 25px; font-weight: bolder; color: green;">
+                                                    [[score.guest]]
+                                                </div>
+                                            </template>
+                                            <template is="dom-if" if="{{_isEqualTo(homeOrGuestMatch)}}">
+                                                <div class="guest" style="flex: 1; font-size: 25px; font-weight: bolder; color: red;">
+                                                    [[score.guest]]
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </template>
+                                    <template is="dom-if" if="[[score.eventDescription]]">
                                         <div class="guest" style="flex: 1; font-size: 25px;">
                                             [[score.guest]]
                                         </div>
-                                    </template>
-                                    <template is="dom-if" if="{{!_isEqualTo(score.homeOrGuest)}}">
-                                        <template is="dom-if" if="{{!_isEqualTo(homeOrGuestMatch)}}">
-                                            <div class="guest" style="flex: 1; font-size: 25px; font-weight: bolder; color: green;">
-                                                [[score.guest]]
-                                            </div>
-                                        </template>
-                                        <template is="dom-if" if="{{_isEqualTo(homeOrGuestMatch)}}">
-                                            <div class="guest" style="flex: 1; font-size: 25px; font-weight: bolder; color: red;">
-                                                [[score.guest]]
-                                            </div>
-                                        </template>
                                     </template>
                                 </div>
                                 <div class="scoreCenter">
@@ -250,12 +264,19 @@
                                     </div>
                                 </div>
                                 <div class="scoreBottom">
-                                    <div class="description" style="flex: 1; text-align: left;">
-                                        [[score.player]]
-                                    </div>
-                                    <div class="description" style="flex: 1; text-align: right;">
-                                        [[score.description]]
-                                    </div>
+                                    <template is="dom-if" if="[[score.player]]">
+                                        <div class="description" style="flex: 1; text-align: left;">
+                                            [[score.player]]
+                                        </div>
+                                        <div class="description" style="flex: 1; text-align: right;">
+                                            [[score.description]]
+                                        </div>
+                                    </template>
+                                    <template is="dom-if" if="[[score.eventDescription]]">
+                                        <div class="description" style="width: 100%; text-align: left;">
+                                            [[score.eventDescription]]
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
                         </template>
@@ -501,6 +522,7 @@
                                 this.set('scores.' + i, {
                                     description: val.data().description,
                                     player: val.data().player,
+                                    eventDescription: val.data().eventDescription,
                                     home: val.data().home,
                                     guest: val.data().guest,
                                     minutes: val.data().minutes,
@@ -512,6 +534,7 @@
                                 this.push('scores', {
                                     description: val.data().description,
                                     player: val.data().player,
+                                    eventDescription: val.data().eventDescription,
                                     home: val.data().home,
                                     guest: val.data().guest,
                                     minutes: val.data().minutes,

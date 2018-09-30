@@ -270,6 +270,11 @@
                         <div id="messageGuest" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out;">Score toegevoegd.</div>
                         <paper-button class="button" name="scorePlus" id="guestScore" on-click="_guestScorePlus">Gast score toevoegen</paper-button>
                     </div>
+                    <div class="box">
+                        <paper-textarea label="Belangrijke gebeurtenis (E.g. Wissels, blessures, kaarten, Enz.)" name="eventDescription" id="eventDescription" required maxlength="1000" error-message="Vul een gebeurtenis in"></paper-textarea><br>
+                        <div id="messageEvent" style="opacity: 0; font-size: 12px; transition: opacity 0.5s ease-out;">Gebeurtenis toegevoegd.</div>
+                        <paper-button class="button" name="addEvent" id="addEvent" on-click="_addEvent">Gebeurtenis toevoegen</paper-button>
+                    </div>
                     <div class="bottomButtons">
                         <div></div>
                         <div>
@@ -674,6 +679,36 @@
                                     Polymer.dom(this.root).querySelector('#messageGuest').style.opacity = '0';
                                 }, 2000);
                             });
+                        });
+                    });
+                }
+            }
+
+            _addEvent() {
+                const docRef = database.collection('matches').doc(this.subpage);
+                Polymer.dom(this.root).querySelector('#eventDescription').validate();
+                let eventDescription = Polymer.dom(this.root).querySelector('#eventDescription').value;
+                if (eventDescription && eventDescription !== '' && eventDescription !== null
+                    && eventDescription.length < 1002) {
+                    Polymer.dom(this.root).querySelector('#eventDescription').value = '';
+                    docRef.get().then((querySnapshot) => {
+                        const myData = querySnapshot.data();
+                        database.collection('matches').doc(this.subpage).collection('scores').add({
+                            eventDescription: eventDescription,
+                            description: '',
+                            player: '',
+                            homeOrGuest: '',
+                            home: myData.homeScore,
+                            guest: myData.guestScore,
+                            minutes: this.timeMinutes,
+                            seconds: this.timeSeconds,
+                            half: this.half.toString(),
+                            date: new Date(),
+                        }).then(() => {
+                            Polymer.dom(this.root).querySelector('#messageEvent').style.opacity = '1';
+                            setTimeout(() => {
+                                Polymer.dom(this.root).querySelector('#messageEvent').style.opacity = '0';
+                            }, 2000);
                         });
                     });
                 }
